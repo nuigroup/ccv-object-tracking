@@ -55,6 +55,10 @@ class ofxSelectionTool : public ofxGuiListener
 		savePanel,
 		kParameter_SaveXml,
 		kParameter_File,
+
+		areaPanel,
+		areaPanel_minArea,
+		areapanel_maxArea,
 	};
 
 public:
@@ -177,6 +181,10 @@ public:
 
 	//Images
 	ofImage				background;
+
+	//Object Tracking Variables
+	int					minArea;
+	int					maxArea;
 
     /****************************************************************
 	 *						Private Stuff

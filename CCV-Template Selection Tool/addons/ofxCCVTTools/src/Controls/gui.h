@@ -95,6 +95,16 @@ void ofxSelectionTool::setupControls()
 	sPanel->mObjWidth = 127;
 	sPanel->mObjHeight = 65;
 
+	//Selecting Area of the template
+	ofxGuiPanel* aPanel = controls->addPanel(appPtr->areaPanel, "Area", 370, 195, 10, 7);
+	aPanel->addSlider(areaPanel_minArea, "Min Area", 110, 13, 0.0f, 15.0f, appPtr->minArea, kofxGui_Display_Int, 0);
+	aPanel->addSlider(areapanel_maxArea, "Max Area", 110, 13, 0.0f, 15.0f, appPtr->maxArea, kofxGui_Display_Int, 0);
+	aPanel->mObjects[0]->mObjX = 105;
+	aPanel->mObjects[0]->mObjY = 10;
+	aPanel->mObjects[0]->mObjY = 30;
+	aPanel->mObjWidth = 127;
+	aPanel->mObjHeight = 65;
+
 	//Highpass Image
 	ofxGuiPanel* hpPanel = controls->addPanel(appPtr->highpassPanel, "Highpass", 672, 95, OFXGUI_PANEL_BORDER, 7);
 	hpPanel->addButton(highpassPanel_use, "", 12, 12, kofxGui_Button_Off, kofxGui_Button_Switch, "");
