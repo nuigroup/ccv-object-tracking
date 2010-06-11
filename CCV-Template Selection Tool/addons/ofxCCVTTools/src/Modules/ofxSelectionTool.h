@@ -1,4 +1,3 @@
-
 #ifndef _ofxNCoreVision_H
 #define _ofxNCoreVision_H
 
@@ -58,7 +57,7 @@ class ofxSelectionTool : public ofxGuiListener
 
 		areaPanel,
 		areaPanel_minArea,
-		areapanel_maxArea,
+		areaPanel_maxArea,
 	};
 
 public:
@@ -92,6 +91,9 @@ public:
 		camRate = 30;
 		camWidth = 320;
 		camHeight = 240;
+
+		minArea=10;
+		maxArea=10;
 	}
 
 	~ofxSelectionTool()
@@ -166,6 +168,11 @@ public:
 
 	bool				bNewFrame;
 
+
+	//Object Tracking Variables
+	int					minArea;
+	int					maxArea;
+
 	/****************************************************
 	 *End config.xml variables
 	 *****************************************************/
@@ -181,10 +188,6 @@ public:
 
 	//Images
 	ofImage				background;
-
-	//Object Tracking Variables
-	int					minArea;
-	int					maxArea;
 
     /****************************************************************
 	 *						Private Stuff

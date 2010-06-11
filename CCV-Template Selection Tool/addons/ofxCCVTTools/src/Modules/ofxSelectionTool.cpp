@@ -46,7 +46,7 @@ void ofxSelectionTool::_setup(ofEventArgs &e)
 	controls = ofxGui::Instance(this);
 	setupControls();
 	
-	//printf("Controls Loaded...\n");
+	printf("Controls Loaded...\n");
 
 
 	//Allocate Filters
@@ -60,7 +60,7 @@ void ofxSelectionTool::_setup(ofEventArgs &e)
 	
 	#ifdef TARGET_WIN32
 	    //get rid of the console window
-        FreeConsole();
+  //      FreeConsole();
 	#endif
 
 	printf("Template Selection Tool is setup!\n\n");
@@ -95,6 +95,9 @@ void ofxSelectionTool::loadXMLSettings()
 	filter->highpassNoise		= XML.getValue("CONFIG:INT:HIGHPASSNOISE",0);
 	filter->highpassAmp			= XML.getValue("CONFIG:INT:HIGHPASSAMP",0);
 	filter->smooth				= XML.getValue("CONFIG:INT:SMOOTH",0);
+	//Area Setings
+	minArea						= XML.getValue("CONFIG:INT:MINAREA",10);
+	maxArea						= XML.getValue("CONFIG:INT:MAXAREA",10);
 	//--------------------------------------------------------------
 	//  END XML SETUP
 }
@@ -119,6 +122,8 @@ void ofxSelectionTool::saveSettings()
 	XML.setValue("CONFIG:INT:HIGHPASSNOISE", filter->highpassNoise);
 	XML.setValue("CONFIG:INT:HIGHPASSAMP", filter->highpassAmp);
 	XML.setValue("CONFIG:INT:SMOOTH", filter->smooth);
+	XML.setValue("CONFIG:INT:MINAREA",minArea);
+	XML.setValue("CONFIG:INT:MAXAREA",maxArea);
 	XML.saveFile("config.xml");
 }
 
@@ -192,6 +197,7 @@ void ofxSelectionTool::initDevice()
 *****************************************************************************/
 void ofxSelectionTool::_update(ofEventArgs &e)
 {
+	printf("\nMaxArea=%d",maxArea);
 	bNewFrame = false;
 
 		#ifdef TARGET_WIN32

@@ -76,7 +76,7 @@
         <TYPE>PANEL</TYPE>
         <NAME>Settings</NAME>
         <LEFT>535.000000</LEFT>
-        <TOP>265.000000</TOP>
+        <TOP>270.000000</TOP>
         <WIDTH>145.000000</WIDTH>
         <HEIGHT>42.000000</HEIGHT>
         <MODE>0</MODE>
@@ -137,7 +137,7 @@
             <STEPS>0</STEPS>
             <MIN>0.000000</MIN>
             <MAX>255.000000</MAX>
-            <VALUE>89.000000</VALUE>
+            <VALUE>38.000000</VALUE>
         </OBJECT>
         <OBJECT>
             <ID>18</ID>
@@ -204,7 +204,7 @@
             <MODE>2</MODE>
             <DISPLAY>2</DISPLAY>
             <STEPS>0</STEPS>
-            <VALUE>1</VALUE>
+            <VALUE>0</VALUE>
         </OBJECT>
         <OBJECT>
             <ID>7</ID>
@@ -219,7 +219,51 @@
             <STEPS>0</STEPS>
             <MIN>0.000000</MIN>
             <MAX>15.000000</MAX>
-            <VALUE>6.000000</VALUE>
+            <VALUE>4.000000</VALUE>
+        </OBJECT>
+    </OBJECT>
+    <OBJECT>
+        <ID>22</ID>
+        <TYPE>PANEL</TYPE>
+        <NAME>Area Panel</NAME>
+        <LEFT>370.000000</LEFT>
+        <TOP>270.000000</TOP>
+        <WIDTH>120.000000</WIDTH>
+        <HEIGHT>86.000000</HEIGHT>
+        <MODE>0</MODE>
+        <DISPLAY>2</DISPLAY>
+        <STEPS>0</STEPS>
+        <BORDER>10</BORDER>
+        <SPACING>7</SPACING>
+        <OBJECT>
+            <ID>23</ID>
+            <TYPE>SLIDER</TYPE>
+            <NAME>Min Area</NAME>
+            <LEFT>10.000000</LEFT>
+            <TOP>30.000000</TOP>
+            <WIDTH>110.000000</WIDTH>
+            <HEIGHT>13.000000</HEIGHT>
+            <MODE>0</MODE>
+            <DISPLAY>1</DISPLAY>
+            <STEPS>0</STEPS>
+            <MIN>0.000000</MIN>
+            <MAX>15.000000</MAX>
+            <VALUE>10.227273</VALUE>
+        </OBJECT>
+        <OBJECT>
+            <ID>24</ID>
+            <TYPE>SLIDER</TYPE>
+            <NAME>Max Area</NAME>
+            <LEFT>10.000000</LEFT>
+            <TOP>55.000000</TOP>
+            <WIDTH>110.000000</WIDTH>
+            <HEIGHT>13.000000</HEIGHT>
+            <MODE>0</MODE>
+            <DISPLAY>1</DISPLAY>
+            <STEPS>0</STEPS>
+            <MIN>0.000000</MIN>
+            <MAX>15.000000</MAX>
+            <VALUE>10.500000</VALUE>
         </OBJECT>
     </OBJECT>
     <OBJECT>
@@ -261,7 +305,7 @@
             <STEPS>0</STEPS>
             <MIN>0.000000</MIN>
             <MAX>200.000000</MAX>
-            <VALUE>116.000000</VALUE>
+            <VALUE>32.000000</VALUE>
         </OBJECT>
         <OBJECT>
             <ID>14</ID>
@@ -276,7 +320,7 @@
             <STEPS>0</STEPS>
             <MIN>0.000000</MIN>
             <MAX>30.000000</MAX>
-            <VALUE>13.000000</VALUE>
+            <VALUE>0.000000</VALUE>
         </OBJECT>
     </OBJECT>
     <OBJECT>
@@ -303,7 +347,7 @@
             <MODE>2</MODE>
             <DISPLAY>2</DISPLAY>
             <STEPS>0</STEPS>
-            <VALUE>1</VALUE>
+            <VALUE>0</VALUE>
         </OBJECT>
         <OBJECT>
             <ID>10</ID>
@@ -318,7 +362,7 @@
             <STEPS>0</STEPS>
             <MIN>0.000000</MIN>
             <MAX>300.000000</MAX>
-            <VALUE>130.000000</VALUE>
+            <VALUE>70.000000</VALUE>
         </OBJECT>
     </OBJECT>
 </UI>

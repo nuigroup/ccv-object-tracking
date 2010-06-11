@@ -60,7 +60,7 @@ void ofxSelectionTool::setupControls()
 	propPanel->addButton(appPtr->propertiesPanel_flipH, "Flip Horizontal (h)", OFXGUI_BUTTON_HEIGHT, OFXGUI_BUTTON_HEIGHT, kofxGui_Button_Off, kofxGui_Button_Switch, "");
 	propPanel->mObjWidth = 264;
 
-	ofxGuiPanel* panel2 = controls->addPanel(appPtr->savePanel, "Settings", 535, 265, OFXGUI_PANEL_BORDER, OFXGUI_PANEL_SPACING);
+	ofxGuiPanel* panel2 = controls->addPanel(appPtr->savePanel, "Settings", 535, 270, OFXGUI_PANEL_BORDER, OFXGUI_PANEL_SPACING);
 	panel2->addButton(appPtr->kParameter_SaveXml, "Save Settings (s)", OFXGUI_BUTTON_HEIGHT, OFXGUI_BUTTON_HEIGHT, kofxGui_Button_Off, kofxGui_Button_Trigger, "");
 	panel2->mObjWidth = 264;
 
@@ -69,7 +69,7 @@ void ofxSelectionTool::setupControls()
 	imgSetPanel->addButton(appPtr->imgSetPanel_darkblobs, "Inverse", OFXGUI_BUTTON_HEIGHT, OFXGUI_BUTTON_HEIGHT, kofxGui_Button_Off, kofxGui_Button_Switch, "");
 	imgSetPanel->addSlider(appPtr->imgSetPanel_threshold, "Image Threshold", 140, 13, 0.0f, 255.0f, filter->threshold, kofxGui_Display_Int, 0);
 	imgSetPanel->addButton(appPtr->imgSetPanel_showBinary,"Show Binary Image",OFXGUI_BUTTON_HEIGHT, OFXGUI_BUTTON_HEIGHT, kofxGui_Button_Off, kofxGui_Button_Switch, "");
-	imgSetPanel->mObjHeight = 100;
+	imgSetPanel->mObjHeight = 95;
 	imgSetPanel->mObjWidth = 319;
 	imgSetPanel->mObjects[0]->mObjX = 10;
 	imgSetPanel->mObjects[0]->mObjY = 31;
@@ -95,15 +95,17 @@ void ofxSelectionTool::setupControls()
 	sPanel->mObjWidth = 127;
 	sPanel->mObjHeight = 65;
 
-	//Selecting Area of the template
-	ofxGuiPanel* aPanel = controls->addPanel(appPtr->areaPanel, "Area", 370, 195, 10, 7);
-	aPanel->addSlider(areaPanel_minArea, "Min Area", 110, 13, 0.0f, 15.0f, appPtr->minArea, kofxGui_Display_Int, 0);
-	aPanel->addSlider(areapanel_maxArea, "Max Area", 110, 13, 0.0f, 15.0f, appPtr->maxArea, kofxGui_Display_Int, 0);
-	aPanel->mObjects[0]->mObjX = 105;
-	aPanel->mObjects[0]->mObjY = 10;
+
+
+	//Area Panel
+	ofxGuiPanel* aPanel = controls->addPanel(appPtr->areaPanel, "Area Panel", 370, 270, 10, 7);
+	aPanel->addSlider(areaPanel_minArea, "Min Area", 110, 13, 0.0f, 15.0f, appPtr->minArea, kofxGui_Display_Int, 0);	
+	aPanel->addSlider(areaPanel_maxArea, "Max Area", 110, 13, 0.0f, 15.0f, appPtr->maxArea, kofxGui_Display_Int, 0);
+	aPanel->mObjects[0]->mObjX = 10;
 	aPanel->mObjects[0]->mObjY = 30;
-	aPanel->mObjWidth = 127;
-	aPanel->mObjHeight = 65;
+	aPanel->mObjects[1]->mObjY = 55;
+	aPanel->mObjWidth = 157;
+	aPanel->mObjHeight = 95;
 
 	//Highpass Image
 	ofxGuiPanel* hpPanel = controls->addPanel(appPtr->highpassPanel, "Highpass", 672, 95, OFXGUI_PANEL_BORDER, 7);
@@ -155,6 +157,9 @@ void ofxSelectionTool::setupControls()
 	controls->update(appPtr->amplifyPanel_amp, kofxGui_Set_Bool, &appPtr->filter->highpassAmp, sizeof(float));
 	//Threshold
 	controls->update(appPtr->imgSetPanel_threshold, kofxGui_Set_Bool, &appPtr->filter->threshold, sizeof(float));
+	//Area
+	controls->update(appPtr->areaPanel_maxArea,kofxGui_Set_Bool,&appPtr->maxArea,sizeof(float));
+	controls->update(appPtr->areaPanel_minArea,kofxGui_Set_Bool,&appPtr->minArea,sizeof(float));
 }
 
 void ofxSelectionTool ::handleGui(int parameterId, int task, void* data, int length)
@@ -217,6 +222,15 @@ void ofxSelectionTool ::handleGui(int parameterId, int task, void* data, int len
 		case smoothPanel_use:
 			if(length == sizeof(bool))
 				filter->bSmooth = *(bool*)data;
+			break;
+		//Area Settings
+		case areaPanel_maxArea:
+			if(length==sizeof(int))
+				maxArea=*(float *)data;
+			break;
+		case areaPanel_minArea:
+			if(length==sizeof(int))
+				minArea=*(float *)data;
 			break;
 		//Save Settings
 		case kParameter_SaveXml:

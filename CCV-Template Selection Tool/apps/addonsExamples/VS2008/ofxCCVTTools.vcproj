@@ -93,11 +93,11 @@
 			<Tool
 				Name="VCAppVerifierTool"
 			/>
-			<Tool
-				Name="VCPostBuildEventTool"
-				Description="adding DLLs and creating data folder"
-				CommandLine="xcopy /e /i /y &quot;$(ProjectDir)\..\..\..\export\vs2008\*.dll&quot; &quot;$(ProjectDir)\bin&quot;&#x0D;&#x0A;if not exist &quot;$(ProjectDir)\bin\data&quot; mkdir  &quot;$(ProjectDir)\bin\data&quot;&#x0D;&#x0A;&#x0D;&#x0A;"
-			/>
+<Tool
+Name="VCPostBuildEventTool"
+Description="adding DLLs and creating data folder"
+CommandLine="xcopy /e /i /y &quot;$(ProjectDir)\..\..\other\dlls\*.dll&quot; $(ConfigurationName)&#x0D;&#x0A;if not exist &quot;$(ConfigurationName)\data&quot; mkdir  &quot;$(ConfigurationName)\data&quot;&#x0D;&#x0A;"
+/>
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
@@ -175,11 +175,11 @@
 			<Tool
 				Name="VCAppVerifierTool"
 			/>
-			<Tool
-				Name="VCPostBuildEventTool"
-				Description="adding DLLs and creating data folder"
-				CommandLine="xcopy /e /i /y &quot;$(ProjectDir)\..\..\..\export\vs2008\*.dll&quot; &quot;$(ProjectDir)\bin&quot;&#x0D;&#x0A;if not exist &quot;$(ProjectDir)\bin\data&quot; mkdir  &quot;$(ProjectDir)\bin\data&quot;&#x0D;&#x0A;&#x0D;&#x0A;"
-			/>
+<Tool
+Name="VCPostBuildEventTool"
+Description="adding DLLs and creating data folder"
+CommandLine="xcopy /e /i /y &quot;$(ProjectDir)\..\..\other\dlls\*.dll&quot; $(ConfigurationName)&#x0D;&#x0A;if not exist &quot;$(ConfigurationName)\data&quot; mkdir  &quot;$(ConfigurationName)\data&quot;&#x0D;&#x0A;"
+/>
 		</Configuration>
 	</Configurations>
 	<References>
