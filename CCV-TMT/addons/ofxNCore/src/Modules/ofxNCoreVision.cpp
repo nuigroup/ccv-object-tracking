@@ -146,6 +146,11 @@ void ofxNCoreVision::loadXMLSettings()
 	filter->highpassNoise		= XML.getValue("CONFIG:INT:HIGHPASSNOISE",0);
 	filter->highpassAmp			= XML.getValue("CONFIG:INT:HIGHPASSAMP",0);
 	filter->smooth				= XML.getValue("CONFIG:INT:SMOOTH",0);
+	//Tracking Options
+	bTrackFingers				= XML.getValue("CONFIG:BOOLEAN:TRACKFINGERS",0);
+	bTrackObjects				= XML.getValue("CONFIG:BOOLEAN:TRACKOBJECTS",0);
+	bTrackFiducials				= XML.getValue("CONFIG:BOOLEAN:TRACKFIDUCIALS",0);
+
 	//NETWORK SETTINGS
 	bTUIOMode					= XML.getValue("CONFIG:BOOLEAN:TUIO",0);
 	myTUIO.bOSCMode				= XML.getValue("CONFIG:BOOLEAN:OSCMODE",1);
@@ -190,6 +195,9 @@ void ofxNCoreVision::saveSettings()
 	XML.setValue("CONFIG:INT:SMOOTH", filter->smooth);
 	XML.setValue("CONFIG:BOOLEAN:MINIMODE", bMiniMode);
 	XML.setValue("CONFIG:BOOLEAN:TUIO",bTUIOMode);
+	XML.setValue("CONFIG:BOOLEAN:TRACKFINGERS",bTrackFingers);
+	XML.setValue("CONFIG:BOOLEAN:TRACKOBJECTS",bTrackObjects);
+	XML.setValue("CONFIG:BOOLEAN:TRACKFIDUCIALS",bTrackFiducials);
 	XML.setValue("CONFIG:BOOLEAN:HEIGHTWIDTH", myTUIO.bHeightWidth);
 	XML.setValue("CONFIG:BOOLEAN:OSCMODE", myTUIO.bOSCMode);
 	XML.setValue("CONFIG:BOOLEAN:TCPMODE", myTUIO.bTCPMode);
@@ -551,7 +559,7 @@ void ofxNCoreVision::drawFullMode()
 		string str4 = "Camera Framerate: ";
 		str4+= ofToString(fps, 0)+" FPS \n";
 		ofSetColor(0xFFFFFF);
-		verdana.drawString(str + str2 + str4, 740, 410);
+		verdana.drawString(str + str2 + str4, 740, 430);
 	}
 	else
 	{
@@ -560,7 +568,7 @@ void ofxNCoreVision::drawFullMode()
 		string str4 = "Video Framerate: ";
 		str4+= ofToString(fps, 0)+" FPS \n";
 		ofSetColor(0xFFFFFF);
-		verdana.drawString(str + str2 + str4, 740, 410);
+		verdana.drawString(str + str2 + str4, 740, 430);
 	}
 
 	if (bTUIOMode)
@@ -586,7 +594,7 @@ void ofxNCoreVision::drawFullMode()
 			else
 				sprintf(buf, "Could not bind or send TCP to:\nPort: %i", myTUIO.TUIOFlashPort);
 		}
-		verdana.drawString(buf, 740, 480);
+		verdana.drawString(buf, 740, 500);
 	}
 	ofSetColor(0xFF0000);
 	verdana.drawString("Press spacebar for mini mode", 748, 572);

@@ -41,7 +41,7 @@
 #include "Events/TouchMessenger.h"
 
 //Used for tracking algo
-#include "Tracking/BlobManager.h"
+//#include "Tracking/BlobManager.h"
 #include "Tracking/Tracking.h"
 
 //image filters

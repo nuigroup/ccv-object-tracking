@@ -90,6 +90,11 @@ class ofxNCoreVision : public ofxGuiListener
 		trackedPanel_outlines,
 		trackedPanel_ids,
 
+		trackingPanel, //Panel for selecting what to track-Fingers, Objects or Fiducials
+		trackingPanel_trackFingers,
+		trackingPanel_trackObjects,
+		trackingPanel_trackFiducials,
+
 		savePanel,
 		kParameter_SaveXml,
 		kParameter_File,
@@ -141,6 +146,11 @@ public:
 		backgroundLearnRate = .01;
 		MIN_BLOB_SIZE = 2;
 		MAX_BLOB_SIZE = 100;
+
+		bTrackFingers=false;
+		bTrackObjects=false;
+		bTrackFiducials=false;
+
         //if auto tracker is defined then the tracker automagically comes up
         //on startup..
         #ifdef STANDALONE
@@ -245,6 +255,11 @@ public:
 	bool				bAutoBackground;
 	//modes
 	bool				bGPUMode;
+
+	//Tracking Panel variables
+	bool				bTrackFingers;
+	bool				bTrackObjects;
+	bool				bTrackFiducials;
 
 	//auto ~ standalone/non-addon
 	bool                bStandaloneMode;

@@ -1,5 +1,5 @@
 <UI>
-    <VERSION>0.06</VERSION>
+    <VERSION>0.10</VERSION>
     <ISACTIVE>1</ISACTIVE>
     <DOUPDATE>0</DOUPDATE>
     <STYLE>
@@ -26,7 +26,7 @@
         <SLIDERCOLOR>FF0000CC</SLIDERCOLOR>
         <AXISCOLOR>00FF00FF</AXISCOLOR>
         <HANDLECOLOR>000000FF</HANDLECOLOR>
-        <BUTTONCOLOR>E6FF00CC</BUTTONCOLOR>
+        <BUTTONCOLOR>FF0000CC</BUTTONCOLOR>
         <CURVECOLOR>FF9900FF</CURVECOLOR>
         <SCOPECOLOR>FF9900FF</SCOPECOLOR>
         <ACTIVECOLOR>FF0000FF</ACTIVECOLOR>
@@ -39,7 +39,6 @@
         <TOP>10.000000</TOP>
         <WIDTH>165.000000</WIDTH>
         <HEIGHT>84.000000</HEIGHT>
-        <MODE>0</MODE>
         <DISPLAY>2</DISPLAY>
         <STEPS>0</STEPS>
         <BORDER>12</BORDER>
@@ -52,8 +51,7 @@
             <TOP>34.000000</TOP>
             <WIDTH>10.000000</WIDTH>
             <HEIGHT>10.000000</HEIGHT>
-            <MODE>3</MODE>
-            <DISPLAY>2</DISPLAY>
+            <DISPLAY>3</DISPLAY>
             <STEPS>0</STEPS>
             <VALUE>0</VALUE>
         </OBJECT>
@@ -65,7 +63,6 @@
             <TOP>54.000000</TOP>
             <WIDTH>10.000000</WIDTH>
             <HEIGHT>10.000000</HEIGHT>
-            <MODE>2</MODE>
             <DISPLAY>2</DISPLAY>
             <STEPS>0</STEPS>
             <VALUE>0</VALUE>
@@ -78,7 +75,6 @@
             <TOP>74.000000</TOP>
             <WIDTH>10.000000</WIDTH>
             <HEIGHT>10.000000</HEIGHT>
-            <MODE>2</MODE>
             <DISPLAY>2</DISPLAY>
             <STEPS>0</STEPS>
             <VALUE>0</VALUE>
@@ -90,9 +86,8 @@
         <NAME>GPU Properties</NAME>
         <LEFT>735.000000</LEFT>
         <TOP>110.000000</TOP>
-        <WIDTH>122.000000</WIDTH>
+        <WIDTH>141.000000</WIDTH>
         <HEIGHT>42.000000</HEIGHT>
-        <MODE>0</MODE>
         <DISPLAY>2</DISPLAY>
         <STEPS>0</STEPS>
         <BORDER>10</BORDER>
@@ -100,12 +95,11 @@
         <OBJECT>
             <ID>6</ID>
             <TYPE>BUTTON</TYPE>
-            <NAME>GPU Mode (g)</NAME>
+            <NAME>GPU Shaders (g)</NAME>
             <LEFT>10.000000</LEFT>
             <TOP>32.000000</TOP>
             <WIDTH>10.000000</WIDTH>
             <HEIGHT>10.000000</HEIGHT>
-            <MODE>2</MODE>
             <DISPLAY>2</DISPLAY>
             <STEPS>0</STEPS>
             <VALUE>0</VALUE>
@@ -117,9 +111,8 @@
         <NAME>Communication</NAME>
         <LEFT>735.000000</LEFT>
         <TOP>167.000000</TOP>
-        <WIDTH>157.000000</WIDTH>
-        <HEIGHT>62.000000</HEIGHT>
-        <MODE>0</MODE>
+        <WIDTH>127.000000</WIDTH>
+        <HEIGHT>82.000000</HEIGHT>
         <DISPLAY>2</DISPLAY>
         <STEPS>0</STEPS>
         <BORDER>10</BORDER>
@@ -127,12 +120,11 @@
         <OBJECT>
             <ID>8</ID>
             <TYPE>BUTTON</TYPE>
-            <NAME>Send TUIO UDP (t)</NAME>
+            <NAME>TUIO UDP (t)</NAME>
             <LEFT>10.000000</LEFT>
             <TOP>32.000000</TOP>
             <WIDTH>10.000000</WIDTH>
             <HEIGHT>10.000000</HEIGHT>
-            <MODE>2</MODE>
             <DISPLAY>2</DISPLAY>
             <STEPS>0</STEPS>
             <VALUE>0</VALUE>
@@ -140,12 +132,72 @@
         <OBJECT>
             <ID>9</ID>
             <TYPE>BUTTON</TYPE>
-            <NAME>Send Flash XML (f)</NAME>
+            <NAME>Flash XML (f)</NAME>
             <LEFT>10.000000</LEFT>
             <TOP>52.000000</TOP>
             <WIDTH>10.000000</WIDTH>
             <HEIGHT>10.000000</HEIGHT>
-            <MODE>2</MODE>
+            <DISPLAY>2</DISPLAY>
+            <STEPS>0</STEPS>
+            <VALUE>0</VALUE>
+        </OBJECT>
+        <OBJECT>
+            <ID>10</ID>
+            <TYPE>BUTTON</TYPE>
+            <NAME>Binary TCP (n)</NAME>
+            <LEFT>10.000000</LEFT>
+            <TOP>72.000000</TOP>
+            <WIDTH>10.000000</WIDTH>
+            <HEIGHT>10.000000</HEIGHT>
+            <DISPLAY>2</DISPLAY>
+            <STEPS>0</STEPS>
+            <VALUE>1</VALUE>
+        </OBJECT>
+    </OBJECT>
+    <OBJECT>
+        <ID>7</ID>
+        <TYPE>PANEL</TYPE>
+        <NAME>Track</NAME>
+        <LEFT>735.000000</LEFT>
+        <TOP>264.000000</TOP>
+        <WIDTH>81.000000</WIDTH>
+        <HEIGHT>82.000000</HEIGHT>
+        <DISPLAY>2</DISPLAY>
+        <STEPS>0</STEPS>
+        <BORDER>10</BORDER>
+        <SPACING>10</SPACING>
+        <OBJECT>
+            <ID>43</ID>
+            <TYPE>BUTTON</TYPE>
+            <NAME>Fingers</NAME>
+            <LEFT>10.000000</LEFT>
+            <TOP>32.000000</TOP>
+            <WIDTH>10.000000</WIDTH>
+            <HEIGHT>10.000000</HEIGHT>
+            <DISPLAY>2</DISPLAY>
+            <STEPS>0</STEPS>
+            <VALUE>0</VALUE>
+        </OBJECT>
+        <OBJECT>
+            <ID>44</ID>
+            <TYPE>BUTTON</TYPE>
+            <NAME>Objects</NAME>
+            <LEFT>10.000000</LEFT>
+            <TOP>52.000000</TOP>
+            <WIDTH>10.000000</WIDTH>
+            <HEIGHT>10.000000</HEIGHT>
+            <DISPLAY>2</DISPLAY>
+            <STEPS>0</STEPS>
+            <VALUE>0</VALUE>
+        </OBJECT>
+        <OBJECT>
+            <ID>45</ID>
+            <TYPE>BUTTON</TYPE>
+            <NAME>Fiducials</NAME>
+            <LEFT>10.000000</LEFT>
+            <TOP>72.000000</TOP>
+            <WIDTH>10.000000</WIDTH>
+            <HEIGHT>10.000000</HEIGHT>
             <DISPLAY>2</DISPLAY>
             <STEPS>0</STEPS>
             <VALUE>0</VALUE>
@@ -156,10 +208,9 @@
         <TYPE>PANEL</TYPE>
         <NAME>Calibration</NAME>
         <LEFT>735.000000</LEFT>
-        <TOP>264.000000</TOP>
+        <TOP>361.000000</TOP>
         <WIDTH>161.000000</WIDTH>
         <HEIGHT>42.000000</HEIGHT>
-        <MODE>0</MODE>
         <DISPLAY>2</DISPLAY>
         <STEPS>0</STEPS>
         <BORDER>10</BORDER>
@@ -172,35 +223,32 @@
             <TOP>32.000000</TOP>
             <WIDTH>10.000000</WIDTH>
             <HEIGHT>10.000000</HEIGHT>
-            <MODE>3</MODE>
-            <DISPLAY>2</DISPLAY>
+            <DISPLAY>3</DISPLAY>
             <STEPS>0</STEPS>
             <VALUE>0</VALUE>
         </OBJECT>
     </OBJECT>
     <OBJECT>
-        <ID>42</ID>
+        <ID>46</ID>
         <TYPE>PANEL</TYPE>
-        <NAME>Files</NAME>
+        <NAME>Settings</NAME>
         <LEFT>735.000000</LEFT>
-        <TOP>322.000000</TOP>
+        <TOP>458.000000</TOP>
         <WIDTH>145.000000</WIDTH>
         <HEIGHT>42.000000</HEIGHT>
-        <MODE>0</MODE>
         <DISPLAY>2</DISPLAY>
         <STEPS>0</STEPS>
         <BORDER>10</BORDER>
         <SPACING>10</SPACING>
         <OBJECT>
-            <ID>43</ID>
+            <ID>47</ID>
             <TYPE>BUTTON</TYPE>
             <NAME>Save Settings (s)</NAME>
             <LEFT>10.000000</LEFT>
             <TOP>32.000000</TOP>
             <WIDTH>10.000000</WIDTH>
             <HEIGHT>10.000000</HEIGHT>
-            <MODE>3</MODE>
-            <DISPLAY>2</DISPLAY>
+            <DISPLAY>3</DISPLAY>
             <STEPS>0</STEPS>
             <VALUE>0</VALUE>
         </OBJECT>
@@ -213,7 +261,6 @@
         <TOP>270.000000</TOP>
         <WIDTH>309.000000</WIDTH>
         <HEIGHT>90.000000</HEIGHT>
-        <MODE>0</MODE>
         <DISPLAY>2</DISPLAY>
         <STEPS>0</STEPS>
         <BORDER>10</BORDER>
@@ -226,7 +273,6 @@
             <TOP>11.000000</TOP>
             <WIDTH>10.000000</WIDTH>
             <HEIGHT>10.000000</HEIGHT>
-            <MODE>2</MODE>
             <DISPLAY>2</DISPLAY>
             <STEPS>0</STEPS>
             <VALUE>0</VALUE>
@@ -239,27 +285,25 @@
             <TOP>32.000000</TOP>
             <WIDTH>140.000000</WIDTH>
             <HEIGHT>13.000000</HEIGHT>
-            <MODE>0</MODE>
             <DISPLAY>1</DISPLAY>
             <STEPS>0</STEPS>
             <MIN>0.000000</MIN>
             <MAX>255.000000</MAX>
-            <VALUE>18.000000</VALUE>
+            <VALUE>36.000000</VALUE>
         </OBJECT>
         <OBJECT>
             <ID>37</ID>
             <TYPE>SLIDER</TYPE>
-            <NAME>Movement Threshold</NAME>
+            <NAME>Movement Filtering</NAME>
             <LEFT>165.000000</LEFT>
             <TOP>32.000000</TOP>
             <WIDTH>140.000000</WIDTH>
             <HEIGHT>13.000000</HEIGHT>
-            <MODE>0</MODE>
             <DISPLAY>1</DISPLAY>
             <STEPS>0</STEPS>
             <MIN>0.000000</MIN>
             <MAX>15.000000</MAX>
-            <VALUE>2.000000</VALUE>
+            <VALUE>1.000000</VALUE>
         </OBJECT>
         <OBJECT>
             <ID>38</ID>
@@ -269,12 +313,11 @@
             <TOP>67.000000</TOP>
             <WIDTH>140.000000</WIDTH>
             <HEIGHT>13.000000</HEIGHT>
-            <MODE>0</MODE>
             <DISPLAY>1</DISPLAY>
             <STEPS>0</STEPS>
             <MIN>1.000000</MIN>
             <MAX>500.000000</MAX>
-            <VALUE>61.000000</VALUE>
+            <VALUE>11.000000</VALUE>
         </OBJECT>
         <OBJECT>
             <ID>39</ID>
@@ -284,12 +327,11 @@
             <TOP>67.000000</TOP>
             <WIDTH>140.000000</WIDTH>
             <HEIGHT>13.000000</HEIGHT>
-            <MODE>0</MODE>
             <DISPLAY>1</DISPLAY>
             <STEPS>0</STEPS>
             <MIN>1.000000</MIN>
             <MAX>1000.000000</MAX>
-            <VALUE>157.000000</VALUE>
+            <VALUE>29.000000</VALUE>
         </OBJECT>
     </OBJECT>
     <OBJECT>
@@ -300,7 +342,6 @@
         <TOP>270.000000</TOP>
         <WIDTH>309.000000</WIDTH>
         <HEIGHT>75.000000</HEIGHT>
-        <MODE>0</MODE>
         <DISPLAY>2</DISPLAY>
         <STEPS>0</STEPS>
         <BORDER>10</BORDER>
@@ -313,7 +354,6 @@
             <TOP>11.000000</TOP>
             <WIDTH>10.000000</WIDTH>
             <HEIGHT>10.000000</HEIGHT>
-            <MODE>2</MODE>
             <DISPLAY>2</DISPLAY>
             <STEPS>0</STEPS>
             <VALUE>1</VALUE>
@@ -326,7 +366,6 @@
             <TOP>11.000000</TOP>
             <WIDTH>10.000000</WIDTH>
             <HEIGHT>10.000000</HEIGHT>
-            <MODE>2</MODE>
             <DISPLAY>2</DISPLAY>
             <STEPS>0</STEPS>
             <VALUE>1</VALUE>
@@ -339,7 +378,6 @@
             <TOP>42.000000</TOP>
             <WIDTH>10.000000</WIDTH>
             <HEIGHT>10.000000</HEIGHT>
-            <MODE>2</MODE>
             <DISPLAY>2</DISPLAY>
             <STEPS>0</STEPS>
             <VALUE>1</VALUE>
@@ -352,8 +390,7 @@
             <TOP>42.000000</TOP>
             <WIDTH>10.000000</WIDTH>
             <HEIGHT>10.000000</HEIGHT>
-            <MODE>3</MODE>
-            <DISPLAY>2</DISPLAY>
+            <DISPLAY>3</DISPLAY>
             <STEPS>0</STEPS>
             <VALUE>0</VALUE>
         </OBJECT>
@@ -365,8 +402,7 @@
             <TOP>42.000000</TOP>
             <WIDTH>10.000000</WIDTH>
             <HEIGHT>10.000000</HEIGHT>
-            <MODE>3</MODE>
-            <DISPLAY>2</DISPLAY>
+            <DISPLAY>3</DISPLAY>
             <STEPS>0</STEPS>
             <VALUE>0</VALUE>
         </OBJECT>
@@ -378,7 +414,6 @@
             <TOP>65.000000</TOP>
             <WIDTH>10.000000</WIDTH>
             <HEIGHT>10.000000</HEIGHT>
-            <MODE>2</MODE>
             <DISPLAY>2</DISPLAY>
             <STEPS>0</STEPS>
             <VALUE>0</VALUE>
@@ -392,7 +427,6 @@
         <TOP>487.000000</TOP>
         <WIDTH>144.000000</WIDTH>
         <HEIGHT>88.000000</HEIGHT>
-        <MODE>0</MODE>
         <DISPLAY>2</DISPLAY>
         <STEPS>0</STEPS>
         <BORDER>10</BORDER>
@@ -405,8 +439,7 @@
             <TOP>29.000000</TOP>
             <WIDTH>10.000000</WIDTH>
             <HEIGHT>10.000000</HEIGHT>
-            <MODE>3</MODE>
-            <DISPLAY>2</DISPLAY>
+            <DISPLAY>3</DISPLAY>
             <STEPS>0</STEPS>
             <VALUE>0</VALUE>
         </OBJECT>
@@ -418,7 +451,6 @@
             <TOP>46.000000</TOP>
             <WIDTH>10.000000</WIDTH>
             <HEIGHT>10.000000</HEIGHT>
-            <MODE>2</MODE>
             <DISPLAY>2</DISPLAY>
             <STEPS>0</STEPS>
             <VALUE>0</VALUE>
@@ -431,12 +463,11 @@
             <TOP>63.000000</TOP>
             <WIDTH>110.000000</WIDTH>
             <HEIGHT>13.000000</HEIGHT>
-            <MODE>0</MODE>
             <DISPLAY>1</DISPLAY>
             <STEPS>0</STEPS>
             <MIN>1.000000</MIN>
             <MAX>500.000000</MAX>
-            <VALUE>118.945450</VALUE>
+            <VALUE>500.000000</VALUE>
         </OBJECT>
     </OBJECT>
     <OBJECT>
@@ -447,7 +478,6 @@
         <TOP>487.000000</TOP>
         <WIDTH>120.000000</WIDTH>
         <HEIGHT>73.000000</HEIGHT>
-        <MODE>0</MODE>
         <DISPLAY>2</DISPLAY>
         <STEPS>0</STEPS>
         <BORDER>10</BORDER>
@@ -460,7 +490,6 @@
             <TOP>10.000000</TOP>
             <WIDTH>12.000000</WIDTH>
             <HEIGHT>12.000000</HEIGHT>
-            <MODE>2</MODE>
             <DISPLAY>2</DISPLAY>
             <STEPS>0</STEPS>
             <VALUE>0</VALUE>
@@ -473,12 +502,11 @@
             <TOP>30.000000</TOP>
             <WIDTH>110.000000</WIDTH>
             <HEIGHT>13.000000</HEIGHT>
-            <MODE>0</MODE>
             <DISPLAY>1</DISPLAY>
             <STEPS>0</STEPS>
             <MIN>0.000000</MIN>
             <MAX>15.000000</MAX>
-            <VALUE>0.000000</VALUE>
+            <VALUE>5.000000</VALUE>
         </OBJECT>
     </OBJECT>
     <OBJECT>
@@ -489,7 +517,6 @@
         <TOP>487.000000</TOP>
         <WIDTH>120.000000</WIDTH>
         <HEIGHT>105.000000</HEIGHT>
-        <MODE>0</MODE>
         <DISPLAY>2</DISPLAY>
         <STEPS>0</STEPS>
         <BORDER>10</BORDER>
@@ -502,10 +529,9 @@
             <TOP>10.000000</TOP>
             <WIDTH>12.000000</WIDTH>
             <HEIGHT>12.000000</HEIGHT>
-            <MODE>2</MODE>
             <DISPLAY>2</DISPLAY>
             <STEPS>0</STEPS>
-            <VALUE>0</VALUE>
+            <VALUE>1</VALUE>
         </OBJECT>
         <OBJECT>
             <ID>31</ID>
@@ -515,12 +541,11 @@
             <TOP>30.000000</TOP>
             <WIDTH>110.000000</WIDTH>
             <HEIGHT>13.000000</HEIGHT>
-            <MODE>0</MODE>
             <DISPLAY>1</DISPLAY>
             <STEPS>0</STEPS>
             <MIN>0.000000</MIN>
             <MAX>200.000000</MAX>
-            <VALUE>58.000000</VALUE>
+            <VALUE>16.000000</VALUE>
         </OBJECT>
         <OBJECT>
             <ID>32</ID>
@@ -530,12 +555,11 @@
             <TOP>60.000000</TOP>
             <WIDTH>110.000000</WIDTH>
             <HEIGHT>13.000000</HEIGHT>
-            <MODE>0</MODE>
             <DISPLAY>1</DISPLAY>
             <STEPS>0</STEPS>
             <MIN>0.000000</MIN>
             <MAX>30.000000</MAX>
-            <VALUE>3.000000</VALUE>
+            <VALUE>4.000000</VALUE>
         </OBJECT>
     </OBJECT>
     <OBJECT>
@@ -546,7 +570,6 @@
         <TOP>487.000000</TOP>
         <WIDTH>120.000000</WIDTH>
         <HEIGHT>73.000000</HEIGHT>
-        <MODE>0</MODE>
         <DISPLAY>2</DISPLAY>
         <STEPS>0</STEPS>
         <BORDER>10</BORDER>
@@ -559,10 +582,9 @@
             <TOP>10.000000</TOP>
             <WIDTH>12.000000</WIDTH>
             <HEIGHT>12.000000</HEIGHT>
-            <MODE>2</MODE>
             <DISPLAY>2</DISPLAY>
             <STEPS>0</STEPS>
-            <VALUE>0</VALUE>
+            <VALUE>1</VALUE>
         </OBJECT>
         <OBJECT>
             <ID>28</ID>
@@ -572,12 +594,11 @@
             <TOP>30.000000</TOP>
             <WIDTH>110.000000</WIDTH>
             <HEIGHT>13.000000</HEIGHT>
-            <MODE>0</MODE>
             <DISPLAY>1</DISPLAY>
             <STEPS>0</STEPS>
             <MIN>0.000000</MIN>
             <MAX>300.000000</MAX>
-            <VALUE>35.000000</VALUE>
+            <VALUE>242.000000</VALUE>
         </OBJECT>
     </OBJECT>
 </UI>
