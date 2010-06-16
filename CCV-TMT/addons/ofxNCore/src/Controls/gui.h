@@ -119,7 +119,6 @@ void ofxNCoreVision::setupControls()
 	srcPanel->addButton(appPtr->sourcePanel_cam, "Use Camera", OFXGUI_BUTTON_HEIGHT, OFXGUI_BUTTON_HEIGHT, kofxGui_Button_Off, kofxGui_Button_Switch);
 	srcPanel->addButton(appPtr->sourcePanel_previousCam, "Previous Camera", OFXGUI_BUTTON_HEIGHT, OFXGUI_BUTTON_HEIGHT, kofxGui_Button_Off, kofxGui_Button_Trigger);
 	srcPanel->addButton(appPtr->sourcePanel_nextCam, "Next Camera", OFXGUI_BUTTON_HEIGHT, OFXGUI_BUTTON_HEIGHT, kofxGui_Button_Off, kofxGui_Button_Trigger);
-	srcPanel->addButton(appPtr->sourcePanel_video, "Use Video", OFXGUI_BUTTON_HEIGHT, OFXGUI_BUTTON_HEIGHT, kofxGui_Button_Off, kofxGui_Button_Switch);
 	srcPanel->mObjHeight = 85;
 	srcPanel->mObjWidth = 319;
 	srcPanel->mObjects[0]->mObjX = 110;
@@ -131,7 +130,6 @@ void ofxNCoreVision::setupControls()
 	srcPanel->mObjects[3]->mObjY = 42;
 	srcPanel->mObjects[4]->mObjX = 230;
 	srcPanel->mObjects[4]->mObjY = 42;
-	srcPanel->mObjects[5]->mObjY = 65;
 	srcPanel->adjustToNewContent(100, 0);
 
 	//Background Image
@@ -188,10 +186,6 @@ void ofxNCoreVision::setupControls()
 	controls->update(appPtr->trackedPanel_darkblobs, kofxGui_Set_Bool, &appPtr->filter->bTrackDark, sizeof(bool));	
 	//Source
 	controls->update(appPtr->sourcePanel_cam, kofxGui_Set_Bool, &appPtr->bcamera, sizeof(bool));
-	if(!bcamera){
-	bool bvideo = true;
-	controls->update(appPtr->sourcePanel_video, kofxGui_Set_Bool, &bvideo, sizeof(bool));
-	}
 	//Calibration
 	controls->update(appPtr->calibrationPanel_calibrate, kofxGui_Set_Bool, &appPtr->bCalibration, sizeof(bool));
 	//Dynamic Background
@@ -216,6 +210,10 @@ void ofxNCoreVision::setupControls()
 	controls->update(appPtr->trackedPanel_max_blob_size, kofxGui_Set_Bool, &appPtr->MAX_BLOB_SIZE, sizeof(float));
 	//Background Learn Rate
 	controls->update(appPtr->backgroundPanel_learn_rate, kofxGui_Set_Bool, &appPtr->backgroundLearnRate, sizeof(float));
+	//Track Panel
+	controls->update(appPtr->trackingPanel_trackFingers, kofxGui_Set_Bool, &appPtr->bTrackFingers, sizeof(bool));
+	controls->update(appPtr->trackingPanel_trackObjects, kofxGui_Set_Bool, &appPtr->bTrackObjects, sizeof(bool));
+	controls->update(appPtr->trackingPanel_trackFiducials, kofxGui_Set_Bool, &appPtr->bTrackFiducials, sizeof(bool));
 	//Send TUIO
 	controls->update(appPtr->optionPanel_tuio_osc, kofxGui_Set_Bool, &appPtr->myTUIO.bOSCMode, sizeof(bool));
 	controls->update(appPtr->optionPanel_tuio_tcp, kofxGui_Set_Bool, &appPtr->myTUIO.bTCPMode, sizeof(bool));
@@ -235,8 +233,6 @@ void ofxNCoreVision ::handleGui(int parameterId, int task, void* data, int lengt
 			{
 				if(*(bool*)data)
 				{
-					if(!bcamera)
-					{
 						if( vidPlayer != NULL ) {
                             vidPlayer->close();
                         }
@@ -249,27 +245,16 @@ void ofxNCoreVision ::handleGui(int parameterId, int task, void* data, int lengt
 						}						
 
 						bcamera = true;
-						initDevice();
 						//reset gpu textures and filters
+						processedImg.clear();
 						processedImg.allocate(camWidth, camHeight); //Processed Image
 						processedImg.setUseTexture(false);
 						sourceImg.allocate(camWidth, camHeight);    //Source Image
 						sourceImg.setUseTexture(false);
 						filter->allocate(camWidth, camHeight);
-						//Turn off the video button;
-						bool setBool = false;
-						controls->update(sourcePanel_video, kofxGui_Set_Bool, &setBool, length);
-					}
 				}
-			}
-			break;
-		case sourcePanel_video:
-			if(length == sizeof(bool))
-			{
-				if(*(bool*)data)
+				else
 				{
-					if(bcamera)
-					{
 						bcamera = false;
 
 						if( vidPlayer == NULL ) {
@@ -296,19 +281,25 @@ void ofxNCoreVision ::handleGui(int parameterId, int task, void* data, int lengt
 
 						if(bReallocate){
 							//reset gpu textures and filters
+							processedImg.clear();
 							processedImg.allocate(camWidth, camHeight); //Processed Image
 							processedImg.setUseTexture(false);
 							sourceImg.allocate(camWidth, camHeight);    //Source Image
 							sourceImg.setUseTexture(false);
 							filter->allocate(camWidth, camHeight);
-						}
-						//Turn off the camera button;
-						bool setBool = false;
-						controls->update(sourcePanel_cam, kofxGui_Set_Bool, &setBool, length);
 					}
 				}
 			}
 			break;
+		//case sourcePanel_video:
+		//	if(length == sizeof(bool))
+		//	{
+		//		if(*(bool*)data)
+		//		{
+
+		//		}
+		//	}
+		//	break;
 		case sourcePanel_nextCam:
 			if(length == sizeof(bool))
 			{
@@ -382,6 +373,20 @@ void ofxNCoreVision ::handleGui(int parameterId, int task, void* data, int lengt
 		case gpuPanel_use:
 			if(length == sizeof(bool))
 				bGPUMode= *(bool*)data;
+			break;
+
+		//Tracking Panel
+		case trackingPanel_trackFingers:
+			if(length == sizeof(bool))
+				bTrackFingers=*(bool*)data;
+			break;
+		case trackingPanel_trackObjects:
+			if(length == sizeof(bool))
+				bTrackObjects=*(bool*)data;
+			break;
+		case trackingPanel_trackFiducials:
+			if(length == sizeof(bool))
+				bTrackFiducials=*(bool*)data;
 			break;
 		//Communication
 		case optionPanel_tuio_osc:

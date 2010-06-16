@@ -60,7 +60,6 @@ class ofxNCoreVision : public ofxGuiListener
 		sourcePanel_cam,
 		sourcePanel_nextCam,
 		sourcePanel_previousCam,
-		sourcePanel_video,
 
 		backgroundPanel,
 		backgroundPanel_remove,

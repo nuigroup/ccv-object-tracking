@@ -89,7 +89,7 @@ void ofxNCoreVision::_setup(ofEventArgs &e)
 	
 	#ifdef TARGET_WIN32
 	    //get rid of the console window
-        FreeConsole();
+        //FreeConsole();
 	#endif
 
 	printf("Community Core Vision is setup!\n\n");
@@ -226,7 +226,7 @@ void ofxNCoreVision::initDevice()
 				PS3->initPS3(camWidth, camHeight, camRate);
 				camWidth = PS3->getCamWidth();
 			    camHeight = PS3->getCamHeight();
-				printf("Camera Mode\nAsked for %i by %i - actual size is %i by %i \n\n", camWidth, camHeight, PS3->getCamWidth(), PS3->getCamHeight());
+				printf("PS3 Camera Mode\nAsked for %i by %i - actual size is %i by %i \n\n", camWidth, camHeight, PS3->getCamWidth(), PS3->getCamHeight());
 				return;
 			}
 			/****ffmv - firefly camera only****/
@@ -235,7 +235,7 @@ void ofxNCoreVision::initDevice()
 			   ffmv = new ofxffmv();
 			   ffmv->listDevices();
 			   ffmv->initFFMV(camWidth,camHeight);
-			   printf("Camera Mode\nAsked for %i by %i - actual size is %i by %i \n\n", camWidth, camHeight, ffmv->getCamWidth(), ffmv->getCamHeight());
+			   printf("FFMV Camera Mode\nAsked for %i by %i - actual size is %i by %i \n\n", camWidth, camHeight, ffmv->getCamWidth(), ffmv->getCamHeight());
 			   camWidth = ffmv->getCamWidth();
 			   camHeight = ffmv->getCamHeight();
 			   return;
@@ -246,7 +246,7 @@ void ofxNCoreVision::initDevice()
 				vidGrabber->listDevices();
 				vidGrabber->setVerbose(true);
 				vidGrabber->initGrabber(camWidth,camHeight);
-				printf("Camera Mode\nAsked for %i by %i - actual size is %i by %i \n\n", camWidth, camHeight, vidGrabber->width, vidGrabber->height);
+				printf("Video Grabber Camera Mode\nAsked for %i by %i - actual size is %i by %i \n\n", camWidth, camHeight, vidGrabber->width, vidGrabber->height);
 				camWidth = vidGrabber->width;
 				camHeight = vidGrabber->height;
 				return;
@@ -255,7 +255,7 @@ void ofxNCoreVision::initDevice()
 			{
 				dsvl = new ofxDSVL();
 				dsvl->initDSVL();
-				printf("Camera Mode\nAsked for %i by %i - actual size is %i by %i \n\n", camWidth, camHeight, dsvl->getCamWidth(), dsvl->getCamHeight());
+				printf("DSVL Camera Mode\nAsked for %i by %i - actual size is %i by %i \n\n", camWidth, camHeight, dsvl->getCamWidth(), dsvl->getCamHeight());
 				camWidth = dsvl->getCamWidth();
 				camHeight = dsvl->getCamHeight();
 				return;
@@ -267,7 +267,7 @@ void ofxNCoreVision::initDevice()
 				vidGrabber->listDevices();
 				vidGrabber->setVerbose(true);
 				vidGrabber->initGrabber(camWidth,camHeight);
-				printf("Camera Mode\nAsked for %i by %i - actual size is %i by %i \n\n", camWidth, camHeight, vidGrabber->width, vidGrabber->height);
+				printf("Linux Camera Mode\nAsked for %i by %i - actual size is %i by %i \n\n", camWidth, camHeight, vidGrabber->width, vidGrabber->height);
 				camWidth = vidGrabber->width;
 				camHeight = vidGrabber->height;
 				return;
