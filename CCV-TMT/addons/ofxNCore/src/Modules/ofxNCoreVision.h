@@ -290,6 +290,9 @@ public:
 
 	int	maxBlobs;
 
+	// The variable which will check the initilisation of camera
+	bool cameraInited; 
+
 	//Calibration
     Calibration calib;
 

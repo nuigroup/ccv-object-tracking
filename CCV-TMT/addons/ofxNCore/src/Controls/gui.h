@@ -246,9 +246,14 @@ void ofxNCoreVision ::handleGui(int parameterId, int task, void* data, int lengt
 
 						bcamera = true;
 						//reset gpu textures and filters
+						if(!cameraInited)
+						{
+							initDevice();
+						}
 						processedImg.clear();
 						processedImg.allocate(camWidth, camHeight); //Processed Image
 						processedImg.setUseTexture(false);
+						sourceImg.clear();
 						sourceImg.allocate(camWidth, camHeight);    //Source Image
 						sourceImg.setUseTexture(false);
 						filter->allocate(camWidth, camHeight);
@@ -284,6 +289,7 @@ void ofxNCoreVision ::handleGui(int parameterId, int task, void* data, int lengt
 							processedImg.clear();
 							processedImg.allocate(camWidth, camHeight); //Processed Image
 							processedImg.setUseTexture(false);
+							sourceImg.clear();
 							sourceImg.allocate(camWidth, camHeight);    //Source Image
 							sourceImg.setUseTexture(false);
 							filter->allocate(camWidth, camHeight);

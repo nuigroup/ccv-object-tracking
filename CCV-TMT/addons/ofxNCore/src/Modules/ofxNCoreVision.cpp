@@ -24,6 +24,8 @@ void ofxNCoreVision::_setup(ofEventArgs &e)
 	//Load Settings from config.xml file
 	loadXMLSettings();
 
+	cameraInited = false;
+
 	//Setup Window Properties
 	ofSetWindowShape(winWidth,winHeight);
 	ofSetVerticalSync(false);	            //Set vertical sync to false for better performance?
@@ -216,6 +218,7 @@ void ofxNCoreVision::initDevice()
 	//Pick the Source - camera or video
 	if (bcamera)
 	{
+		cameraInited=true;
 		//check if a firefly, ps3 camera, or other is plugged in
 		#ifdef TARGET_WIN32
 			/****PS3 - PS3 camera only****/
