@@ -148,6 +148,8 @@ void ofxNCoreVision::loadXMLSettings()
 	filter->highpassNoise		= XML.getValue("CONFIG:INT:HIGHPASSNOISE",0);
 	filter->highpassAmp			= XML.getValue("CONFIG:INT:HIGHPASSAMP",0);
 	filter->smooth				= XML.getValue("CONFIG:INT:SMOOTH",0);
+	minTempArea					= XML.getValue("CONFIG:INT:MINTEMPAREA",0);
+	maxTempArea					= XML.getValue("CONFIG:INT:MAXTEMPAREA",0);
 	//Tracking Options
 	bTrackFingers				= XML.getValue("CONFIG:BOOLEAN:TRACKFINGERS",0);
 	bTrackObjects				= XML.getValue("CONFIG:BOOLEAN:TRACKOBJECTS",0);
@@ -195,6 +197,8 @@ void ofxNCoreVision::saveSettings()
 	XML.setValue("CONFIG:INT:HIGHPASSNOISE", filter->highpassNoise);
 	XML.setValue("CONFIG:INT:HIGHPASSAMP", filter->highpassAmp);
 	XML.setValue("CONFIG:INT:SMOOTH", filter->smooth);
+	XML.setValue("CONFIG:INT:MINTEMPAREA", minTempArea);
+	XML.setValue("CONFIG:INT:MAXTEMPAREA", maxTempArea);
 	XML.setValue("CONFIG:BOOLEAN:MINIMODE", bMiniMode);
 	XML.setValue("CONFIG:BOOLEAN:TUIO",bTUIOMode);
 	XML.setValue("CONFIG:BOOLEAN:TRACKFINGERS",bTrackFingers);
@@ -367,7 +371,19 @@ void ofxNCoreVision::_update(ofEventArgs &e)
 		}
 
 		//Track found contours/blobss
+		if(bTrackFingers)
+		{
 		tracker.track(&contourFinder);
+		}
+		if(bTrackObjects)
+		{
+			//Object Tracking to be done here
+		}
+		if(bTrackFiducials)
+		{
+			//Fiducial Tracking to be done here
+		}
+
 		//get DSP time
 		differenceTime = ofGetElapsedTimeMillis() - beforeTime;
 
@@ -516,7 +532,15 @@ void ofxNCoreVision::_draw(ofEventArgs &e)
 		{
 			drawFullMode();
 			if(bDrawOutlines || bShowLabels) drawFingerOutlines();
+
+			if(bTrackObjects && isSelecting)
+			{	
+				ofSetColor(255, 0, 0);
+				ofNoFill();
+				ofRect(rect.x,rect.y,rect.width,rect.height);
+			}
 		}
+
 		//draw gui controls
 		if (!bCalibration && !bMiniMode) {controls->draw();}
 	}	
@@ -652,22 +676,25 @@ void ofxNCoreVision::drawMiniMode()
 void ofxNCoreVision::drawFingerOutlines()
 {
 	//Find the blobs for drawing
-	for (int i=0; i<contourFinder.nBlobs; i++)
+	if(bTrackFingers)
 	{
-		if (bDrawOutlines)
+		for (int i=0; i<contourFinder.nBlobs; i++)
 		{
-			//Draw contours (outlines) on the source image
-			contourFinder.blobs[i].drawContours(40, 30, camWidth, camHeight, MAIN_WINDOW_WIDTH, MAIN_WINDOW_HEIGHT);
-		}
-		if (bShowLabels) //Show ID label;
-		{
-			float xpos = contourFinder.blobs[i].centroid.x * (MAIN_WINDOW_WIDTH/camWidth);
-			float ypos = contourFinder.blobs[i].centroid.y * (MAIN_WINDOW_HEIGHT/camHeight);
-
-			ofSetColor(0xCCFFCC);
-			char idStr[1024];
-			sprintf(idStr, "id: %i", contourFinder.blobs[i].id);
-			verdana.drawString(idStr, xpos + 365, ypos + contourFinder.blobs[i].boundingRect.height/2 + 45);
+			if (bDrawOutlines)
+			{
+				//Draw contours (outlines) on the source image
+				contourFinder.blobs[i].drawContours(40, 30, camWidth, camHeight, MAIN_WINDOW_WIDTH, MAIN_WINDOW_HEIGHT);
+			}
+			if (bShowLabels) //Show ID label;
+			{
+				float xpos = contourFinder.blobs[i].centroid.x * (MAIN_WINDOW_WIDTH/camWidth);
+				float ypos = contourFinder.blobs[i].centroid.y * (MAIN_WINDOW_HEIGHT/camHeight);
+	
+				ofSetColor(0xCCFFCC);
+				char idStr[1024];
+				sprintf(idStr, "id: %i", contourFinder.blobs[i].id);
+				verdana.drawString(idStr, xpos + 365, ypos + contourFinder.blobs[i].boundingRect.height/2 + 45);
+			}
 		}
 	}
 	ofSetColor(0xFFFFFF);
@@ -783,6 +810,12 @@ void ofxNCoreVision::_keyPressed(ofKeyEventArgs &e)
 			bFullscreen = false;
 			}
 			break;
+		case OF_KEY_RETURN: //Close Template Selection and save it
+			isSelecting = false;
+			break;
+		default: //Check key character <<<<===== Remove this
+			printf("%c",e.key);
+			break;
 		}
 	}
 }
@@ -812,15 +845,46 @@ void ofxNCoreVision::_mouseDragged(ofMouseEventArgs &e)
 {
 	if (showConfiguration)
 		controls->mouseDragged(e.x, e.y, e.button); //guilistener
+	if(bTrackObjects)
+	{
+		if( e.x > 40 && e.x < 360 && e.y > 30 && e.y < 270 )
+		{
+			if( e.x < rect.x || e.y < rect.y )
+			{
+				rect.width = rect.x - e.x;
+				rect.height = rect.y - e.y;
+				
+				rect.x = e.x;
+				rect.y =  e.y;
+			}
+			else
+			{
+				rect.width = e.x - rect.x;
+				rect.height = e.y - rect.y;
+			}
+		}
+	}
 }
 
 void ofxNCoreVision::_mousePressed(ofMouseEventArgs &e)
 {
 	if (showConfiguration)
 	{
-		controls->mousePressed(e.x, e.y, e.button); //guilistener
-		if (e.x > 722 && e.y > 586)
-			ofLaunchBrowser("http://ccv.nuigroup.com");
+		controls->mousePressed( e.x, e.y, e.button ); //guilistener
+		if ( bTrackObjects )
+		{
+			if ( e.x > 40 && e.x < 360 && e.y > 30 && e.y < 270 )
+			{
+				isSelecting = true;
+				rect.x = e.x;
+				rect.y = e.y;
+				rect.width = 0;
+				rect.height = 0;
+			}
+		}
+		//Launch the website in browser
+		if ( e.x > 722 && e.y > 586 )
+		ofLaunchBrowser("http://ccv.nuigroup.com");
 	}
 }
 
@@ -828,6 +892,15 @@ void ofxNCoreVision::_mouseReleased(ofMouseEventArgs &e)
 {
 	if (showConfiguration)
 		controls->mouseReleased(e.x, e.y, 0); //guilistener
+	if( e.x > 40 && e.x < 360 && e.y > 30 && e.y < 270 )
+	{
+		if	( bTrackObjects && isSelecting )
+		{
+			minRect = rect;
+			maxRect = rect;
+			printf("Area is %f\n",rect.height*rect.width);
+		}
+	}
 }
 
 /*****************************************************************************

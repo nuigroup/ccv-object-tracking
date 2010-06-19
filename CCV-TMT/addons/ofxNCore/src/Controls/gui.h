@@ -102,7 +102,7 @@ void ofxNCoreVision::setupControls()
 	trackPanel->addSlider(appPtr->trackedPanel_min_movement, "Movement Filtering", 140, 13, 0.0f, 15.0f, tracker.MOVEMENT_FILTERING, kofxGui_Display_Int, 0);
 	trackPanel->addSlider(appPtr->trackedPanel_min_blob_size, "Min Blob Size", 140, 13, 1.0f, 500.0f, MIN_BLOB_SIZE, kofxGui_Display_Int, 0);
 	trackPanel->addSlider(appPtr->trackedPanel_max_blob_size, "Max Blob Size", 140, 13, 1.0f, 1000.0f, MAX_BLOB_SIZE, kofxGui_Display_Int, 0);
-	trackPanel->mObjHeight = 100;
+	trackPanel->mObjHeight = 120;
 	trackPanel->mObjWidth = 319;
 	trackPanel->mObjects[0]->mObjX = 120;
 	trackPanel->mObjects[0]->mObjY = 11;
@@ -121,7 +121,6 @@ void ofxNCoreVision::setupControls()
 	srcPanel->addButton(appPtr->sourcePanel_cam, "Use Camera", OFXGUI_BUTTON_HEIGHT, OFXGUI_BUTTON_HEIGHT, kofxGui_Button_Off, kofxGui_Button_Switch);
 	srcPanel->addButton(appPtr->sourcePanel_previousCam, "Previous Camera", OFXGUI_BUTTON_HEIGHT, OFXGUI_BUTTON_HEIGHT, kofxGui_Button_Off, kofxGui_Button_Trigger);
 	srcPanel->addButton(appPtr->sourcePanel_nextCam, "Next Camera", OFXGUI_BUTTON_HEIGHT, OFXGUI_BUTTON_HEIGHT, kofxGui_Button_Off, kofxGui_Button_Trigger);
-	srcPanel->mObjHeight = 85;
 	srcPanel->mObjWidth = 319;
 	srcPanel->mObjects[0]->mObjX = 110;
 	srcPanel->mObjects[0]->mObjY = 11;
@@ -133,6 +132,18 @@ void ofxNCoreVision::setupControls()
 	srcPanel->mObjects[4]->mObjX = 230;
 	srcPanel->mObjects[4]->mObjY = 42;
 	srcPanel->adjustToNewContent(100, 0);
+	srcPanel->mObjHeight = 60;
+
+	//Template Panel
+	ofxGuiPanel* tPanel = controls->addPanel(appPtr->TemplatePanel, "Template Area", 41, 330, OFXGUI_PANEL_BORDER, OFXGUI_PANEL_SPACING);
+	tPanel->addSlider(appPtr->TemplatePanel_minArea, "Min Area", 140, 13, 1.0f, 500.0f, minTempArea, kofxGui_Display_Int, 0);
+	tPanel->addSlider(appPtr->TemplatePanel_maxArea, "Max Area", 140, 13, 1.0f, 1000.0f, maxTempArea, kofxGui_Display_Int, 0);
+	tPanel->mObjWidth = 319;
+	tPanel->mObjHeight = 60;
+	tPanel->mObjects[0]->mObjY = 25;
+	tPanel->mObjects[1]->mObjX = 165;
+	tPanel->mObjects[1]->mObjY = 25;
+	tPanel->adjustToNewContent(100, 0);
 
 	//Background Image
 	ofxGuiPanel* bkPanel1 = controls->addPanel(appPtr->backgroundPanel, "Background", 86, 487, 10, 7);
@@ -210,6 +221,9 @@ void ofxNCoreVision::setupControls()
 	controls->update(appPtr->trackedPanel_min_blob_size, kofxGui_Set_Bool, &appPtr->MIN_BLOB_SIZE, sizeof(float));
 	//Max Blob Size
 	controls->update(appPtr->trackedPanel_max_blob_size, kofxGui_Set_Bool, &appPtr->MAX_BLOB_SIZE, sizeof(float));
+	//Template Area
+	controls->update(appPtr->TemplatePanel_minArea, kofxGui_Set_Bool, &appPtr->minTempArea, sizeof(bool));
+	controls->update(appPtr->TemplatePanel_maxArea, kofxGui_Set_Bool, &appPtr->maxTempArea, sizeof(bool));
 	//Background Learn Rate
 	controls->update(appPtr->backgroundPanel_learn_rate, kofxGui_Set_Bool, &appPtr->backgroundLearnRate, sizeof(float));
 	//Track Panel
@@ -508,6 +522,15 @@ void ofxNCoreVision ::handleGui(int parameterId, int task, void* data, int lengt
 		case smoothPanel_use:
 			if(length == sizeof(bool))
 				filter->bSmooth = *(bool*)data;
+			break;
+		//Template Area Sliders
+		case TemplatePanel_minArea:
+			if(length == sizeof(float))
+				minTempArea = *(float*)data;
+			break;
+		case TemplatePanel_maxArea:
+			if(length == sizeof(float))
+				maxTempArea = *(float*)data;
 			break;
 		//Save Settings
 		case kParameter_SaveXml:

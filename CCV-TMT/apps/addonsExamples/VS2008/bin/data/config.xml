@@ -7,7 +7,7 @@
     ///////////////////////////////////////////// -->
     <!--// CAMERA SETTINGS // -->
     <CAMERA_0>
-        <USECAMERA>1</USECAMERA>
+        <USECAMERA>0</USECAMERA>
         <DEVICE>0</DEVICE>
         <WIDTH>320</WIDTH>
         <HEIGHT>240</HEIGHT>
@@ -46,7 +46,7 @@
         <LABELS>0</LABELS>
         <OUTLINES>0</OUTLINES>
         <LEARNBG>0</LEARNBG>
-        <TUIO>1</TUIO>
+        <TUIO>0</TUIO>
         <VMIRROR>0</VMIRROR>
         <HMIRROR>0</HMIRROR>
         <HIGHPASS>1</HIGHPASS>
@@ -57,12 +57,12 @@
         <SNAPSHOT>0</SNAPSHOT>
         <MINIMODE>0</MINIMODE>
         <HEIGHTWIDTH>0</HEIGHTWIDTH>
-        <OSCMODE>1</OSCMODE>
+        <OSCMODE>0</OSCMODE>
         <TCPMODE>0</TCPMODE>
         <BINMODE>0</BINMODE>
         <TRACKDARK>0</TRACKDARK>
         <TRACKFINGERS>0</TRACKFINGERS>
-        <TRACKOBJECTS>0</TRACKOBJECTS>
+        <TRACKOBJECTS>1</TRACKOBJECTS>
         <TRACKFIDUCIALS>0</TRACKFIDUCIALS>
     </BOOLEAN>
     <INT>
@@ -76,5 +76,7 @@
         <HIGHPASSAMP>242</HIGHPASSAMP>
         <SMOOTH>5</SMOOTH>
         <BGLEARNRATE>500.000000</BGLEARNRATE>
+        <MINTEMPAREA>90</MINTEMPAREA>
+        <MAXTEMPAREA>8</MAXTEMPAREA>
     </INT>
 </CONFIG>

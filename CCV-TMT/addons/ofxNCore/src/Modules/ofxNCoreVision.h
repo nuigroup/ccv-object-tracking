@@ -60,6 +60,10 @@ class ofxNCoreVision : public ofxGuiListener
 		sourcePanel_cam,
 		sourcePanel_nextCam,
 		sourcePanel_previousCam,
+		
+		TemplatePanel,
+		TemplatePanel_minArea,
+		TemplatePanel_maxArea,
 
 		backgroundPanel,
 		backgroundPanel_remove,
@@ -262,6 +266,10 @@ public:
 	bool				bTrackObjects;
 	bool				bTrackFiducials;
 
+	//Area slider variables
+	int					minTempArea;
+	int					maxTempArea;
+
 	//auto ~ standalone/non-addon
 	bool                bStandaloneMode;
 
@@ -285,21 +293,36 @@ public:
 	//Blob Tracker
 	BlobTracker			tracker;
 
+	//Template Utilities
+	TemplateUtils		templates;
+
+	//Template Registration
+	ofRectangle			rect;
+	ofRectangle			minRect;
+	ofRectangle			maxRect;
+
+	//Object Selection bools
+	bool				isSelecting;
+
+	//Area sliders
+
+
     /****************************************************************
 	 *						Private Stuff
 	 ****************************************************************/
-	string videoFileName;
+	string				videoFileName;
 
-	int	maxBlobs;
+	int					maxBlobs;
 
 	// The variable which will check the initilisation of camera
-	bool cameraInited; 
+	//to avoid multiple initialisation
+	bool				cameraInited; 
 
 	//Calibration
     Calibration calib;
 
 	//Blob Finder
-	ContourFinder	contourFinder;
+	ContourFinder		contourFinder;
 
 	//Image filters
 	Filters*			filter;

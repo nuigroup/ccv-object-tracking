@@ -42,6 +42,8 @@
 
 //Used for tracking algo
 #include "Tracking/Tracking.h"
+//Object Trackin
+#include "Templates/TemplateUtils.h"
 
 //image filters
 #include "Filters/GPUImageFilter.h"

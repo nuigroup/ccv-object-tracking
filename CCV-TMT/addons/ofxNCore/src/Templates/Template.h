@@ -4,7 +4,7 @@ class Template {
 public:
 	int Height;
 	int Width;
-	int minHeight
+	int minHeight;
 	int minWidth;
 	int maxHeight;
 	int maxWidth;

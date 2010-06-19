@@ -1,9 +1,15 @@
 #ifndef TEMPLATEUTILS_H
 #define TEMPLATEUTILS_H
 
+#include "Template.h"
+
 class TemplateUtils	{
 public:
-	void TemplateUtils()
+	TemplateUtils()
+	{
+	}
+
+	~TemplateUtils()
 	{
 	}
 	//Functions 
