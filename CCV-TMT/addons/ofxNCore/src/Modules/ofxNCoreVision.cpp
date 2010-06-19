@@ -562,7 +562,7 @@ void ofxNCoreVision::drawFullMode()
 		string str4 = "Camera Framerate: ";
 		str4+= ofToString(fps, 0)+" FPS \n";
 		ofSetColor(0xFFFFFF);
-		verdana.drawString(str + str2 + str4, 740, 430);
+		verdana.drawString(str + str2 + str4, 740, 480);
 	}
 	else
 	{
@@ -571,7 +571,7 @@ void ofxNCoreVision::drawFullMode()
 		string str4 = "Video Framerate: ";
 		str4+= ofToString(fps, 0)+" FPS \n";
 		ofSetColor(0xFFFFFF);
-		verdana.drawString(str + str2 + str4, 740, 430);
+		verdana.drawString(str + str2 + str4, 740, 480);
 	}
 
 	if (bTUIOMode)
@@ -597,7 +597,7 @@ void ofxNCoreVision::drawFullMode()
 			else
 				sprintf(buf, "Could not bind or send TCP to:\nPort: %i", myTUIO.TUIOFlashPort);
 		}
-		verdana.drawString(buf, 740, 500);
+		verdana.drawString(buf, 740, 535);
 	}
 	ofSetColor(0xFF0000);
 	verdana.drawString("Press spacebar for mini mode", 748, 572);

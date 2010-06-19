@@ -97,6 +97,8 @@ class ofxNCoreVision : public ofxGuiListener
 		savePanel,
 		kParameter_SaveXml,
 		kParameter_File,
+		kParameter_LoadTemplateXml,
+		kParameter_SaveTemplateXml,
 	};
 
 public:

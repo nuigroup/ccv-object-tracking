@@ -90,8 +90,10 @@ void ofxNCoreVision::setupControls()
 
 	ofxGuiPanel* panel2 = controls->addPanel(appPtr->savePanel, "Settings", 735, 373, OFXGUI_PANEL_BORDER, OFXGUI_PANEL_SPACING);
 	panel2->addButton(appPtr->kParameter_SaveXml, "Save Settings (s)", OFXGUI_BUTTON_HEIGHT, OFXGUI_BUTTON_HEIGHT, kofxGui_Button_Off, kofxGui_Button_Trigger);
+	panel2->addButton(appPtr->kParameter_SaveTemplateXml, "Save Templates", OFXGUI_BUTTON_HEIGHT, OFXGUI_BUTTON_HEIGHT, kofxGui_Button_Off, kofxGui_Button_Trigger);
+	panel2->addButton(appPtr->kParameter_LoadTemplateXml, "Load Templates", OFXGUI_BUTTON_HEIGHT, OFXGUI_BUTTON_HEIGHT, kofxGui_Button_Off, kofxGui_Button_Trigger);
 	panel2->mObjWidth = 200;
-	panel2->mObjHeight = 45;
+	panel2->mObjHeight = 90;
 
 	//Tracked Image
 	ofxGuiPanel* trackPanel = controls->addPanel(appPtr->trackedPanel, "Tracked Image", 386, 270, OFXGUI_PANEL_BORDER, OFXGUI_PANEL_SPACING);

@@ -781,6 +781,22 @@
 							>
 						</File>
 					</Filter>
+					<Filter
+						Name="Templates"
+						>
+						<File
+							RelativePath="..\..\..\addons\ofxNCore\src\Templates\Template.h"
+							>
+						</File>
+						<File
+							RelativePath="..\..\..\addons\ofxNCore\src\Templates\TemplateUtils.cpp"
+							>
+						</File>
+						<File
+							RelativePath="..\..\..\addons\ofxNCore\src\Templates\TemplateUtils.h"
+							>
+						</File>
+					</Filter>
 				</Filter>
 			</Filter>
 			<Filter
