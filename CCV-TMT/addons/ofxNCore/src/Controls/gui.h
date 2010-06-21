@@ -136,8 +136,8 @@ void ofxNCoreVision::setupControls()
 
 	//Template Panel
 	ofxGuiPanel* tPanel = controls->addPanel(appPtr->TemplatePanel, "Template Area", 41, 330, OFXGUI_PANEL_BORDER, OFXGUI_PANEL_SPACING);
-	tPanel->addSlider(appPtr->TemplatePanel_minArea, "Min Area", 140, 13, 1.0f, 500.0f, minTempArea, kofxGui_Display_Int, 0);
-	tPanel->addSlider(appPtr->TemplatePanel_maxArea, "Max Area", 140, 13, 1.0f, 1000.0f, maxTempArea, kofxGui_Display_Int, 0);
+	tPanel->addSlider(appPtr->TemplatePanel_minArea, "Min Area", 140, 13, 0.0f, 2000.0f, minTempArea, kofxGui_Display_Int, 0);
+	tPanel->addSlider(appPtr->TemplatePanel_maxArea, "Max Area", 140, 13, 0.0f, 2000.0f, maxTempArea, kofxGui_Display_Int, 0);
 	tPanel->mObjWidth = 319;
 	tPanel->mObjHeight = 60;
 	tPanel->mObjects[0]->mObjY = 25;
@@ -222,8 +222,8 @@ void ofxNCoreVision::setupControls()
 	//Max Blob Size
 	controls->update(appPtr->trackedPanel_max_blob_size, kofxGui_Set_Bool, &appPtr->MAX_BLOB_SIZE, sizeof(float));
 	//Template Area
-	controls->update(appPtr->TemplatePanel_minArea, kofxGui_Set_Bool, &appPtr->minTempArea, sizeof(bool));
-	controls->update(appPtr->TemplatePanel_maxArea, kofxGui_Set_Bool, &appPtr->maxTempArea, sizeof(bool));
+	controls->update(appPtr->TemplatePanel_minArea, kofxGui_Set_Bool, &appPtr->minTempArea, sizeof(float));
+	controls->update(appPtr->TemplatePanel_maxArea, kofxGui_Set_Bool, &appPtr->maxTempArea, sizeof(float));
 	//Background Learn Rate
 	controls->update(appPtr->backgroundPanel_learn_rate, kofxGui_Set_Bool, &appPtr->backgroundLearnRate, sizeof(float));
 	//Track Panel
@@ -526,11 +526,31 @@ void ofxNCoreVision ::handleGui(int parameterId, int task, void* data, int lengt
 		//Template Area Sliders
 		case TemplatePanel_minArea:
 			if(length == sizeof(float))
+			{
 				minTempArea = *(float*)data;
+				float smallArea = rect.height*rect.width-minTempArea; //The area of the small rectangle
+				float _w = sqrt(smallArea*rect.width/rect.height); // Width of small rectangle, as the width and height
+																   //will be proportional to the original rectangle
+				float _h = sqrt(smallArea*rect.height/rect.width);
+				minRect.x =rect.x + (rect.width - _w)/2 ;
+				minRect.y = rect.y + (rect.height - _h)/2 ;
+				minRect.width = _w ;
+				minRect.height = _h ;
+			}
 			break;
 		case TemplatePanel_maxArea:
 			if(length == sizeof(float))
+			{
 				maxTempArea = *(float*)data;
+				float bigArea = rect.height*rect.width+maxTempArea; //The area of the big rectangle
+				float _w = sqrt(bigArea*rect.width/rect.height); // Width of big rectangle, as the width and height
+																 //will be proportional to the original rectangle
+				float _h = sqrt(bigArea*rect.height/rect.width);
+				maxRect.x =rect.x - (_w - rect.width)/2 ;
+				maxRect.y = rect.y - (_h - rect.height)/2 ;
+				maxRect.width = _w ;
+				maxRect.height = _h ;
+			}
 			break;
 		//Save Settings
 		case kParameter_SaveXml:

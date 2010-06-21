@@ -7,7 +7,7 @@
     ///////////////////////////////////////////// -->
     <!--// CAMERA SETTINGS // -->
     <CAMERA_0>
-        <USECAMERA>0</USECAMERA>
+        <USECAMERA>1</USECAMERA>
         <DEVICE>0</DEVICE>
         <WIDTH>320</WIDTH>
         <HEIGHT>240</HEIGHT>
@@ -76,7 +76,7 @@
         <HIGHPASSAMP>242</HIGHPASSAMP>
         <SMOOTH>5</SMOOTH>
         <BGLEARNRATE>500.000000</BGLEARNRATE>
-        <MINTEMPAREA>90</MINTEMPAREA>
-        <MAXTEMPAREA>8</MAXTEMPAREA>
+        <MINTEMPAREA>0</MINTEMPAREA>
+        <MAXTEMPAREA>0</MAXTEMPAREA>
     </INT>
 </CONFIG>

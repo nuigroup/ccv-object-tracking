@@ -535,9 +535,13 @@ void ofxNCoreVision::_draw(ofEventArgs &e)
 
 			if(bTrackObjects && isSelecting)
 			{	
-				ofSetColor(255, 0, 0);
 				ofNoFill();
+				ofSetColor(255, 0, 0);
 				ofRect(rect.x,rect.y,rect.width,rect.height);
+				ofSetColor(0, 255, 0);
+				ofRect(minRect.x,minRect.y,minRect.width, minRect.height);
+				ofSetColor(0, 0, 255);
+				ofRect(maxRect.x, maxRect.y, maxRect.width, maxRect.height);
 			}
 		}
 
@@ -812,6 +816,13 @@ void ofxNCoreVision::_keyPressed(ofKeyEventArgs &e)
 			break;
 		case OF_KEY_RETURN: //Close Template Selection and save it
 			isSelecting = false;
+			rect = ofRectangle(0,0,0,0);
+			minRect = rect;
+			maxRect = rect;
+			minTempArea = 0;
+			maxTempArea = 0;
+			controls->update(appPtr->TemplatePanel_minArea, kofxGui_Set_Bool, &appPtr->minTempArea, sizeof(float));
+			controls->update(appPtr->TemplatePanel_maxArea, kofxGui_Set_Bool, &appPtr->maxTempArea, sizeof(float));
 			break;
 		default: //Check key character <<<<===== Remove this
 			printf("%c",e.key);
