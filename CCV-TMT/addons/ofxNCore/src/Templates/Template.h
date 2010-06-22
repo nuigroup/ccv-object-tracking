@@ -1,13 +1,25 @@
 #ifndef TEMPLATE_H
 #define TEMPLATE_H
+
+#include "ofMain.h"
+
 class Template {
+	
 public:
-	int Height;
-	int Width;
-	int minHeight;
-	int minWidth;
-	int maxHeight;
-	int maxWidth;
+	Template() 
+	{
+	}
+
+	//The ID of the template
+	int			id;
+
+	//Rectangle Specifications
+	float			height;
+	float			width;
+	float			minHeight;
+	float			minWidth;
+	float			maxHeight;
+	float			maxWidth;
 
 	bool matchWithTemplate(Template t);
 };

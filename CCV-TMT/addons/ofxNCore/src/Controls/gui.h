@@ -563,6 +563,27 @@ void ofxNCoreVision ::handleGui(int parameterId, int task, void* data, int lengt
 				}
 			}
 			break;
+		case kParameter_LoadTemplateXml:
+			if(length == sizeof(bool))
+			{
+				if(*(bool*)data)
+				{
+					if(templates.loadTemplateXml())
+					{
+						printf("Templates Loaded\n");
+					}
+				}
+			}
+			break;
+		case kParameter_SaveTemplateXml:
+			if(length == sizeof(bool))
+			{
+				if(*(bool*)data)
+				{
+					templates.saveTemplateXml();
+				}
+			}
+			break;
 
 	}
 }

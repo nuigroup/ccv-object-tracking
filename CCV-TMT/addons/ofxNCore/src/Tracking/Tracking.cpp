@@ -14,7 +14,7 @@
 
 BlobTracker::BlobTracker()
 {
-	IDCounter = 0;
+	IDCounter = 200;
 	isCalibrating = false;
 }
 

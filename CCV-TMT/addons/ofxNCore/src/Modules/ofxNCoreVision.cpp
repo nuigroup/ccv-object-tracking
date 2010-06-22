@@ -815,14 +815,18 @@ void ofxNCoreVision::_keyPressed(ofKeyEventArgs &e)
 			}
 			break;
 		case OF_KEY_RETURN: //Close Template Selection and save it
+			if( bTrackObjects && isSelecting )
+			{
 			isSelecting = false;
-			rect = ofRectangle(0,0,0,0);
+			templates.addTemplate(rect,minRect,maxRect);
+			rect = ofRectangle();
 			minRect = rect;
 			maxRect = rect;
 			minTempArea = 0;
 			maxTempArea = 0;
 			controls->update(appPtr->TemplatePanel_minArea, kofxGui_Set_Bool, &appPtr->minTempArea, sizeof(float));
 			controls->update(appPtr->TemplatePanel_maxArea, kofxGui_Set_Bool, &appPtr->maxTempArea, sizeof(float));
+			}
 			break;
 		default: //Check key character <<<<===== Remove this
 			printf("%c",e.key);
@@ -909,7 +913,6 @@ void ofxNCoreVision::_mouseReleased(ofMouseEventArgs &e)
 		{
 			minRect = rect;
 			maxRect = rect;
-			printf("Area is %f\n",rect.height*rect.width);
 		}
 	}
 }
