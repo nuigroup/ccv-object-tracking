@@ -20,6 +20,7 @@ bool TemplateUtils::loadTemplateXml()
 {
 	if( XML.loadFile("templates.xml") )
 	{
+		templates.clear();
 		int numTags=XML.getNumTags("TEMPLATE");
 		if( numTags > 0 )
 		{
@@ -48,14 +49,13 @@ bool TemplateUtils::loadTemplateXml()
 					templates.push_back(temp);
 				}
 			}
-			isLoaded = true;// <- This is inside the if statement so that if the file exists but no xml data in it,
-							//this will still be false
+			isLoaded = true;// <- This is inside the if statement so that if the file exists but no xml data in it,this will still be false
 		}
 		return true;
 	}
 	else
 	{
-		printf("Templates.xml could not be loaded. Make sure it is there in data folder\n");
+		printf("\nTemplates.xml could not be loaded. Make sure it is there in data folder\n");
 		return false;
 	}
 }

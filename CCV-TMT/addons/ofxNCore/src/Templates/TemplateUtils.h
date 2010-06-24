@@ -25,7 +25,6 @@ public:
 	void saveTemplateXml();
 	int matchTemplate();
 	void addTemplate(ofRectangle rect,ofRectangle minRect, ofRectangle maxRect);
-	int reset();
 
 	//Variables
 	bool isLoaded;

@@ -32,6 +32,10 @@ public:
 	int MOVEMENT_FILTERING;
 	std::map<int, Blob> getTrackedBlobs();
 
+	bool bTrackFingers;
+	bool bTrackObjects;
+	bool bTrackFiducials;
+
 private:
 	int trackKnn(ContourFinder *newBlobs, Blob *track, int k, double thresh);
 	int						IDCounter;	  //counter of last blob

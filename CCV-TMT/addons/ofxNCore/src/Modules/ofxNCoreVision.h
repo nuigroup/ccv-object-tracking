@@ -152,9 +152,9 @@ public:
 		MIN_BLOB_SIZE = 2;
 		MAX_BLOB_SIZE = 100;
 
-		bTrackFingers=false;
-		bTrackObjects=false;
-		bTrackFiducials=false;
+		tracker.bTrackFingers=false;
+		tracker.bTrackObjects=false;
+		tracker.bTrackFiducials=false;
 
         //if auto tracker is defined then the tracker automagically comes up
         //on startup..
@@ -260,11 +260,6 @@ public:
 	bool				bAutoBackground;
 	//modes
 	bool				bGPUMode;
-
-	//Tracking Panel variables
-	bool				bTrackFingers;
-	bool				bTrackObjects;
-	bool				bTrackFiducials;
 
 	//Area slider variables
 	int					minTempArea;

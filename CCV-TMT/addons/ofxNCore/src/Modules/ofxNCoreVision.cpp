@@ -88,6 +88,16 @@ void ofxNCoreVision::_setup(ofEventArgs &e)
 		bShowInterface = true;
 		printf("Starting in full mode...\n\n");
 	}
+
+	//If Object tracking activated
+	if(tracker.bTrackObjects)
+	{
+		if(!templates.loadTemplateXml())
+		{
+			tracker.bTrackObjects=false;
+			controls->update(trackingPanel_trackObjects,kofxGui_Set_Bool,&appPtr->ofxSelectionToolsObjects, sizeof(bool));
+		}
+	}
 	
 	#ifdef TARGET_WIN32
 	    //get rid of the console window
@@ -151,9 +161,9 @@ void ofxNCoreVision::loadXMLSettings()
 	minTempArea					= XML.getValue("CONFIG:INT:MINTEMPAREA",0);
 	maxTempArea					= XML.getValue("CONFIG:INT:MAXTEMPAREA",0);
 	//Tracking Options
-	bTrackFingers				= XML.getValue("CONFIG:BOOLEAN:TRACKFINGERS",0);
-	bTrackObjects				= XML.getValue("CONFIG:BOOLEAN:TRACKOBJECTS",0);
-	bTrackFiducials				= XML.getValue("CONFIG:BOOLEAN:TRACKFIDUCIALS",0);
+	tracker.bTrackFingers				= XML.getValue("CONFIG:BOOLEAN:TRACKFINGERS",0);
+	tracker.bTrackObjects				= XML.getValue("CONFIG:BOOLEAN:TRACKOBJECTS",0);
+	tracker.bTrackFiducials				= XML.getValue("CONFIG:BOOLEAN:TRACKFIDUCIALS",0);
 
 	//NETWORK SETTINGS
 	bTUIOMode					= XML.getValue("CONFIG:BOOLEAN:TUIO",0);
@@ -201,9 +211,9 @@ void ofxNCoreVision::saveSettings()
 	XML.setValue("CONFIG:INT:MAXTEMPAREA", maxTempArea);
 	XML.setValue("CONFIG:BOOLEAN:MINIMODE", bMiniMode);
 	XML.setValue("CONFIG:BOOLEAN:TUIO",bTUIOMode);
-	XML.setValue("CONFIG:BOOLEAN:TRACKFINGERS",bTrackFingers);
-	XML.setValue("CONFIG:BOOLEAN:TRACKOBJECTS",bTrackObjects);
-	XML.setValue("CONFIG:BOOLEAN:TRACKFIDUCIALS",bTrackFiducials);
+	XML.setValue("CONFIG:BOOLEAN:TRACKFINGERS",tracker.bTrackFingers);
+	XML.setValue("CONFIG:BOOLEAN:TRACKOBJECTS",tracker.bTrackObjects);
+	XML.setValue("CONFIG:BOOLEAN:TRACKFIDUCIALS",tracker.bTrackFiducials);
 	XML.setValue("CONFIG:BOOLEAN:HEIGHTWIDTH", myTUIO.bHeightWidth);
 	XML.setValue("CONFIG:BOOLEAN:OSCMODE", myTUIO.bOSCMode);
 	XML.setValue("CONFIG:BOOLEAN:TCPMODE", myTUIO.bTCPMode);
@@ -371,15 +381,15 @@ void ofxNCoreVision::_update(ofEventArgs &e)
 		}
 
 		//Track found contours/blobss
-		if(bTrackFingers)
+		if(tracker.bTrackFingers)
 		{
 		tracker.track(&contourFinder);
 		}
-		if(bTrackObjects)
+		if(tracker.bTrackObjects)
 		{
 			//Object Tracking to be done here
 		}
-		if(bTrackFiducials)
+		if(tracker.bTrackFiducials)
 		{
 			//Fiducial Tracking to be done here
 		}
@@ -533,7 +543,7 @@ void ofxNCoreVision::_draw(ofEventArgs &e)
 			drawFullMode();
 			if(bDrawOutlines || bShowLabels) drawFingerOutlines();
 
-			if(bTrackObjects && isSelecting)
+			if(tracker.bTrackObjects && isSelecting)
 			{	
 				ofNoFill();
 				ofSetColor(255, 0, 0);
@@ -680,7 +690,7 @@ void ofxNCoreVision::drawMiniMode()
 void ofxNCoreVision::drawFingerOutlines()
 {
 	//Find the blobs for drawing
-	if(bTrackFingers)
+	if(tracker.bTrackFingers)
 	{
 		for (int i=0; i<contourFinder.nBlobs; i++)
 		{
@@ -815,7 +825,7 @@ void ofxNCoreVision::_keyPressed(ofKeyEventArgs &e)
 			}
 			break;
 		case OF_KEY_RETURN: //Close Template Selection and save it
-			if( bTrackObjects && isSelecting )
+			if( tracker.bTrackObjects && isSelecting )
 			{
 			isSelecting = false;
 			templates.addTemplate(rect,minRect,maxRect);
@@ -860,7 +870,7 @@ void ofxNCoreVision::_mouseDragged(ofMouseEventArgs &e)
 {
 	if (showConfiguration)
 		controls->mouseDragged(e.x, e.y, e.button); //guilistener
-	if(bTrackObjects)
+	if(tracker.bTrackObjects)
 	{
 		if( e.x > 40 && e.x < 360 && e.y > 30 && e.y < 270 )
 		{
@@ -886,7 +896,7 @@ void ofxNCoreVision::_mousePressed(ofMouseEventArgs &e)
 	if (showConfiguration)
 	{
 		controls->mousePressed( e.x, e.y, e.button ); //guilistener
-		if ( bTrackObjects )
+		if ( tracker.bTrackObjects )
 		{
 			if ( e.x > 40 && e.x < 360 && e.y > 30 && e.y < 270 )
 			{
@@ -909,7 +919,7 @@ void ofxNCoreVision::_mouseReleased(ofMouseEventArgs &e)
 		controls->mouseReleased(e.x, e.y, 0); //guilistener
 	if( e.x > 40 && e.x < 360 && e.y > 30 && e.y < 270 )
 	{
-		if	( bTrackObjects && isSelecting )
+		if	( tracker.bTrackObjects && isSelecting )
 		{
 			minRect = rect;
 			maxRect = rect;
@@ -932,6 +942,11 @@ std::map<int, Blob> ofxNCoreVision::getBlobs()
 void ofxNCoreVision::_exit(ofEventArgs &e)
 {
 	saveSettings();
+
+	//Save templates
+	if(tracker.bTrackObjects)
+		templates.saveTemplateXml();
+
 	// AlexP
 	// C++ guarantees that operator delete checks its argument for null-ness
     #ifdef TARGET_WIN32
