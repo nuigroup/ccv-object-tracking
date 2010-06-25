@@ -81,3 +81,8 @@ void TemplateUtils::saveTemplateXml()
 	XML.saveFile("templates.xml");
 	printf("Template is saved\n");
 }
+
+int TemplateUtils::getTemplateId(float width,float height)
+{
+	return -1;
+}

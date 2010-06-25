@@ -152,9 +152,9 @@ public:
 		MIN_BLOB_SIZE = 2;
 		MAX_BLOB_SIZE = 100;
 
-		tracker.bTrackFingers=false;
-		tracker.bTrackObjects=false;
-		tracker.bTrackFiducials=false;
+		contourFinder.bTrackFingers=false;
+		contourFinder.bTrackObjects=false;
+		contourFinder.bTrackFiducials=false;
 
         //if auto tracker is defined then the tracker automagically comes up
         //on startup..

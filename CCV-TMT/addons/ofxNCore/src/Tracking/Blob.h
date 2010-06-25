@@ -33,6 +33,7 @@ class Blob {
 		ofRectangle         angleBoundingRect;
 		ofPoint             centroid, lastCentroid, D;
 		bool				simulated;
+		bool				isObject;
 		bool                hole;
 		int					color;				
 
@@ -47,6 +48,7 @@ class Blob {
 			age			= 0.0f;
 			sitting		= 0.0f;
 			color		= 0xFFFFFF;
+			isObject	= false;
 			
 			//freakishly long variable name (ala Apple)
 			lastTimeTimeWasChecked = ofGetElapsedTimeMillis(); //get current time as of creation

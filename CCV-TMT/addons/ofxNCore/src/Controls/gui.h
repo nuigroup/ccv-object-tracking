@@ -227,9 +227,9 @@ void ofxNCoreVision::setupControls()
 	//Background Learn Rate
 	controls->update(appPtr->backgroundPanel_learn_rate, kofxGui_Set_Bool, &appPtr->backgroundLearnRate, sizeof(float));
 	//Track Panel
-	controls->update(appPtr->trackingPanel_trackFingers, kofxGui_Set_Bool, &appPtr->tracker.bTrackFingers, sizeof(bool));
-	controls->update(appPtr->trackingPanel_trackObjects, kofxGui_Set_Bool, &appPtr->tracker.bTrackObjects, sizeof(bool));
-	controls->update(appPtr->trackingPanel_trackFiducials, kofxGui_Set_Bool, &appPtr->tracker.bTrackFiducials, sizeof(bool));
+	controls->update(appPtr->trackingPanel_trackFingers, kofxGui_Set_Bool, &appPtr->contourFinder.bTrackFingers, sizeof(bool));
+	controls->update(appPtr->trackingPanel_trackObjects, kofxGui_Set_Bool, &appPtr->contourFinder.bTrackObjects, sizeof(bool));
+	controls->update(appPtr->trackingPanel_trackFiducials, kofxGui_Set_Bool, &appPtr->contourFinder.bTrackFiducials, sizeof(bool));
 	//Send TUIO
 	controls->update(appPtr->optionPanel_tuio_osc, kofxGui_Set_Bool, &appPtr->myTUIO.bOSCMode, sizeof(bool));
 	controls->update(appPtr->optionPanel_tuio_tcp, kofxGui_Set_Bool, &appPtr->myTUIO.bTCPMode, sizeof(bool));
@@ -400,18 +400,18 @@ void ofxNCoreVision ::handleGui(int parameterId, int task, void* data, int lengt
 		//Tracking Panel
 		case trackingPanel_trackFingers:
 			if(length == sizeof(bool))
-				tracker.bTrackFingers=*(bool*)data;
+				contourFinder.bTrackFingers=*(bool*)data;
 			break;
 		case trackingPanel_trackObjects:
 			if(length == sizeof(bool))
 			{
-				tracker.bTrackObjects=*(bool*)data;
-				if(tracker.bTrackObjects)
+				contourFinder.bTrackObjects=*(bool*)data;
+				if(contourFinder.bTrackObjects)
 				{
 					if(!templates.loadTemplateXml())
 					{
-						tracker.bTrackObjects=false;
-						controls->update(trackingPanel_trackObjects,kofxGui_Set_Bool,&appPtr->ofxSelectionToolsObjects, sizeof(bool));
+						contourFinder.bTrackObjects=false;
+						controls->update(trackingPanel_trackObjects,kofxGui_Set_Bool,&appPtr->contourFinder.bTrackObjects, sizeof(bool));
 					}
 				}
 				else
@@ -422,7 +422,7 @@ void ofxNCoreVision ::handleGui(int parameterId, int task, void* data, int lengt
 			break;
 		case trackingPanel_trackFiducials:
 			if(length == sizeof(bool))
-				tracker.bTrackFiducials=*(bool*)data;
+				contourFinder.bTrackFiducials=*(bool*)data;
 			break;
 		//Communication
 		case optionPanel_tuio_osc:

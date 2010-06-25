@@ -16,6 +16,7 @@
 #include "ofMain.h"
 #include "ofxOpenCv.h"
 #include "Blob.h"
+#include "../Templates/TemplateUtils.h"
 
 #define TOUCH_MAX_CONTOURS			128
 #define TOUCH_MAX_CONTOUR_LENGTH	1024
@@ -38,6 +39,10 @@ class ContourFinder
     vector <Blob>	   blobs;      // the blobs, in a std::vector...
     Blob 	           getBlob(int num);
 
+	bool bTrackFingers;
+	bool bTrackObjects;
+	bool bTrackFiducials;
+
   protected:
 
     // this is stuff, not for general public to touch -- we need
@@ -46,6 +51,8 @@ class ContourFinder
     CvMemStorage*       contour_storage;
     CvMemStorage*       storage;
     CvMoments*          myMoments;
+
+	TemplateUtils* templates;
 
     // internally, we find cvSeqs, they will become blobs.
     int                 nCvSeqsFound;
