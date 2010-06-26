@@ -28,6 +28,7 @@ class ContourFinder
     ContourFinder();
     ~ContourFinder();
 	
+	void setTemplateUtils(TemplateUtils * _templates);
 	int findContours( ofxCvGrayscaleImage& input,
                        int minArea, int maxArea,
                        int nConsidered, bool bFindHoles,

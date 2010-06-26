@@ -8,6 +8,7 @@ class Template {
 public:
 	Template() 
 	{
+		id=185;    // <<<==== Have to change 
 	}
 
 	//The ID of the template

@@ -99,6 +99,7 @@ void ofxNCoreVision::_setup(ofEventArgs &e)
 		}
 	}
 	
+	contourFinder.setTemplateUtils(&templates);
 	#ifdef TARGET_WIN32
 	    //get rid of the console window
         //FreeConsole();
@@ -380,19 +381,7 @@ void ofxNCoreVision::_update(ofEventArgs &e)
 			contourFinder.findContours(processedImg,  (MIN_BLOB_SIZE * 2) + 1, ((camWidth * camHeight) * .4) * (MAX_BLOB_SIZE * .001), maxBlobs, false);
 		}
 
-		//Track found contours/blobss
-		if(contourFinder.bTrackFingers)
-		{
 		tracker.track(&contourFinder);
-		}
-		if(contourFinder.bTrackObjects)
-		{
-			//Object Tracking to be done here
-		}
-		if(contourFinder.bTrackFiducials)
-		{
-			//Fiducial Tracking to be done here
-		}
 
 		//get DSP time
 		differenceTime = ofGetElapsedTimeMillis() - beforeTime;

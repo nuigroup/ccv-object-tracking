@@ -82,7 +82,20 @@ void TemplateUtils::saveTemplateXml()
 	printf("Template is saved\n");
 }
 
+
+// Better funtion to be implemented
 int TemplateUtils::getTemplateId(float width,float height)
 {
-	return -1;
+	int id = -1;
+	if(templates.size()==0)
+	{
+		return -1;
+	}
+	for(int i = 0 ; i < templates.size() ; i++ )
+	{
+		if(width < templates[i].maxWidth && width > templates[i].maxWidth && height < templates[i].maxHeight && height > templates[i].minHeight)
+		{
+			return templates[i].id;
+		}
+	}
 }
