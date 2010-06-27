@@ -33,7 +33,7 @@ void BlobTracker::track(ContourFinder* newBlobs)
 {
 	//initialize ID's of all blobs
 	for(int i=0; i<newBlobs->nBlobs; i++)
-		newBlobs->blobs[i].id=-1;
+			newBlobs->blobs[i].id=-1;
 
 	// STEP 1: Blob matching
 	//

@@ -36,9 +36,11 @@ class ContourFinder
                        // approximation = don't do points for all points of the contour, if the contour runs
                        // along a straight line, for example...
 		
-    int                        nBlobs;     // how many did we find
-    vector <Blob>	   blobs;      // the blobs, in a std::vector...
-    Blob 	           getBlob(int num);
+    int					nBlobs;     // how many did we find
+	int					nObjects;	
+
+    vector <Blob>		blobs;      // the blobs, in a std::vector...
+	vector <Blob>		objects;
 
 	bool bTrackFingers;
 	bool bTrackObjects;

@@ -10,23 +10,6 @@
 #include "ContourFinder.h"
 
 //--------------------------------------------------------------------------------
-static int qsort_carea_compare( const void* _a, const void* _b) 
-{
-	int out = 0;
-	// pointers, ugh.... sorry about this
-	CvSeq* a = *((CvSeq **)_a);
-	CvSeq* b = *((CvSeq **)_b);
-	// use opencv to calc size, then sort based on size
-	float areaa = fabs(cvContourArea(a, CV_WHOLE_SEQ));
-	float areab = fabs(cvContourArea(b, CV_WHOLE_SEQ));
-	// note, based on the -1 / 1 flip
-	// we sort biggest to smallest, not smallest to biggest
-	if( areaa > areab )		out = -1;
-	else					out =  1;
-	return out;
-}
-
-//--------------------------------------------------------------------------------
 ContourFinder::ContourFinder()
 {
 	myMoments = (CvMoments*)malloc( sizeof(CvMoments) );
@@ -44,6 +27,9 @@ void ContourFinder::reset()
 {
     blobs.clear();
     nBlobs = 0;
+
+	objects.clear();
+	nObjects = 0;
 }
 
 //--------------------------------------------------------------------------------
@@ -112,13 +98,13 @@ int ContourFinder::findContours( ofxCvGrayscaleImage&  input,
 		CvBox2D box=cvMinAreaRect2(contour_ptr);
 		int objectId; // If the contour is an object, then objectId is its ID
 		objectId=(bTrackObjects)? templates->getTemplateId(box.size.width,box.size.height): -1;
-
+		
 		if(objectId=!-1 )
 		{
 			Blob blob		= Blob();
 			blob.id			= objectId;
 			blob.isObject	= true;
-float area = cvContourArea( contour_ptr, CV_WHOLE_SEQ );
+			float area = cvContourArea( contour_ptr, CV_WHOLE_SEQ );
 
 			cvMoments( contour_ptr, myMoments );
 		
@@ -158,7 +144,7 @@ float area = cvContourArea( contour_ptr, CV_WHOLE_SEQ );
 			}
 			blob.nPts = blob.pts.size();
 
-			blobs.push_back(blob);
+			objects.push_back(blob);
 		}
 		else if(bTrackFingers)
 		{
@@ -214,10 +200,14 @@ float area = cvContourArea( contour_ptr, CV_WHOLE_SEQ );
 		contour_ptr = contour_ptr->h_next;
 	}
 
+	nBlobs = blobs.size();
+	nObjects = objects.size();
 	// Free the storage memory.
 	// Warning: do this inside this function otherwise a strange memory leak
 	if( contour_storage != NULL ) { cvReleaseMemStorage(&contour_storage); }
 	if( storage != NULL ) { cvReleaseMemStorage(&storage); }
+
+//	printf("number of blobs : %d\n",nBlobs);
 
 	return nBlobs;
 }
