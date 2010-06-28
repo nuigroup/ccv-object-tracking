@@ -31,6 +31,7 @@ public:
 	bool isCalibrating;
 	int MOVEMENT_FILTERING;
 	std::map<int, Blob> getTrackedBlobs();
+	std::map<int, Blob> getTrackedObjects();
 
 private:
 	int trackKnn(ContourFinder *newBlobs, Blob *track, int k, double thresh);
@@ -38,6 +39,7 @@ private:
 	int						fightMongrel;
 	std::vector<Blob>		trackedBlobs; //tracked blobs
 	std::map<int, Blob>     calibratedBlobs;
+	std::map<int, Blob>		calibratedObjects;
 };
 
 #endif

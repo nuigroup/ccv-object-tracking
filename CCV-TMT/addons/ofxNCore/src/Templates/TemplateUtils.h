@@ -23,7 +23,7 @@ public:
 	//Functions 
 	bool loadTemplateXml();
 	void saveTemplateXml();
-	void addTemplate(ofRectangle rect,ofRectangle minRect, ofRectangle maxRect);
+	void addTemplate(ofRectangle rect,ofRectangle minRect, ofRectangle maxRect,float scaleX ,float scaleY);
 	int getTemplateId(float width,float height);
 
 	//Variables

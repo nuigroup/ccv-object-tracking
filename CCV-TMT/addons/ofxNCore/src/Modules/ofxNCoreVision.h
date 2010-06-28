@@ -217,6 +217,7 @@ public:
 
 	//Getters
 	std::map<int, Blob> getBlobs();
+	std::map<int, Blob> getObjects();
 
 	/***************************************************************
 	 *					Video Capture Devices

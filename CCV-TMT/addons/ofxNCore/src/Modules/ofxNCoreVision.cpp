@@ -400,6 +400,10 @@ void ofxNCoreVision::_update(ofEventArgs &e)
 		{
 			//Start sending OSC
 			myTUIO.sendTUIO(&getBlobs());
+			if(contourFinder.bTrackObjects)
+			{
+				myTUIO.sendTUIO(&getObjects());
+			}
 		}
 	}
 }
@@ -642,6 +646,10 @@ void ofxNCoreVision::drawMiniMode()
 		{
 			contourFinder.blobs[i].drawContours(0,0, camWidth, camHeight+175, ofGetWidth(), ofGetHeight());
 		}
+		for (int i=0;i<contourFinder.nObjects; i++)
+		{
+			contourFinder.objects[i].drawContours(0,0, camWidth, camHeight+175, ofGetWidth(), ofGetHeight());
+		}
 	}
 
 	//draw grey rectagles for text information
@@ -695,7 +703,14 @@ void ofxNCoreVision::drawFingerOutlines()
 	
 				ofSetColor(0xCCFFCC);
 				char idStr[1024];
+				if(!contourFinder.blobs[i].isObject)
+				{
 				sprintf(idStr, "id: %i", contourFinder.blobs[i].id);
+				}
+				else
+				{
+					sprintf(idStr, "oid: %i", contourFinder.blobs[i].id);
+				}
 				verdana.drawString(idStr, xpos + 365, ypos + contourFinder.blobs[i].boundingRect.height/2 + 45);
 			}
 		}
@@ -817,7 +832,7 @@ void ofxNCoreVision::_keyPressed(ofKeyEventArgs &e)
 			if( contourFinder.bTrackObjects && isSelecting )
 			{
 			isSelecting = false;
-			templates.addTemplate(rect,minRect,maxRect);
+			templates.addTemplate(rect,minRect,maxRect,camWidth/320,camHeight/240);
 			rect = ofRectangle();
 			minRect = rect;
 			maxRect = rect;
@@ -923,6 +938,11 @@ void ofxNCoreVision::_mouseReleased(ofMouseEventArgs &e)
 std::map<int, Blob> ofxNCoreVision::getBlobs()
 {
 	return tracker.getTrackedBlobs();
+}
+
+std::map<int,Blob> ofxNCoreVision::getObjects()
+{
+	return tracker.getTrackedObjects();
 }
 
 /*****************************************************************************

@@ -1,15 +1,15 @@
 #include "TemplateUtils.h"
 
 //Adds template data to the vector
-void TemplateUtils::addTemplate(ofRectangle rect,ofRectangle minRect, ofRectangle maxRect) 
+void TemplateUtils::addTemplate(ofRectangle rect,ofRectangle minRect, ofRectangle maxRect,float scaleX=1.0f ,float scaleY=1.0f) 
 {
 	Template temp = Template();
-	temp.width = rect.width;
-	temp.height = rect.height;
-	temp.maxWidth = maxRect.width;
-	temp.maxHeight = maxRect.height;
-	temp.minWidth = minRect.width;
-	temp.minHeight = minRect.height;
+	temp.width = rect.width * scaleX;
+	temp.height = rect.height * scaleY;
+	temp.maxWidth = maxRect.width * scaleX;
+	temp.maxHeight = maxRect.height * scaleY;
+	temp.minWidth = minRect.width * scaleX;
+	temp.minHeight = minRect.height * scaleY;
 
 	templates.push_back(temp);
 	printf("Template added. Number of templates = %d\n",templates.size());

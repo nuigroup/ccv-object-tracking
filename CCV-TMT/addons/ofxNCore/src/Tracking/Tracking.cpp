@@ -31,6 +31,14 @@ void BlobTracker::passInCalibration(CalibrationUtils* calibrater)
 //assigns IDs to each blob in the contourFinder
 void BlobTracker::track(ContourFinder* newBlobs)
 {
+	//handle the object tracking if present
+	for (int i = 0; i < newBlobs->nObjects; i++)
+	{
+		//Change the object's x,y position to the caliberated one : TODO
+
+		calibratedObjects[i]=newBlobs->objects[i];
+	}
+
 	//initialize ID's of all blobs
 	for(int i=0; i<newBlobs->nBlobs; i++)
 			newBlobs->blobs[i].id=-1;
@@ -377,6 +385,11 @@ void BlobTracker::track(ContourFinder* newBlobs)
 std::map<int, Blob> BlobTracker::getTrackedBlobs()
 {
     return calibratedBlobs;
+}
+
+std::map<int, Blob> BlobTracker::getTrackedObjects()
+{
+	return calibratedObjects;
 }
 
 /*************************************************************************
