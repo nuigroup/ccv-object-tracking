@@ -84,6 +84,12 @@ class Blob {
 			}
 			else
 			{
+				glPushMatrix();
+				ofNoFill();
+				glRotatef(-angle, 0.0f, 0.0f, 1.0f);
+				ofSetRectMode(OF_RECTMODE_CENTER);
+				ofRect(angleBoundingRect.x,angleBoundingRect.y,angleBoundingRect.width,angleBoundingRect.height);
+				glPopMatrix();
 				//draw object boundin rectangle
 			}
         }
