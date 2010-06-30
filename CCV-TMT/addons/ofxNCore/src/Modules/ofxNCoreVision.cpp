@@ -92,11 +92,7 @@ void ofxNCoreVision::_setup(ofEventArgs &e)
 	//If Object tracking activated
 	if(contourFinder.bTrackObjects)
 	{
-		if(!templates.loadTemplateXml())
-		{
-			contourFinder.bTrackObjects=false;
-			controls->update(trackingPanel_trackObjects,kofxGui_Set_Bool,&appPtr->contourFinder.bTrackObjects, sizeof(bool));
-		}
+		templates.loadTemplateXml();
 	}
 	
 	contourFinder.setTemplateUtils(&templates);
@@ -703,18 +699,39 @@ void ofxNCoreVision::drawFingerOutlines()
 	
 				ofSetColor(0xCCFFCC);
 				char idStr[1024];
-				if(!contourFinder.blobs[i].isObject)
-				{
+
 				sprintf(idStr, "id: %i", contourFinder.blobs[i].id);
-				}
-				else
-				{
-					sprintf(idStr, "oid: %i", contourFinder.blobs[i].id);
-				}
+
 				verdana.drawString(idStr, xpos + 365, ypos + contourFinder.blobs[i].boundingRect.height/2 + 45);
 			}
 		}
 	}
+	//Object Drawing
+	if(contourFinder.bTrackObjects)
+	{
+		for (int i=0; i<contourFinder.nObjects; i++)
+		{
+			if (bDrawOutlines)
+			{
+				//Draw contours (outlines) on the source image
+				contourFinder.objects[i].drawBox(40, 30, camWidth, camHeight, MAIN_WINDOW_WIDTH, MAIN_WINDOW_HEIGHT);
+			}
+			if (bShowLabels) //Show ID label;
+			{
+				float xpos = contourFinder.objects[i].centroid.x * (MAIN_WINDOW_WIDTH/camWidth);
+				float ypos = contourFinder.objects[i].centroid.y * (MAIN_WINDOW_HEIGHT/camHeight);
+	
+				ofSetColor(0xCCFFCC);
+				char idStr[1024];
+
+				sprintf(idStr, "id: %i", contourFinder.objects[i].id);
+
+				verdana.drawString(idStr, xpos + 365, ypos + contourFinder.objects[i].boundingRect.height/2 + 45);
+			}
+		}
+	}
+
+
 	ofSetColor(0xFFFFFF);
 }
 
@@ -876,7 +893,7 @@ void ofxNCoreVision::_mouseDragged(ofMouseEventArgs &e)
 		controls->mouseDragged(e.x, e.y, e.button); //guilistener
 	if(contourFinder.bTrackObjects)
 	{
-		if( e.x > 40 && e.x < 360 && e.y > 30 && e.y < 270 )
+		if( e.x > 385 && e.x < 705 && e.y > 30 && e.y < 270 )
 		{
 			if( e.x < rect.x || e.y < rect.y )
 			{
@@ -902,7 +919,7 @@ void ofxNCoreVision::_mousePressed(ofMouseEventArgs &e)
 		controls->mousePressed( e.x, e.y, e.button ); //guilistener
 		if ( contourFinder.bTrackObjects )
 		{
-			if ( e.x > 40 && e.x < 360 && e.y > 30 && e.y < 270 )
+			if ( e.x > 385 && e.x < 705 && e.y > 30 && e.y < 270 )
 			{
 				isSelecting = true;
 				rect.x = e.x;
@@ -921,7 +938,7 @@ void ofxNCoreVision::_mouseReleased(ofMouseEventArgs &e)
 {
 	if (showConfiguration)
 		controls->mouseReleased(e.x, e.y, 0); //guilistener
-	if( e.x > 40 && e.x < 360 && e.y > 30 && e.y < 270 )
+	if( e.x > 385 && e.x < 705 && e.y > 30 && e.y < 270 )
 	{
 		if	( contourFinder.bTrackObjects && isSelecting )
 		{

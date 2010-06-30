@@ -99,7 +99,7 @@ int ContourFinder::findContours( ofxCvGrayscaleImage&  input,
 		int objectId; // If the contour is an object, then objectId is its ID
 		objectId=(bTrackObjects)? templates->getTemplateId(box.size.width,box.size.height): -1;
 		
-		if(objectId=!-1 )
+		if(objectId != -1 )
 		{
 			Blob blob		= Blob();
 			blob.id			= objectId;
@@ -116,6 +116,7 @@ int ContourFinder::findContours( ofxCvGrayscaleImage&  input,
 			blob.boundingRect.height = rect.height;
 
 			//For anglebounding rectangle
+			blob.angleBoundingBox=box;
 			blob.angleBoundingRect.x	  = box.center.x;
 			blob.angleBoundingRect.y	  = box.center.y;
 			blob.angleBoundingRect.width  = box.size.height;
@@ -207,7 +208,7 @@ int ContourFinder::findContours( ofxCvGrayscaleImage&  input,
 	if( contour_storage != NULL ) { cvReleaseMemStorage(&contour_storage); }
 	if( storage != NULL ) { cvReleaseMemStorage(&storage); }
 
-//	printf("number of blobs : %d\n",nBlobs);
+	//printf("Number of objects :  %d\n",nObjects);
 
 	return nBlobs;
 }

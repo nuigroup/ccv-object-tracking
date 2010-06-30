@@ -408,11 +408,7 @@ void ofxNCoreVision ::handleGui(int parameterId, int task, void* data, int lengt
 				contourFinder.bTrackObjects=*(bool*)data;
 				if(contourFinder.bTrackObjects)
 				{
-					if(!templates.loadTemplateXml())
-					{
-						contourFinder.bTrackObjects=false;
-						controls->update(trackingPanel_trackObjects,kofxGui_Set_Bool,&appPtr->contourFinder.bTrackObjects, sizeof(bool));
-					}
+					templates.loadTemplateXml();
 				}
 				else
 				{

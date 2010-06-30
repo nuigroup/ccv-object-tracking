@@ -28,12 +28,12 @@ bool TemplateUtils::loadTemplateXml()
 			;
 			for(int i=0; i < total; i++)
 			{
-				float width =(float) XML.getValue("TEMPLATE:WIDTH",0);
-				float height =(float)XML.getValue("TEMPLATE:HEIGHT",0);
-				float minWidth =(float)  XML.getValue("TEMPLATE:MINWIDTH",0);
-				float minHeight = (float) XML.getValue("TEMPLATE:MINHEIGHT",0);
-				float maxWidth = (float) XML.getValue("TEMPLATE:MAXWIDTH",0);
-				float maxHeight =(float) XML.getValue("TEMPLATE:MAXHEIGHT",0);
+				float width =(float) XML.getValue("TEMPLATE:WIDTH",0,i);
+				float height =(float)XML.getValue("TEMPLATE:HEIGHT",0,i);
+				float minWidth =(float)  XML.getValue("TEMPLATE:MINWIDTH",0,i);
+				float minHeight = (float) XML.getValue("TEMPLATE:MINHEIGHT",0,i);
+				float maxWidth = (float) XML.getValue("TEMPLATE:MAXWIDTH",0,i);
+				float maxHeight =(float) XML.getValue("TEMPLATE:MAXHEIGHT",0,i);
 
 				if(width !=0 && height != 0 && minWidth != 0 && minHeight != 0 && maxWidth != 0 && maxHeight != 0)
 				{//Only then add a template
@@ -56,6 +56,7 @@ bool TemplateUtils::loadTemplateXml()
 	else
 	{
 		printf("\nTemplates.xml could not be loaded. Make sure it is there in data folder\n");
+		templates.clear();
 		return false;
 	}
 }
@@ -93,9 +94,10 @@ int TemplateUtils::getTemplateId(float width,float height)
 	}
 	for(int i = 0 ; i < templates.size() ; i++ )
 	{
-		if(width < templates[i].maxWidth && width > templates[i].maxWidth && height < templates[i].maxHeight && height > templates[i].minHeight)
+		if(width < templates[i].maxWidth && width > templates[i].minWidth && height < templates[i].maxHeight && height > templates[i].minHeight)
 		{
 			return templates[i].id;
 		}
 	}
+	return id;
 }
