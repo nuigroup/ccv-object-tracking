@@ -3,16 +3,21 @@
 //Adds template data to the vector
 void TemplateUtils::addTemplate(ofRectangle rect,ofRectangle minRect, ofRectangle maxRect,float scaleX=1.0f ,float scaleY=1.0f) 
 {
-	Template temp = Template();
-	temp.width = rect.width * scaleX;
-	temp.height = rect.height * scaleY;
-	temp.maxWidth = maxRect.width * scaleX;
-	temp.maxHeight = maxRect.height * scaleY;
-	temp.minWidth = minRect.width * scaleX;
-	temp.minHeight = minRect.height * scaleY;
-
-	templates.push_back(temp);
-	printf("Template added. Number of templates = %d\n",templates.size());
+	if(templates.size() < MAX_NUM_TEMPLATES)
+	{
+		Template temp = Template();
+		temp.width = rect.width * scaleX;
+		temp.height = rect.height * scaleY;
+		temp.maxWidth = maxRect.width * scaleX;
+		temp.maxHeight = maxRect.height * scaleY;
+		temp.minWidth = minRect.width * scaleX;
+		temp.minHeight = minRect.height * scaleY;
+		temp.id = getId();
+		temp.trueId = 0;
+	
+		templates.push_back(temp);
+		printf("Template added. Number of templates = %d\n",templates.size());
+	}
 }
 
 //Loads the XML file from templates.xml file. This returns false if the file does not exist
@@ -34,6 +39,17 @@ bool TemplateUtils::loadTemplateXml()
 				float minHeight = (float) XML.getValue("TEMPLATE:MINHEIGHT",0,i);
 				float maxWidth = (float) XML.getValue("TEMPLATE:MAXWIDTH",0,i);
 				float maxHeight =(float) XML.getValue("TEMPLATE:MAXHEIGHT",0,i);
+				int	trueId = XML.getValue("TEMPLATE:TRUEID",0,i);
+				int id;
+				if(trueId)
+				{
+					id = XML.getValue("TEMPLATE:ID",0,i);
+					assignedIds.push_back(id);
+				}
+				else
+				{
+					id = getId();
+				}
 
 				if(width !=0 && height != 0 && minWidth != 0 && minHeight != 0 && maxWidth != 0 && maxHeight != 0)
 				{//Only then add a template
@@ -45,6 +61,8 @@ bool TemplateUtils::loadTemplateXml()
 					temp.maxHeight = maxHeight;
 					temp.minWidth = minWidth;
 					temp.minHeight = minHeight;
+					temp.trueId = trueId;
+					temp.id = id;
 
 					templates.push_back(temp);
 				}
@@ -76,6 +94,8 @@ void TemplateUtils::saveTemplateXml()
 		XML.setValue("TEMPLATE:MINHEIGHT",templates[i].minHeight,tagNum);
 		XML.setValue("TEMPLATE:MAXWIDTH",templates[i].maxWidth,tagNum);
 		XML.setValue("TEMPLATE:MAXHEIGHT",templates[i].maxHeight,tagNum);
+		XML.setValue("TEMPLATE:TRUEID",templates[i].trueId,tagNum);
+		XML.setValue("TEMPLATE:ID",templates[i].id,tagNum);
 		
 		XML.popTag();	
 	}

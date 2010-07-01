@@ -13,11 +13,36 @@ public:
 
 	TemplateUtils()
 	{
-		isLoaded = false;
+		idCounter	= 180;
+		isLoaded	= false;
 	}
 
 	~TemplateUtils()
 	{
+	}
+
+	int getId()
+	{
+		bool hasId=false;
+		int i;
+
+		for(i=0;i<assignedIds.size();i++)
+		{
+			if(idCounter==assignedIds[i])
+			{
+				idCounter++;
+				i=0;
+				continue;
+			}
+		}
+		if(idCounter<200)
+		{
+			return idCounter;
+		}
+		else
+		{
+			return -1;
+		}
 	}
 
 	//Functions 
@@ -27,10 +52,12 @@ public:
 	int getTemplateId(float width,float height);
 
 	//Variables
-	bool isLoaded;
+	bool	isLoaded;
+	int		idCounter;
 
 	std::vector<Template>		templates;
 	ofxXmlSettings				XML;
+	vector<int>					assignedIds;
 
 };
 
