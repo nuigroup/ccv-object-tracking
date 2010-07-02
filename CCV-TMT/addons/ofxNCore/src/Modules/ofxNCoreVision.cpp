@@ -98,7 +98,7 @@ void ofxNCoreVision::_setup(ofEventArgs &e)
 	contourFinder.setTemplateUtils(&templates);
 	#ifdef TARGET_WIN32
 	    //get rid of the console window
-        //FreeConsole();
+        FreeConsole();
 	#endif
 
 	printf("Community Core Vision is setup!\n\n");
@@ -860,7 +860,7 @@ void ofxNCoreVision::_keyPressed(ofKeyEventArgs &e)
 			}
 			break;
 		default: //Check key character <<<<===== Remove this
-			printf("%c",e.key);
+			//printf("%c",e.key);
 			break;
 		}
 	}

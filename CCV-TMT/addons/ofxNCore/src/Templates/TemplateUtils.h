@@ -37,6 +37,7 @@ public:
 		}
 		if(idCounter<200)
 		{
+			assignedIds.push_back(idCounter);
 			return idCounter;
 		}
 		else
