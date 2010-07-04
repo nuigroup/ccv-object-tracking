@@ -395,7 +395,11 @@ void ofxNCoreVision::_update(ofEventArgs &e)
 		if (bTUIOMode)
 		{
 			//Start sending OSC
-			myTUIO.sendTUIO(&getBlobs());
+			if(contourFinder.bTrackFingers)
+			{
+				myTUIO.sendTUIO(&getBlobs());
+			}
+
 			if(contourFinder.bTrackObjects)
 			{
 				myTUIO.sendTUIO(&getObjects());

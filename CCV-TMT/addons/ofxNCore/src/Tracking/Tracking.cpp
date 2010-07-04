@@ -34,9 +34,10 @@ void BlobTracker::track(ContourFinder* newBlobs)
 	//handle the object tracking if present
 	for (int i = 0; i < newBlobs->nObjects; i++)
 	{
-		//Change the object's x,y position to the caliberated one : TODO
-
 		calibratedObjects[i]=newBlobs->objects[i];
+
+		//Camera to Screen Position Conversion
+		calibrate->cameraToScreenPosition(calibratedObjects[i].centroid.x,calibratedObjects[i].centroid.y);
 	}
 
 	//initialize ID's of all blobs
