@@ -96,10 +96,14 @@ void ofxNCoreVision::_setup(ofEventArgs &e)
 	}
 	
 	contourFinder.setTemplateUtils(&templates);
-	#ifdef TARGET_WIN32
-	    //get rid of the console window
-        FreeConsole();
-	#endif
+
+	if(!debugMode)
+	{
+		#ifdef TARGET_WIN32
+			//get rid of the console window
+			FreeConsole();
+		#endif
+	}
 
 	printf("Community Core Vision is setup!\n\n");
 }

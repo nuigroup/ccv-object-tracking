@@ -106,7 +106,7 @@ class ofxNCoreVision : public ofxGuiListener
 	};
 
 public:
-	ofxNCoreVision()
+	ofxNCoreVision(bool debug)
 	{
 		ofAddListener(ofEvents.mousePressed, this, &ofxNCoreVision::_mousePressed);
 		ofAddListener(ofEvents.mouseDragged, this, &ofxNCoreVision::_mouseDragged);
@@ -124,6 +124,8 @@ public:
 			dsvl = NULL;
 		#endif
 
+		debugMode = debug;
+		
 		vidGrabber = NULL;
 		vidPlayer = NULL;
 		//initialize filter
@@ -272,6 +274,8 @@ public:
 	/****************************************************
 	 *End config.xml variables
 	 *****************************************************/
+	//Debug mode variables
+	bool debugMode;
 	//FPS variables
 	int 				frames;
 	int  				fps;

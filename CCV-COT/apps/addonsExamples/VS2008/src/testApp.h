@@ -12,11 +12,23 @@
 class testApp : public ofBaseApp, public TouchListener
 {
 public:
-	testApp() 
+	testApp(int argc, char *argv[]) 
 	{
 		TouchEvents.addListener(this);
+		if(argc==2)
+		{
+			if(argv[1]=="-d")
+			{
+				debug = true;
+			}
+		}
+		else
+		{
+			debug = false;
+		}
 	}
 	ofxNCoreVision * ccv;
+	bool debug;
 
 	void setup();
 	void update();
