@@ -25,6 +25,7 @@
 #include "ofxOsc.h"
 #include "ofxThread.h"
 #include "ofxXmlSettings.h"
+#include "ofxFiducialFinder.h"
 
 // Our Addon
 #include "ofxNCore.h"

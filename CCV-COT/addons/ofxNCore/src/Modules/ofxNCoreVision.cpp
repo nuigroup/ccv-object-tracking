@@ -95,8 +95,10 @@ void ofxNCoreVision::_setup(ofEventArgs &e)
 		templates.loadTemplateXml();
 	}
 	
+	//Linking TemplateUtils with the Contourfinder class for cotour finding
 	contourFinder.setTemplateUtils(&templates);
 
+	//TESTING --
 	if(!debugMode)
 	{
 		#ifdef TARGET_WIN32

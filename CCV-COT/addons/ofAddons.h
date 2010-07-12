@@ -45,3 +45,8 @@
 #ifdef OF_ADDON_USING_OFXXMLSETTINGS
 	#include "ofxXmlSettings.h"
 #endif
+
+//-------------------------------------------- ofxFiducialFinder
+#ifdef OF_ADDON_USING_OFXFIDUCIALFINDER
+	#include "ofxFiducialFinder.h"
+#endif
