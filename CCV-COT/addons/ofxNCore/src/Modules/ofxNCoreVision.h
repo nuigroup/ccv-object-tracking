@@ -131,6 +131,7 @@ public:
 		vidPlayer = NULL;
 		//initialize filter
 		filter = NULL;
+		filter_fiducial = NULL;
 		//fps and dsp calculation
 		frames		= 0;
 		fps			= 0;
@@ -173,6 +174,7 @@ public:
 		// AlexP
 		// C++ guarantees that operator delete checks its argument for null-ness
 		delete filter;		filter = NULL;
+		delete filter_fiducial;		filter_fiducial = NULL;
 		delete vidGrabber;	vidGrabber = NULL;
 		delete vidPlayer;	vidPlayer = NULL;
 		#ifdef TARGET_WIN32
@@ -271,6 +273,12 @@ public:
 
 	//auto ~ standalone/non-addon
 	bool                bStandaloneMode;
+
+	ofxFiducialFinder	fidfinder;
+
+	Filters*			filter_fiducial;
+	CPUImageFilter		processedImg_fiducial;
+
 
 	/****************************************************
 	 *End config.xml variables

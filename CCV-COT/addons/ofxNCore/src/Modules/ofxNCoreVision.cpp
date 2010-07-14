@@ -20,6 +20,8 @@ void ofxNCoreVision::_setup(ofEventArgs &e)
 	
 	//create filter
 	if(filter == NULL)	filter = new ProcessFilters();
+
+	if ( filter_fiducial == NULL ){filter_fiducial = new ProcessFilters();}
 	
 	//Load Settings from config.xml file
 	loadXMLSettings();
@@ -44,6 +46,10 @@ void ofxNCoreVision::_setup(ofEventArgs &e)
 	processedImg.setUseTexture(false);			//We don't need to draw this so don't create a texture
 	sourceImg.allocate(camWidth, camHeight);    //Source Image
 	sourceImg.setUseTexture(false);				//We don't need to draw this so don't create a texture
+
+	processedImg_fiducial.allocate(camWidth, camHeight);
+	processedImg_fiducial.setUseTexture(false); 
+
 	/******************************************************************************************************/
 	//printf("Cameras Loaded...\n");
 
@@ -66,6 +72,8 @@ void ofxNCoreVision::_setup(ofEventArgs &e)
 
 	//Allocate Filters
 	filter->allocate( camWidth, camHeight );
+	filter_fiducial->allocate( camWidth, camHeight );
+
 
 	/*****************************************************************************************************
 	* Startup Modes
@@ -83,6 +91,7 @@ void ofxNCoreVision::_setup(ofEventArgs &e)
 		printf("Starting in Mini Mode...\n\n");
 		ofSetWindowShape(190, 200); //minimized size
 		filter->bMiniMode = bMiniMode;
+		filter_fiducial->bMiniMode = bMiniMode;
 	}
 	else{
 		bShowInterface = true;
@@ -101,11 +110,13 @@ void ofxNCoreVision::_setup(ofEventArgs &e)
 	//TESTING --
 	if(!debugMode)
 	{
-		#ifdef TARGET_WIN32
-			//get rid of the console window
-			FreeConsole();
-		#endif
+		//Add Logging options : TODO
 	}
+
+	#ifdef TARGET_WIN32
+		//get rid of the console window
+		FreeConsole();
+	#endif
 
 	printf("Community Core Vision is setup!\n\n");
 }
@@ -138,15 +149,23 @@ void ofxNCoreVision::loadXMLSettings()
 	bShowLabels					= XML.getValue("CONFIG:BOOLEAN:LABELS",0);
 	bDrawOutlines				= XML.getValue("CONFIG:BOOLEAN:OUTLINES",0);
 	filter->bLearnBakground		= XML.getValue("CONFIG:BOOLEAN:LEARNBG",0);
+	filter_fiducial->bLearnBakground=filter->bLearnBakground;
 	filter->bVerticalMirror		= XML.getValue("CONFIG:BOOLEAN:VMIRROR",0);
+	filter_fiducial->bVerticalMirror= filter->bVerticalMirror;
 	filter->bHorizontalMirror	= XML.getValue("CONFIG:BOOLEAN:HMIRROR",0);
+	filter_fiducial->bHorizontalMirror	= filter->bHorizontalMirror;
 	
 	//Filters
 	filter->bTrackDark			= XML.getValue("CONFIG:BOOLEAN:TRACKDARK", 0);
+	filter_fiducial->bTrackDark			= filter->bTrackDark;
 	filter->bHighpass			= XML.getValue("CONFIG:BOOLEAN:HIGHPASS",1);
+	filter_fiducial->bHighpass			= filter->bHighpass;
 	filter->bAmplify			= XML.getValue("CONFIG:BOOLEAN:AMPLIFY", 1);
+	filter_fiducial->bAmplify			= filter->bAmplify;
 	filter->bSmooth				= XML.getValue("CONFIG:BOOLEAN:SMOOTH", 1);
+	filter_fiducial->bSmooth				= filter->bSmooth;
 	filter->bDynamicBG			= XML.getValue("CONFIG:BOOLEAN:DYNAMICBG", 1);
+	filter_fiducial->bDynamicBG			= filter->bDynamicBG;
 	//MODES
 	bGPUMode					= XML.getValue("CONFIG:BOOLEAN:GPU", 0);
 	bMiniMode                   = XML.getValue("CONFIG:BOOLEAN:MINIMODE",0);
@@ -157,10 +176,15 @@ void ofxNCoreVision::loadXMLSettings()
 	backgroundLearnRate			= XML.getValue("CONFIG:INT:BGLEARNRATE", 0.01f);
 	//Filter Settings
 	filter->threshold			= XML.getValue("CONFIG:INT:THRESHOLD",0);
+	filter_fiducial->threshold			= filter->threshold;
 	filter->highpassBlur		= XML.getValue("CONFIG:INT:HIGHPASSBLUR",0);
+	filter_fiducial->highpassBlur		= filter->highpassBlur;
 	filter->highpassNoise		= XML.getValue("CONFIG:INT:HIGHPASSNOISE",0);
+	filter_fiducial->highpassNoise		= filter->highpassNoise;
 	filter->highpassAmp			= XML.getValue("CONFIG:INT:HIGHPASSAMP",0);
+	filter_fiducial->highpassAmp	= filter->highpassAmp;
 	filter->smooth				= XML.getValue("CONFIG:INT:SMOOTH",0);
+	filter_fiducial->smooth		= filter->smooth;
 	minTempArea					= XML.getValue("CONFIG:INT:MINTEMPAREA",0);
 	maxTempArea					= XML.getValue("CONFIG:INT:MAXTEMPAREA",0);
 	//Tracking Options
@@ -287,7 +311,7 @@ void ofxNCoreVision::initDevice()
 				vidGrabber->listDevices();
 				vidGrabber->setVerbose(true);
 				vidGrabber->initGrabber(camWidth,camHeight);
-				printf("Linux Camera Mode\nAsked for %i by %i - actual size is %i by %i \n\n", camWidth, camHeight, vidGrabber->width, vidGrabber->height);
+				printf("VidGrabber Camera Mode\nAsked for %i by %i - actual size is %i by %i \n\n", camWidth, camHeight, vidGrabber->width, vidGrabber->height);
 				camWidth = vidGrabber->width;
 				camHeight = vidGrabber->height;
 				return;
@@ -375,12 +399,26 @@ void ofxNCoreVision::_update(ofEventArgs &e)
 			grabFrameToGPU(filter->gpuSourceTex);
 			filter->applyGPUFilters();
 			contourFinder.findContours(filter->gpuReadBackImageGS,  (MIN_BLOB_SIZE * 2) + 1, ((camWidth * camHeight) * .4) * (MAX_BLOB_SIZE * .001), maxBlobs, false);
+
+			if(contourFinder.bTrackFiducials)
+			{
+				grabFrameToGPU(filter_fiducial->gpuSourceTex);
+				filter_fiducial->applyGPUFilters();
+				fidfinder.findFiducials( filter_fiducial->gpuReadBackImageGS );
+			}
+
 		}
 		else
 		{
 			grabFrameToCPU();
 			filter->applyCPUFilters( processedImg );
 			contourFinder.findContours(processedImg,  (MIN_BLOB_SIZE * 2) + 1, ((camWidth * camHeight) * .4) * (MAX_BLOB_SIZE * .001), maxBlobs, false);
+			
+			if(contourFinder.bTrackFiducials)
+			{
+				filter_fiducial->applyCPUFilters( processedImg_fiducial );
+				fidfinder.findFiducials( processedImg_fiducial );
+			}
 		}
 
 		tracker.track(&contourFinder);
