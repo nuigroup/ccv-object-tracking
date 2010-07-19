@@ -228,9 +228,9 @@ public:
 	 *					Video Capture Devices
 	 ***************************************************************/
     #ifdef TARGET_WIN32
-        ofxffmv*            ffmv; //for firefly mv
-        ofxPS3*				PS3;  //for ps3
-		ofxDSVL*			dsvl;
+        ofxffmv*        ffmv; //for firefly mv
+        ofxPS3*			PS3;  //for ps3
+		ofxDSVL*		dsvl;
 	#endif
 	ofVideoGrabber*		vidGrabber;
     ofVideoPlayer*		vidPlayer;
@@ -273,18 +273,30 @@ public:
 
 	//auto ~ standalone/non-addon
 	bool                bStandaloneMode;
-
+	/*****************************************************
+	*		Fiducial Finder
+	*******************************************************/
 	ofxFiducialFinder	fidfinder;
+
+	float				fiducialDrawFactor_Width; //To draw the Fiducials in the right place we have to scale from camWidth to filter->camWidth
+    float				fiducialDrawFactor_Height;
 
 	Filters*			filter_fiducial;
 	CPUImageFilter		processedImg_fiducial;
 
 
+
 	/****************************************************
 	 *End config.xml variables
 	 *****************************************************/
+	
 	//Debug mode variables
-	bool debugMode;
+	bool				debugMode;
+
+	//Undistortion of Image - Required for some setups
+	bool				bUndistort;
+	ofxCvGrayscaleImage	undistortedImg;
+
 	//FPS variables
 	int 				frames;
 	int  				fps;
@@ -328,7 +340,7 @@ public:
 	bool				cameraInited; 
 
 	//Calibration
-    Calibration calib;
+    Calibration			calib;
 
 	//Blob Finder
 	ContourFinder		contourFinder;

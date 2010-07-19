@@ -20,13 +20,14 @@ void ofxNCoreVision::_setup(ofEventArgs &e)
 	
 	//create filter
 	if(filter == NULL)	filter = new ProcessFilters();
-	
+	if ( filter_fiducial == NULL ){filter_fiducial = new ProcessFilters();}
+
 	//Load Settings from config.xml file
 	loadXMLSettings();
 
 	if(debugMode)
 	{
-		printf("DEBUG MODE : Printing to File");
+		printf("DEBUG MODE : Printing to File\n");
 		/*****************************************************************************************************
 		* LOGGING
 		******************************************************************************************************/
@@ -50,6 +51,8 @@ void ofxNCoreVision::_setup(ofEventArgs &e)
 
 	//load camera/video
 	initDevice();
+	printf("Cameras Initialised...\n");
+
 	//set framerate
 	ofSetFrameRate(camRate * 1.3);			//This will be based on camera fps in the future
 
@@ -60,8 +63,12 @@ void ofxNCoreVision::_setup(ofEventArgs &e)
 	processedImg.setUseTexture(false);			//We don't need to draw this so don't create a texture
 	sourceImg.allocate(camWidth, camHeight);    //Source Image
 	sourceImg.setUseTexture(false);				//We don't need to draw this so don't create a texture
+
+	//Fiducial Images
+	processedImg_fiducial.allocate(camWidth, camHeight); //main Image that'll be processed.
+	processedImg_fiducial.setUseTexture(false);                        //We don't need to draw this so don't create a texture
+	undistortedImg.allocate(camWidth, camHeight);
 	/******************************************************************************************************/
-	//printf("Cameras Loaded...\n");
 
 	//Fonts - Is there a way to dynamically change font size?
 	verdana.loadFont("verdana.ttf", 8, true, true);	   //Font used for small images
@@ -69,7 +76,6 @@ void ofxNCoreVision::_setup(ofEventArgs &e)
 
 	//Static Images
 	background.loadImage("images/background.jpg"); //Main (Temp?) Background
-	//printf("freedom3?");
 	
 	//GUI Controls
 	controls = ofxGui::Instance(this);
@@ -82,6 +88,14 @@ void ofxNCoreVision::_setup(ofEventArgs &e)
 
 	//Allocate Filters
 	filter->allocate( camWidth, camHeight );
+	filter_fiducial->allocate( camWidth, camHeight );
+
+	//Fiducial Initialisation
+
+	// factor for Fiducial Drawing. The ImageSize is hardcoded 320x240 Pixel!(Look at ProcessFilters.h at the draw() Method
+	fiducialDrawFactor_Width = 320 / static_cast<float>(filter->camWidth);//camWidth;
+	fiducialDrawFactor_Height = 240 / static_cast<float>(filter->camHeight);//camHeight;
+
 
 	/*****************************************************************************************************
 	* Startup Modes
@@ -115,7 +129,7 @@ void ofxNCoreVision::_setup(ofEventArgs &e)
 
 	#ifdef TARGET_WIN32
 		//get rid of the console window
-	//	FreeConsole();
+		FreeConsole();
 	#endif
 
 	printf("Community Core Vision is setup!\n\n");
@@ -148,6 +162,7 @@ void ofxNCoreVision::loadXMLSettings()
 	maxBlobs					= XML.getValue("CONFIG:BLOBS:MAXNUMBER", 20);
 	bShowLabels					= XML.getValue("CONFIG:BOOLEAN:LABELS",0);
 	bDrawOutlines				= XML.getValue("CONFIG:BOOLEAN:OUTLINES",0);
+	bUndistort					= XML.getValue("CONFIG:BOOLEAN:UNDISTORT", 0);
 	filter->bLearnBakground		= XML.getValue("CONFIG:BOOLEAN:LEARNBG",0);
 	filter->bVerticalMirror		= XML.getValue("CONFIG:BOOLEAN:VMIRROR",0);
 	filter->bHorizontalMirror	= XML.getValue("CONFIG:BOOLEAN:HMIRROR",0);
@@ -191,6 +206,21 @@ void ofxNCoreVision::loadXMLSettings()
 	myTUIO.setup(tmpLocalHost.c_str(), tmpPort, tmpFlashPort); //have to convert tmpLocalHost to a const char*	
 	//--------------------------------------------------------------
 	//  END XML SETUP
+
+	//Filter for Fiducial setup
+	filter_fiducial->bLearnBackground        = filter->bLearnBackground;
+	filter_fiducial->bVerticalMirror        = filter->bVerticalMirror;
+	filter_fiducial->bHorizontalMirror        = filter->bHorizontalMirror;
+	filter_fiducial->bTrackDark               = filter->bTrackDark;
+	filter_fiducial->bHighpass				= filter->bHighpass;
+	filter_fiducial->bAmplify				= filter->bAmplify;
+	filter_fiducial->bSmooth				= filter->bSmooth;
+
+	filter_fiducial->threshold				= filter->threshold;
+	filter_fiducial->highpassBlur			= filter->highpassBlur;
+	filter_fiducial->highpassNoise			= filter->highpassNoise;
+	filter_fiducial->highpassAmp			= filter->highpassAmp;
+	filter_fiducial->smooth					= filter->smooth;
 }
 
 void ofxNCoreVision::saveSettings()
@@ -203,6 +233,7 @@ void ofxNCoreVision::saveSettings()
 	XML.setValue("CONFIG:BOOLEAN:PRESSURE",bShowPressure);
 	XML.setValue("CONFIG:BOOLEAN:LABELS",bShowLabels);
 	XML.setValue("CONFIG:BOOLEAN:OUTLINES",bDrawOutlines);
+	XML.setValue("CONFIG:BOOLEAN:UNDISTORT",bUndistort);
 	XML.setValue("CONFIG:BOOLEAN:LEARNBG", filter->bLearnBakground);
 	XML.setValue("CONFIG:BOOLEAN:VMIRROR", filter->bVerticalMirror);
 	XML.setValue("CONFIG:BOOLEAN:HMIRROR", filter->bHorizontalMirror);
@@ -391,12 +422,25 @@ void ofxNCoreVision::_update(ofEventArgs &e)
 			grabFrameToGPU(filter->gpuSourceTex);
 			filter->applyGPUFilters();
 			contourFinder.findContours(filter->gpuReadBackImageGS,  (MIN_BLOB_SIZE * 2) + 1, ((camWidth * camHeight) * .4) * (MAX_BLOB_SIZE * .001), maxBlobs, false);
+
+			if(contourFinder.bTrackFiducials)
+			{
+				grabFrameToGPU(filter_fiducial->gpuSourceTex);
+				filter_fiducial->applyGPUFilters();
+				fidfinder.findFiducials( filter_fiducial->gpuReadBackImageGS );
+			}
 		}
 		else
 		{
 			grabFrameToCPU();
 			filter->applyCPUFilters( processedImg );
 			contourFinder.findContours(processedImg,  (MIN_BLOB_SIZE * 2) + 1, ((camWidth * camHeight) * .4) * (MAX_BLOB_SIZE * .001), maxBlobs, false);
+
+			if(contourFinder.bTrackFiducials)
+			{
+				filter_fiducial->applyCPUFilters( processedImg_fiducial );
+				fidfinder.findFiducials( processedImg_fiducial );
+			}
 		}
 
 		tracker.track(&contourFinder);
@@ -425,6 +469,10 @@ void ofxNCoreVision::_update(ofEventArgs &e)
 			if(contourFinder.bTrackObjects)
 			{
 				myTUIO.sendTUIO(&getObjects());
+			}
+			if(contourFinder.bTrackFiducials)
+			{
+				//Fiducial TUIO data sending
 			}
 		}
 	}
@@ -481,6 +529,7 @@ void ofxNCoreVision::grabFrameToCPU()
             sourceImg.setFromPixels(vidGrabber->getPixels(), camWidth, camHeight);
  			//convert to grayscale
  			processedImg = sourceImg;
+			if(bTrackFiducials){processedImg_fiducial = sourceImg;}
  		#endif
 	}
 	else
@@ -488,6 +537,7 @@ void ofxNCoreVision::grabFrameToCPU()
 		sourceImg.setFromPixels(vidPlayer->getPixels(), camWidth, camHeight);
 		//convert to grayscale
 		processedImg = sourceImg;
+		if(bTrackFiducials){processedImg_fiducial = sourceImg;}
 	}
 }
 
