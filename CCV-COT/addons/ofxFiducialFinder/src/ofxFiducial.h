@@ -41,6 +41,7 @@ struct _frame {
  float motion_speed, motion_accel;
  float motion_speed_x, motion_speed_y;
  int time;
+ float cameraToScreen_xpos,cameraToScreen_ypos;
  };
 
 class ofxFiducial {
@@ -89,12 +90,28 @@ public:
 	float getRootSize()	{ return r_size; }
 	bool  getCornerUpdateStatus() { return updateCorners; }
 	void  setUpdateCorners(bool _update){ updateCorners	= _update; }
-	
-	
+
+	//added by Stefan Schlupek
+	//TODO : last.... / give the cameraToScreenMap?
+	float getCameraToScreenX()		{ return current.cameraToScreen_xpos; }
+	float getCameraToScreenY()		{ return current.cameraToScreen_ypos; }
+	void  setCameraToScreenPosition(float x, float y){
+		//printf("fiducial.setCameraToScreenPosition:%f:%f\n", x,y);
+			current.cameraToScreen_xpos= x;
+			current.cameraToScreen_ypos= y;
+		};
+
+
+	void initLastFrame(){
+		//printf("fiducial.initLastFrame:%p:\n", this);
+		saveLastFrame();
+	}
+	//------------------------
 	//Update Fiducial
 	//****//--------------------------------------------------------------------------------------
 	void update(float _x, float _y, float _angle, float _root, float _leaf) {
-		
+			//printf("---fiducial.update:%p:\n", this);
+			//printf("fiducial.update.raw:%f:%f\n", _x,_y);
 		//this is to try and filter out some of the jitter
 		//------------------------------------------------
 		float jitterThreshold	= 1.0;
@@ -108,7 +125,7 @@ public:
 		if ( fabs(_angle - current.angle) > jitterThreshold/20 ) current.angle = _angle;
 		else current.angle = last.angle;
 		//------------------------------------------------
-		
+		//printf("fiducial.update:%f:%f\n", current.xpos,current.ypos);
 		current.time	= ofGetElapsedTimeMillis(); //get current time
 		r_size			= _root; //update root size
 		l_size			= _leaf; //update leaf size
@@ -305,6 +322,31 @@ public:
 		ofSetRectMode(OF_RECTMODE_CORNER);
 		ofSetColor(255,255,255);
 	}
+
+	//**** added by Stefan Schlupek//--------------------------------------------------------------------------------------
+	void drawScaled( float _x, float _y, float _scale_x, float _scale_y ) {
+		ofFill();
+		
+ofEnableAlphaBlending() ;
+		ofSetRectMode(OF_RECTMODE_CENTER);
+		glPushMatrix();
+		glTranslatef((current.xpos*_scale_x) + _x, (current.ypos* _scale_y) + _y, 0);
+		float deg = degrees(getAngle()); // get degree
+		glRotatef(deg, 0, 0, 1.0); // must flip degrees to compensate for image flip
+		ofSetColor(0, 255, 0,104);//set color red
+		ofRect(0, 0, r_size*_scale_x, r_size*_scale_y); //draw root size red
+		
+ofDisableAlphaBlending() ;
+		ofNoFill();
+		ofSetColor(0, 0, 255); //set color blue
+		ofCircle(0, l_size*4, 4); //draw leaf size blue
+		
+		ofSetColor(0, 54, 0); //set color green
+		ofDrawBitmapString(ofToString( fidId ), 0, 0); //draw fiducial number green
+		glPopMatrix();
+		ofSetRectMode(OF_RECTMODE_CORNER);
+		ofSetColor(255,255,255);
+	}
 	
 	//draw corners
 	//****//--------------------------------------------------------------------------------------
@@ -317,6 +359,26 @@ public:
 		if (cornerPoints.size() > 0) {
 			for(int i = 0; i < cornerPoints.size() ;i++) {
 				ofCircle(cornerPoints[i].x, cornerPoints[i].y, 4);
+				////printf("corner 0.x: %f corner 0.y %f\n", cornerPoints[i].x, cornerPoints[i].y);
+				}
+			}
+		glPopMatrix();
+		ofSetColor(255,255,255);
+		//printf("corner 0.x: %f corner 0.y %f\n", cornerPoints[0].x, cornerPoints[0].y);
+		}
+
+
+
+	//**** added by Stefan Schlupek//--------------------------------------------------------------------------------------
+	void drawCornersScaled( float _x, float _y, float _scale_x, float _scale_y ) {
+		if ( !cornersUpdated ) computeCorners();
+		ofSetColor(0, 255, 0);
+		ofNoFill();
+		glPushMatrix();
+		glTranslatef(_x, _y, 0);
+		if (cornerPoints.size() > 0) {
+			for(int i = 0; i < cornerPoints.size() ;i++) {
+				ofCircle(cornerPoints[i].x*_scale_x, cornerPoints[i].y*_scale_y, 3);
 				////printf("corner 0.x: %f corner 0.y %f\n", cornerPoints[i].x, cornerPoints[i].y);
 				}
 			}

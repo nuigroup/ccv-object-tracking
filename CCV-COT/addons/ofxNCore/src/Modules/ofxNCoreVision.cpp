@@ -490,16 +490,21 @@ void ofxNCoreVision::getPixels()
 	{
 		//already grayscale
 		processedImg.setFromPixels(PS3->getPixels(), camWidth, camHeight);
+		if(contourFinder.bTrackFiducials){processedImg_fiducial = sourceImg;}
 	}
 	else if(ffmv != NULL)
 	{
 		processedImg.setFromPixels(ffmv->fcImage[ffmv->getDeviceID()].pData, camWidth, camHeight);
+
+		if(contourFinder.bTrackFiducials){processedImg_fiducial.setFromPixels(ffmv->fcImage[0].pData, camWidth, camHeight);}
 	}
 	else if(vidGrabber != NULL ) 
 	{
 		sourceImg.setFromPixels(vidGrabber->getPixels(), camWidth, camHeight);
 		//convert to grayscale
 		processedImg = sourceImg;
+
+		if(contourFinder.bTrackFiducials){processedImg_fiducial = sourceImg;}
 	}
 	else if(dsvl!=NULL)
 	{
@@ -507,10 +512,13 @@ void ofxNCoreVision::getPixels()
 			sourceImg.setFromPixels(dsvl->getPixels(), camWidth, camHeight);
 			//convert to grayscale
 			processedImg = sourceImg;
+
+			if(contourFinder.bTrackFiducials){processedImg_fiducial = sourceImg;}
 		}
 		else
 		{	//if grayscale
 			processedImg.setFromPixels(dsvl->getPixels(), camWidth, camHeight);
+			if(contourFinder.bTrackFiducials){processedImg_fiducial.setFromPixels(dsvl->getPixels(), camWidth, camHeight);}
 		}
 	}
 #endif	
@@ -529,7 +537,7 @@ void ofxNCoreVision::grabFrameToCPU()
             sourceImg.setFromPixels(vidGrabber->getPixels(), camWidth, camHeight);
  			//convert to grayscale
  			processedImg = sourceImg;
-			if(bTrackFiducials){processedImg_fiducial = sourceImg;}
+			if(contourFinder.bTrackFiducials){processedImg_fiducial = sourceImg;}
  		#endif
 	}
 	else
@@ -537,7 +545,7 @@ void ofxNCoreVision::grabFrameToCPU()
 		sourceImg.setFromPixels(vidPlayer->getPixels(), camWidth, camHeight);
 		//convert to grayscale
 		processedImg = sourceImg;
-		if(bTrackFiducials){processedImg_fiducial = sourceImg;}
+		if(contourFinder.bTrackFiducials){processedImg_fiducial = sourceImg;}
 	}
 }
 
@@ -607,6 +615,10 @@ void ofxNCoreVision::_draw(ofEventArgs &e)
 		{
 			drawFullMode();
 			if(bDrawOutlines || bShowLabels) drawFingerOutlines();
+			if(contourFinder.bTrackFiducials)
+			{
+				drawFiducials(bDrawOutlines,bShowLabels);
+			}
 
 			if(contourFinder.bTrackObjects && isSelecting)
 			{	
@@ -809,6 +821,20 @@ void ofxNCoreVision::drawFingerOutlines()
 
 
 	ofSetColor(0xFFFFFF);
+}
+
+void ofxNCoreVision::drawFiducials(bool outlines,bool labels)
+{
+	for (list<ofxFiducial>::iterator fiducial = fidfinder.fiducialsList.begin(); fiducial != fidfinder.fiducialsList.end(); fiducial++)
+	{
+		fiducial->drawScaled(40,30,fiducialDrawFactor_Width,fiducialDrawFactor_Height);
+
+		fiducial->drawCornersScaled( 40, 30 ,fiducialDrawFactor_Width,fiducialDrawFactor_Height);
+
+		ofSetColor(0,0,255);
+		ofSetColor(255,255,255);
+
+	}
 }
 
 /*****************************************************************************

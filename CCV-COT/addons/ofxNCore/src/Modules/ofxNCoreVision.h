@@ -25,7 +25,7 @@
 #include "ofxOsc.h"
 #include "ofxThread.h"
 #include "ofxXmlSettings.h"
-#include "ofxFiducialFinder.h"
+#include "ofxFiducialTracker.h"
 
 // Our Addon
 #include "ofxNCore.h"
@@ -216,6 +216,10 @@ public:
 	void drawMiniMode();
 	void drawFullMode();
 
+	void drawFiducials(bool outlines,bool labels);
+
+
+
 	//Load/save settings
 	void loadXMLSettings();
 	void saveSettings();
@@ -276,7 +280,7 @@ public:
 	/*****************************************************
 	*		Fiducial Finder
 	*******************************************************/
-	ofxFiducialFinder	fidfinder;
+	ofxFiducialTracker	fidfinder;
 
 	float				fiducialDrawFactor_Width; //To draw the Fiducials in the right place we have to scale from camWidth to filter->camWidth
     float				fiducialDrawFactor_Height;
