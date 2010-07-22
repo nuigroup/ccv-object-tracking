@@ -473,6 +473,7 @@ void ofxNCoreVision::_update(ofEventArgs &e)
 			if(contourFinder.bTrackFiducials)
 			{
 				//Fiducial TUIO data sending
+				myTUIO.sendFidTUIO(&fidfinder.fiducialsList);
 			}
 		}
 	}
@@ -856,6 +857,7 @@ void ofxNCoreVision::_keyPressed(ofKeyEventArgs &e)
 			break;
 		case 'b':
 			filter->bLearnBakground = true;
+			filter_fiducial->bLearnBackground = true;
 			break;
 		case 'o':
 			bDrawOutlines ? bDrawOutlines = false : bDrawOutlines = true;
@@ -867,6 +869,7 @@ void ofxNCoreVision::_keyPressed(ofKeyEventArgs &e)
 			break;
 		case 'j':
 			filter->bVerticalMirror ? filter->bVerticalMirror = false : filter->bVerticalMirror = true;
+			filter_fiducial->bVerticalMirror ? filter_fiducial->bVerticalMirror = false : filter_fiducial->bVerticalMirror = true;
 			controls->update(appPtr->propertiesPanel_flipV, kofxGui_Set_Bool, &appPtr->filter->bVerticalMirror, sizeof(bool));
 			break;
 		case 't':
@@ -927,6 +930,7 @@ void ofxNCoreVision::_keyPressed(ofKeyEventArgs &e)
 				bMiniMode = false;
 				bShowInterface = true;
 				filter->bMiniMode = bMiniMode;
+				filter_fiducial->bMiniMode = bMiniMode;
 				ofSetWindowShape(950,600); //default size
 			}
 			else if(!bCalibration)
@@ -934,6 +938,7 @@ void ofxNCoreVision::_keyPressed(ofKeyEventArgs &e)
 				bMiniMode = true;
 				bShowInterface = false;
 				filter->bMiniMode = bMiniMode;
+				filter_fiducial->bMiniMode = bMiniMode;
 				ofSetWindowShape(190,200); //minimized size
 			}
 			break;

@@ -11,6 +11,7 @@
 #define TUIO_H
 
 #include "../Tracking/ContourFinder.h"
+#include "ofxFiducial.h"
 #include "ofxOsc.h"
 #include "ofxNetwork.h"
 
@@ -23,6 +24,7 @@ class TUIO
 		//methods
 		void setup(const char* host, int port, int flashport);
 		void sendTUIO(std::map<int, Blob> * blobs);
+		void sendFidTUIO(std::list <ofxFiducial> * fiducialsList);
 
 		//TCP Network 
 		ofxTCPServer 	m_tcpServer;

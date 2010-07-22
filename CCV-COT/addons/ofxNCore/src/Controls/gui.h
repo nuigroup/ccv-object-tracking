@@ -258,6 +258,7 @@ void ofxNCoreVision ::handleGui(int parameterId, int task, void* data, int lengt
 							vidGrabber->setVerbose(false);
 							vidGrabber->initGrabber(camWidth,camHeight);
 							filter->exposureStartTime = ofGetElapsedTimeMillis();
+							filter_fiducial->exposureStartTime = ofGetElapsedTimeMillis();
 						}						
 
 						bcamera = true;
@@ -269,10 +270,16 @@ void ofxNCoreVision ::handleGui(int parameterId, int task, void* data, int lengt
 						processedImg.clear();
 						processedImg.allocate(camWidth, camHeight); //Processed Image
 						processedImg.setUseTexture(false);
+
+						processedImg_fiducial.clear();
+						processedImg_fiducial.allocate(camWidth, camHeight);
+						processedImg_fiducial.setUseTexture(false); 
+
 						sourceImg.clear();
 						sourceImg.allocate(camWidth, camHeight);    //Source Image
 						sourceImg.setUseTexture(false);
 						filter->allocate(camWidth, camHeight);
+						filter_fiducial->allocate(camWidth, camHeight);
 				}
 				else
 				{
@@ -289,6 +296,7 @@ void ofxNCoreVision ::handleGui(int parameterId, int task, void* data, int lengt
                         vidPlayer->play();
                         vidPlayer->setLoopState(OF_LOOP_NORMAL);
 						filter->exposureStartTime = ofGetElapsedTimeMillis();
+						filter_fiducial->exposureStartTime = ofGetElapsedTimeMillis();
                         printf("Video Mode\n");
 
 						bool bReallocate = true;
@@ -305,10 +313,14 @@ void ofxNCoreVision ::handleGui(int parameterId, int task, void* data, int lengt
 							processedImg.clear();
 							processedImg.allocate(camWidth, camHeight); //Processed Image
 							processedImg.setUseTexture(false);
+							processedImg_fiducial.clear();
+							processedImg_fiducial.allocate(camWidth, camHeight);
+							processedImg_fiducial.setUseTexture(false); 
 							sourceImg.clear();
 							sourceImg.allocate(camWidth, camHeight);    //Source Image
 							sourceImg.setUseTexture(false);
 							filter->allocate(camWidth, camHeight);
+							filter_fiducial->allocate(camWidth, camHeight);
 					}
 				}
 			}
@@ -334,6 +346,7 @@ void ofxNCoreVision ::handleGui(int parameterId, int task, void* data, int lengt
 						vidGrabber->setVerbose(false);
 						vidGrabber->initGrabber(camWidth,camHeight);
 						filter->exposureStartTime = ofGetElapsedTimeMillis();
+						filter_fiducial->exposureStartTime = ofGetElapsedTimeMillis();
 					}
 				}
 			}
@@ -355,6 +368,7 @@ void ofxNCoreVision ::handleGui(int parameterId, int task, void* data, int lengt
 							vidGrabber->setVerbose(false);
 							vidGrabber->initGrabber(camWidth,camHeight);
 							filter->exposureStartTime = ofGetElapsedTimeMillis();
+							filter_fiducial->exposureStartTime = ofGetElapsedTimeMillis();
 						}
 					}
 				}
@@ -414,11 +428,18 @@ void ofxNCoreVision ::handleGui(int parameterId, int task, void* data, int lengt
 				{
 					templates.saveTemplateXml();
 				}
+
+				contourFinder.bTrackFiducials=false;
+				controls->update(appPtr->trackingPanel_trackFiducials, kofxGui_Set_Bool, &appPtr->contourFinder.bTrackFiducials, sizeof(bool));
 			}
 			break;
 		case trackingPanel_trackFiducials:
 			if(length == sizeof(bool))
+			{
 				contourFinder.bTrackFiducials=*(bool*)data;
+				contourFinder.bTrackObjects=false;
+				controls->update(appPtr->trackingPanel_trackObjects, kofxGui_Set_Bool, &appPtr->contourFinder.bTrackObjects, sizeof(bool));
+			}
 			break;
 		//Communication
 		case optionPanel_tuio_osc:

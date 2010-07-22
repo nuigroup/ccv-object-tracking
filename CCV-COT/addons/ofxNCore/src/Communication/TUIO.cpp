@@ -219,3 +219,183 @@ void TUIO::sendTUIO(std::map<int, Blob> * blobs)
 		m_tcpServer.sendRawBytesToAll((const char*)buf, p-buf);
 	}
 }
+
+void TUIO::sendFidTUIO(std::list <ofxFiducial> * fiducialsList)
+{
+		frameseq += 1;
+
+	// if sending OSC (not TCP)
+	if(bOSCMode)
+	{
+		ofxOscBundle b;
+		ofxOscMessage alive;
+		// Sends alive message - saying 'Hey, there's no alive blobs'
+		alive.setAddress("/tuio/2Dcur");
+		alive.addStringArg("alive");
+
+		// Send fseq message
+		ofxOscMessage fseq;
+		fseq.setAddress( "/tuio/2Dcur" );
+		fseq.addStringArg( "fseq" );
+		fseq.addIntArg(frameseq);
+
+		if(fiducialsList->size() == 0)
+		{
+			b.addMessage( alive );		// add message to bundle
+			b.addMessage( fseq );		// add message to bundle
+			TUIOSocket.sendBundle( b ); // send bundle
+		}
+		else // actually send the blobs
+		{
+			for(list<ofxFiducial>::iterator fiducial = fiducialsList->begin();fiducial != fiducialsList->end(); fiducial++)
+			{
+				//Set Message
+				ofxOscMessage set;
+				set.setAddress( "/tuio/2Dcur" );
+				set.addStringArg("set");
+				set.addIntArg(fiducial->getId());				// id
+				set.addFloatArg(fiducial->getX());	// x
+				set.addFloatArg(fiducial->getY());	// y
+				set.addFloatArg(fiducial->getMSpeedX());			// dX
+				set.addFloatArg(fiducial->getMSpeedY());			// dY
+				set.addFloatArg(fiducial->getMAccel());		// m
+				if(bHeightWidth)
+				{
+					//set.addFloatArg();	// wd
+					//set.addFloatArg();	// ht
+				}
+				b.addMessage( set );							// add message to bundle
+				alive.addIntArg(fiducial->getId());				// add blob to list of ALL active IDs
+			}
+
+// 			// Send alive message of all alive IDs
+// 			ofxOscMessage alive;
+// 			alive.setAddress("/tuio/2Dcur");
+// 			alive.addStringArg("alive");
+
+//			std::map<int, Blob>::iterator this_blobID;
+//			for(this_blobID = blobs->begin(); this_blobID != blobs->end(); this_blobID++)
+//			{
+//				alive.addIntArg(this_blobID->second.id); //Get list of ALL active IDs
+//			}
+
+			//Send fseq message
+//			ofxOscMessage fseq;
+//			fseq.setAddress( "/tuio/2Dcur" );
+//			fseq.addStringArg( "fseq" );
+//			fseq.addIntArg(frameseq);
+
+			b.addMessage( alive );		//add message to bundle
+			b.addMessage( fseq );		//add message to bundle
+			TUIOSocket.sendBundle( b ); //send bundle
+		}
+	}
+	else if(bTCPMode) // else, if TCP (flash) mode
+	{
+		if(fiducialsList->size() == 0)
+		{
+			m_tcpServer.sendToAll("<OSCPACKET ADDRESS=\"127.0.0.1\" PORT=\""+ofToString(TUIOPort)+"\" TIME=\""+ofToString(ofGetElapsedTimef())+"\">" +
+							 "<MESSAGE NAME=\"/tuio/2Dcur\">"+
+							 "<ARGUMENT TYPE=\"s\" VALUE=\"alive\"/>"+
+							 "</MESSAGE>"+
+							 "<MESSAGE NAME=\"/tuio/2Dcur\">"+
+							 "<ARGUMENT TYPE=\"s\" VALUE=\"fseq\"/>"+
+							 "<ARGUMENT TYPE=\"i\" VALUE=\""+ofToString(frameseq)+"\"/>" +
+							 "</MESSAGE>"+
+							 "</OSCPACKET>");
+		}
+		else
+		{
+			string setBlobsMsg;
+			string aliveBeginMsg = "<MESSAGE NAME=\"/tuio/2Dcur\"><ARGUMENT TYPE=\"s\" VALUE=\"alive\"/>";
+			string aliveEndMsg = "</MESSAGE>";
+			string aliveBlobsMsg;
+
+			for(list<ofxFiducial>::iterator fiducial = fiducialsList->begin(); fiducial != fiducialsList->end(); fiducial++)
+			{
+
+				// if sending height and width
+				if(bHeightWidth)
+				{
+					setBlobsMsg += "<MESSAGE NAME=\"/tuio/2Dcur\"><ARGUMENT TYPE=\"s\" VALUE=\"set\"/><ARGUMENT TYPE=\"i\" VALUE=\""+ofToString(fiducial->getId())+"\"/>"+
+					"<ARGUMENT TYPE=\"f\" VALUE=\""+ofToString(fiducial->getX())+"\"/>"+
+					"<ARGUMENT TYPE=\"f\" VALUE=\""+ofToString(fiducial->getY())+"\"/>"+
+					"<ARGUMENT TYPE=\"f\" VALUE=\""+ofToString(fiducial->getMSpeedX())+"\"/>"+
+					"<ARGUMENT TYPE=\"f\" VALUE=\""+ofToString(fiducial->getMSpeedY())+"\"/>"+
+					"<ARGUMENT TYPE=\"f\" VALUE=\""+ofToString(fiducial->getMAccel())+"\"/>"+
+					//"<ARGUMENT TYPE=\"f\" VALUE=\""+ofToString(blob->second.boundingRect.width)+"\"/>"+
+					//"<ARGUMENT TYPE=\"f\" VALUE=\""+ofToString(blob->second.boundingRect.height)+"\"/>"+
+					"</MESSAGE>";
+				}
+				else
+				{
+					setBlobsMsg += "<MESSAGE NAME=\"/tuio/2Dcur\"><ARGUMENT TYPE=\"s\" VALUE=\"set\"/><ARGUMENT TYPE=\"i\" VALUE=\""+ofToString(fiducial->getId())+"\"/>"+
+					"<ARGUMENT TYPE=\"f\" VALUE=\""+ofToString(fiducial->getX())+"\"/>"+
+					"<ARGUMENT TYPE=\"f\" VALUE=\""+ofToString(fiducial->getY())+"\"/>"+
+					"<ARGUMENT TYPE=\"f\" VALUE=\""+ofToString(fiducial->getMSpeedX())+"\"/>"+
+					"<ARGUMENT TYPE=\"f\" VALUE=\""+ofToString(fiducial->getMSpeedY())+"\"/>"+
+					"<ARGUMENT TYPE=\"f\" VALUE=\""+ofToString(fiducial->getMAccel())+"\"/>"+
+					"</MESSAGE>";
+				}
+				aliveBlobsMsg += "<ARGUMENT TYPE=\"i\" VALUE=\""+ofToString(fiducial->getId())+"\"/>";
+			}
+
+// 			std::map<int, Blob>::iterator this_blobID;
+// 			for(this_blobID = blobs->begin(); this_blobID != blobs->end(); this_blobID++)
+// 			{
+// 				aliveBlobsMsg += "<ARGUMENT TYPE=\"i\" VALUE=\""+ofToString(this_blobID->second.id)+"\"/>";
+// 			}
+
+			string fseq = "<MESSAGE NAME=\"/tuio/2Dcur\"><ARGUMENT TYPE=\"s\" VALUE=\"fseq\"/><ARGUMENT TYPE=\"i\" VALUE=\""+ofToString(frameseq) + "\"/></MESSAGE>";
+			m_tcpServer.sendToAll("<OSCPACKET ADDRESS=\"127.0.0.1\" PORT=\"" + 
+									ofToString(TUIOPort) + "\" TIME=\""+ofToString(ofGetElapsedTimef()) + "\">" +
+									setBlobsMsg + aliveBeginMsg + aliveBlobsMsg + aliveEndMsg + fseq + "</OSCPACKET>");
+		}
+	}
+	else if(bBinaryMode) // else, if TCP (binary) mode
+	{
+		uchar buf[1024*8];
+		uchar *p = buf;
+		// Add "CCV" as a data header
+		*p++ = 'C';	*p++ = 'C';	*p++ = 'V';	*p++ = '\0';
+		if(fiducialsList->size() == 0)
+		{
+			memset(p, 0, 4);	p += 4;
+		}
+		else
+		{
+			//Send fiducial count first
+
+			int size=fiducialsList->size();
+			memcpy(p, &size, 4);	p += 4;
+			for(list<ofxFiducial>::iterator fiducial = fiducialsList->begin(); fiducial != fiducialsList->end(); fiducial++)
+			{
+				float id = fiducial->getId();
+				memcpy(p, &id, 4);					p += 4;
+
+				float x = fiducial->getX();
+				memcpy(p, &x, 4);					p += 4;
+
+				float y = fiducial->getY();
+				memcpy(p, &y, 4);					p += 4;
+
+				float dx = fiducial->getMSpeedX();
+				memcpy(p, &dx, 4);					p += 4;
+
+				float dy = fiducial->getMSpeedY();
+				memcpy(p, &dy, 4);					p += 4;
+
+				float maccel = fiducial->getMAccel();
+				memcpy(p, &maccel, 4);				p += 4;
+
+				if(bHeightWidth)
+				{
+					//memcpy(p, &blob->second.boundingRect.width, 4);		p += 4;
+					//memcpy(p, &blob->second.boundingRect.height, 4);	p += 4;
+				}			
+			}
+		}
+		// send blob data to clients
+		m_tcpServer.sendRawBytesToAll((const char*)buf, p-buf);
+	}
+}
