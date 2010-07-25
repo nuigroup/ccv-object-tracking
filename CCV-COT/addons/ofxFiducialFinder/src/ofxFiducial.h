@@ -324,8 +324,8 @@ public:
 	}
 
 	//**** added by Stefan Schlupek//--------------------------------------------------------------------------------------
-	void drawScaled( float _x, float _y, float _scale_x, float _scale_y ) {
-		ofFill();
+	void drawScaled( float _x, float _y, float _scale_x, float _scale_y, bool _outlines, bool _labels) {
+		ofNoFill();
 		
 ofEnableAlphaBlending() ;
 		ofSetRectMode(OF_RECTMODE_CENTER);
@@ -333,7 +333,7 @@ ofEnableAlphaBlending() ;
 		glTranslatef((current.xpos*_scale_x) + _x, (current.ypos* _scale_y) + _y, 0);
 		float deg = degrees(getAngle()); // get degree
 		glRotatef(deg, 0, 0, 1.0); // must flip degrees to compensate for image flip
-		ofSetColor(0, 255, 0,104);//set color red
+		ofSetColor(0, 255, 0,104);//set color green
 		ofRect(0, 0, r_size*_scale_x, r_size*_scale_y); //draw root size red
 		
 ofDisableAlphaBlending() ;

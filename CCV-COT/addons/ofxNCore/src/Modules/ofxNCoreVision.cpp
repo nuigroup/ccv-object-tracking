@@ -129,7 +129,7 @@ void ofxNCoreVision::_setup(ofEventArgs &e)
 
 	#ifdef TARGET_WIN32
 		//get rid of the console window
-		FreeConsole();
+		//FreeConsole();
 	#endif
 
 	printf("Community Core Vision is setup!\n\n");
@@ -442,8 +442,12 @@ void ofxNCoreVision::_update(ofEventArgs &e)
 				fidfinder.findFiducials( processedImg_fiducial );
 			}
 		}
-
-		tracker.track(&contourFinder);
+		
+		//If Object tracking or Finger tracking is enabled
+		if(contourFinder.bTrackFingers || contourFinder.bTrackObjects)
+		{
+			tracker.track(&contourFinder);
+		}
 
 		//get DSP time
 		differenceTime = ofGetElapsedTimeMillis() - beforeTime;
@@ -468,7 +472,8 @@ void ofxNCoreVision::_update(ofEventArgs &e)
 
 			if(contourFinder.bTrackObjects)
 			{
-				myTUIO.sendTUIO(&getObjects());
+				//Object TUIO , 2Dobj to be supported
+				myTUIO.sendObjTUIO(&getObjects());
 			}
 			if(contourFinder.bTrackFiducials)
 			{
@@ -828,7 +833,7 @@ void ofxNCoreVision::drawFiducials(bool outlines,bool labels)
 {
 	for (list<ofxFiducial>::iterator fiducial = fidfinder.fiducialsList.begin(); fiducial != fidfinder.fiducialsList.end(); fiducial++)
 	{
-		fiducial->drawScaled(40,30,fiducialDrawFactor_Width,fiducialDrawFactor_Height);
+		fiducial->drawScaled(40,30,fiducialDrawFactor_Width,fiducialDrawFactor_Height,outlines,labels);
 
 		fiducial->drawCornersScaled( 40, 30 ,fiducialDrawFactor_Width,fiducialDrawFactor_Height);
 

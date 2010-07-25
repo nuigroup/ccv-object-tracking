@@ -24,6 +24,7 @@ class TUIO
 		//methods
 		void setup(const char* host, int port, int flashport);
 		void sendTUIO(std::map<int, Blob> * blobs);
+		void sendObjTUIO(std::map<int, Blob> * blobs);
 		void sendFidTUIO(std::list <ofxFiducial> * fiducialsList);
 
 		//TCP Network 
