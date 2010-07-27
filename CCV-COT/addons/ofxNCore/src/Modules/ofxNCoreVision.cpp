@@ -129,7 +129,7 @@ void ofxNCoreVision::_setup(ofEventArgs &e)
 
 	#ifdef TARGET_WIN32
 		//get rid of the console window
-		//FreeConsole();
+		FreeConsole();
 	#endif
 
 	printf("Community Core Vision is setup!\n\n");
@@ -464,22 +464,23 @@ void ofxNCoreVision::_update(ofEventArgs &e)
 
 		if (bTUIOMode)
 		{
+			myTUIO.setMode(contourFinder.bTrackFingers , contourFinder.bTrackObjects, contourFinder.bTrackFiducials);
 			//Start sending OSC
-			if(contourFinder.bTrackFingers)
-			{
-				myTUIO.sendTUIO(&getBlobs());
-			}
+			//if(contourFinder.bTrackFingers)
+			//{
+			//	myTUIO.sendTUIO(&getBlobs());
+			//}
 
-			if(contourFinder.bTrackObjects)
-			{
-				//Object TUIO , 2Dobj to be supported
-				myTUIO.sendObjTUIO(&getObjects());
-			}
-			if(contourFinder.bTrackFiducials)
-			{
-				//Fiducial TUIO data sending
-				myTUIO.sendFidTUIO(&fidfinder.fiducialsList);
-			}
+			//if(contourFinder.bTrackObjects)
+			//{
+			//	//Object TUIO , 2Dobj to be supported
+			//	myTUIO.sendObjTUIO(&getObjects());
+			//}
+			//if(contourFinder.bTrackFiducials)
+			//{
+			//	//Fiducial TUIO data sending
+			//	myTUIO.sendFidTUIO(&fidfinder.fiducialsList);
+			//}
 		}
 	}
 }

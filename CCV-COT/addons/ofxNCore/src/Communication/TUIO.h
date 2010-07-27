@@ -23,9 +23,8 @@ class TUIO
 		
 		//methods
 		void setup(const char* host, int port, int flashport);
-		void sendTUIO(std::map<int, Blob> * blobs);
-		void sendObjTUIO(std::map<int, Blob> * blobs);
-		void sendFidTUIO(std::list <ofxFiducial> * fiducialsList);
+		void sendTUIO(std::map<int, Blob> * fingerBlobs, std::map<int, Blob> * objectBlobs ,std::list <ofxFiducial> * fiducialsList);
+		void setMode(bool fingers, bool objects, bool fiducials);
 
 		//TCP Network 
 		ofxTCPServer 	m_tcpServer;
@@ -39,6 +38,10 @@ class TUIO
 		bool			bTCPMode;
 		bool			bBinaryMode;
 		bool			bIsConnected;
+
+		bool			bFingers;
+		bool			bObjects;
+		bool			bFiducials;
 
 	private:
 		int				frameseq;

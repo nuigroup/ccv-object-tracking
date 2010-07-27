@@ -46,7 +46,7 @@
         <LABELS>1</LABELS>
         <OUTLINES>1</OUTLINES>
         <LEARNBG>0</LEARNBG>
-        <TUIO>1</TUIO>
+        <TUIO>0</TUIO>
         <VMIRROR>0</VMIRROR>
         <HMIRROR>0</HMIRROR>
         <HIGHPASS>1</HIGHPASS>
@@ -58,7 +58,7 @@
         <MINIMODE>0</MINIMODE>
         <HEIGHTWIDTH>0</HEIGHTWIDTH>
         <OSCMODE>0</OSCMODE>
-        <TCPMODE>1</TCPMODE>
+        <TCPMODE>0</TCPMODE>
         <BINMODE>0</BINMODE>
         <TRACKDARK>0</TRACKDARK>
         <<<<<<< .mine
