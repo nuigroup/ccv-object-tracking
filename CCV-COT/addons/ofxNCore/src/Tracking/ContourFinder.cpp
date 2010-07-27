@@ -99,7 +99,7 @@ int ContourFinder::findContours( ofxCvGrayscaleImage&  input,
 		int objectId; // If the contour is an object, then objectId is its ID
 		objectId=(bTrackObjects)? templates->getTemplateId(box.size.width,box.size.height): -1;
 		
-		if(objectId != -1 )
+		if(objectId != -1 ) //If the blob is a object
 		{
 			Blob blob		= Blob();
 			blob.id			= objectId;
@@ -122,6 +122,11 @@ int ContourFinder::findContours( ofxCvGrayscaleImage&  input,
 			blob.angleBoundingRect.width  = box.size.height;
 			blob.angleBoundingRect.height = box.size.width;
 			blob.angle = box.angle;
+
+			//TEMPORARY INITIALIZATION TO 0, Will be calculating afterwards.This is to prevent sending wrong data
+			blob.D.x = 0;
+			blob.D.y = 0;
+			blob.maccel = 0;
 
 			// assign other parameters
 			blob.area                = fabs(area);

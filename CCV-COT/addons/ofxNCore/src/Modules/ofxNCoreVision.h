@@ -216,7 +216,7 @@ public:
 	void drawMiniMode();
 	void drawFullMode();
 
-	void drawFiducials(bool outlines,bool labels);
+	void drawFiducials();
 
 
 

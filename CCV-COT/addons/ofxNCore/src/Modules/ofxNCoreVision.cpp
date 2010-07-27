@@ -462,25 +462,11 @@ void ofxNCoreVision::_update(ofEventArgs &e)
 			}
 		}//End Background Learning rate
 
+		//Sending TUIO messages
 		if (bTUIOMode)
 		{
 			myTUIO.setMode(contourFinder.bTrackFingers , contourFinder.bTrackObjects, contourFinder.bTrackFiducials);
-			//Start sending OSC
-			//if(contourFinder.bTrackFingers)
-			//{
-			//	myTUIO.sendTUIO(&getBlobs());
-			//}
-
-			//if(contourFinder.bTrackObjects)
-			//{
-			//	//Object TUIO , 2Dobj to be supported
-			//	myTUIO.sendObjTUIO(&getObjects());
-			//}
-			//if(contourFinder.bTrackFiducials)
-			//{
-			//	//Fiducial TUIO data sending
-			//	myTUIO.sendFidTUIO(&fidfinder.fiducialsList);
-			//}
+			myTUIO.sendTUIO(&getBlobs(),&getObjects(),&fidfinder.fiducialsList);
 		}
 	}
 }
@@ -624,7 +610,7 @@ void ofxNCoreVision::_draw(ofEventArgs &e)
 			if(bDrawOutlines || bShowLabels) drawFingerOutlines();
 			if(contourFinder.bTrackFiducials)
 			{
-				drawFiducials(bDrawOutlines,bShowLabels);
+				drawFiducials();
 			}
 
 			if(contourFinder.bTrackObjects && isSelecting)
@@ -830,11 +816,11 @@ void ofxNCoreVision::drawFingerOutlines()
 	ofSetColor(0xFFFFFF);
 }
 
-void ofxNCoreVision::drawFiducials(bool outlines,bool labels)
+void ofxNCoreVision::drawFiducials()
 {
 	for (list<ofxFiducial>::iterator fiducial = fidfinder.fiducialsList.begin(); fiducial != fidfinder.fiducialsList.end(); fiducial++)
 	{
-		fiducial->drawScaled(40,30,fiducialDrawFactor_Width,fiducialDrawFactor_Height,outlines,labels);
+		fiducial->drawScaled(40,30,fiducialDrawFactor_Width,fiducialDrawFactor_Height);
 
 		fiducial->drawCornersScaled( 40, 30 ,fiducialDrawFactor_Width,fiducialDrawFactor_Height);
 

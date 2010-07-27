@@ -265,7 +265,7 @@ void TUIO::sendTUIO(std::map<int, Blob> * fingerBlobs, std::map<int, Blob> * obj
 
 				string fseq = "<MESSAGE NAME=\"/tuio/2Dcur\"><ARGUMENT TYPE=\"s\" VALUE=\"fseq\"/><ARGUMENT TYPE=\"i\" VALUE=\""+ofToString(frameseq) + "\"/></MESSAGE>";
 				m_tcpServer.sendToAll("<OSCPACKET ADDRESS=\"127.0.0.1\" PORT=\"" + 
-										ofToString(TUIOPort) + "\" TIME=\""+ofToString(ofGetElapsedTimef()) + "\">" +
+										ofToString(TUIOFlashPort) + "\" TIME=\""+ofToString(ofGetElapsedTimef()) + "\">" +
 										setBlobsMsg + aliveBeginMsg + aliveBlobsMsg + aliveEndMsg + fseq + "</OSCPACKET>");
 			}
 		}

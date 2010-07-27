@@ -324,8 +324,8 @@ public:
 	}
 
 	//**** added by Stefan Schlupek//--------------------------------------------------------------------------------------
-	void drawScaled( float _x, float _y, float _scale_x, float _scale_y, bool _outlines, bool _labels) {
-		ofNoFill();
+	void drawScaled( float _x, float _y, float _scale_x, float _scale_y) {
+		ofFill();
 		
 ofEnableAlphaBlending() ;
 		ofSetRectMode(OF_RECTMODE_CENTER);
