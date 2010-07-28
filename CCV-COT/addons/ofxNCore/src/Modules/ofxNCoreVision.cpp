@@ -51,7 +51,7 @@ void ofxNCoreVision::_setup(ofEventArgs &e)
 
 	//load camera/video
 	initDevice();
-	printf("Cameras Initialised...\n");
+	printf("Camera(s)/Video Initialised...\n");
 
 	//set framerate
 	ofSetFrameRate(camRate * 1.3);			//This will be based on camera fps in the future
@@ -126,6 +126,7 @@ void ofxNCoreVision::_setup(ofEventArgs &e)
 	}
 	
 	contourFinder.setTemplateUtils(&templates);
+	tracker.passInFiducialInfo(&fidfinder);
 
 	#ifdef TARGET_WIN32
 		//get rid of the console window
@@ -447,6 +448,12 @@ void ofxNCoreVision::_update(ofEventArgs &e)
 		if(contourFinder.bTrackFingers || contourFinder.bTrackObjects)
 		{
 			tracker.track(&contourFinder);
+		}
+
+		//Map Fiducials from camera to screen position
+		if(contourFinder.bTrackFiducials)
+		{
+			tracker.doFiducialCalculation();
 		}
 
 		//get DSP time

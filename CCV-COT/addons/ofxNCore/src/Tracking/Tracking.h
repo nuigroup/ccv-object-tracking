@@ -14,7 +14,9 @@
 #include <list>
 #include <map>
 
+#include "ofxFiducial.h"
 #include "ContourFinder.h"
+#include "ofxFiducialTracker.h"
 #include "../Events/TouchMessenger.h"
 #include "../Calibration/CalibrationUtils.h"
 
@@ -26,6 +28,10 @@ public:
 	//assigns IDs to each blob in the contourFinder
 	void track(ContourFinder* newBlobs);
 	void passInCalibration(CalibrationUtils* calibrate);
+	void passInFiducialInfo(ofxFiducialTracker*	_fidfinder);
+	void doFiducialCalculation();
+
+	ofxFiducialTracker*	fidfinder;
 
 	CalibrationUtils* calibrate;
 	bool isCalibrating;

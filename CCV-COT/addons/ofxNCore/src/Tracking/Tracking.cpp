@@ -18,6 +18,20 @@ BlobTracker::BlobTracker()
 	isCalibrating = false;
 }
 
+void BlobTracker::passInFiducialInfo(ofxFiducialTracker*	_fidfinder)
+{
+	_fidfinder = fidfinder;
+}
+void BlobTracker::doFiducialCalculation()
+{	
+	for (list<ofxFiducial>::iterator fiducial = fidfinder->fiducialsList.begin(); fiducial != fidfinder->fiducialsList.end(); fiducial++)
+	{
+		fiducial->x_pos = fiducial->getX();
+		fiducial->y_pos = fiducial->getY();
+		calibrate->cameraToScreenPosition(fiducial->x_pos,fiducial->y_pos);
+	}
+}
+
 BlobTracker::~BlobTracker()
 {
 	delete calibrate;

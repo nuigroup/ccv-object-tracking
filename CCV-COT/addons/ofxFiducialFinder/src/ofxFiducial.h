@@ -54,6 +54,9 @@ public:
 	_frame	current, last; //current and last fid info
 	bool	updateCorners; //do we want to auto update corners?
 	vector	<ofPoint> cornerPoints;//vector to store corner points
+
+	//For CCV purpose only , to map into calibration
+	float x_pos,y_pos;
 	
 	//Constructor
 	//****//--------------------------------------------------------------------------------------
