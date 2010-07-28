@@ -725,7 +725,7 @@ void ofxNCoreVision::drawMiniMode()
 		}
 		for (int i=0;i<contourFinder.nObjects; i++)
 		{
-			contourFinder.objects[i].drawContours(0,0, camWidth, camHeight+175, ofGetWidth(), ofGetHeight());
+			contourFinder.objects[i].drawBox(0,0, camWidth, camHeight+175, ofGetWidth(), ofGetHeight());
 		}
 	}
 
