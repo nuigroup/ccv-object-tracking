@@ -52,6 +52,7 @@ void BlobTracker::track(ContourFinder* newBlobs)
 
 		//Camera to Screen Position Conversion
 		calibrate->cameraToScreenPosition(calibratedObjects[i].centroid.x,calibratedObjects[i].centroid.y);
+		calibrate->transformDimension(calibratedObjects[i].angleBoundingRect.width,calibratedObjects[i].angleBoundingRect.height);
 	}
 
 	//initialize ID's of all blobs

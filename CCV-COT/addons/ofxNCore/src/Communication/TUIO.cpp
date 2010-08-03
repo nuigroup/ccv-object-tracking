@@ -46,7 +46,7 @@ void TUIO::sendTUIO(std::map<int, Blob> * fingerBlobs, std::map<int, Blob> * obj
 	// if sending OSC (not TCP)
 	if(bOSCMode)
 	{
-		if(bFingers)
+		if(bFingers || bObjects)
 		{
 			ofxOscBundle b;
 			ofxOscMessage alive;
@@ -60,7 +60,7 @@ void TUIO::sendTUIO(std::map<int, Blob> * fingerBlobs, std::map<int, Blob> * obj
 			fseq.addStringArg( "fseq" );
 			fseq.addIntArg(frameseq);
 	
-			if(fingerBlobs->size() == 0)
+			if(fingerBlobs->size() == 0 && objectBlobs->size() == 0)
 			{
 				b.addMessage( alive );		// add message to bundle
 				b.addMessage( fseq );		// add message to bundle
@@ -93,6 +93,33 @@ void TUIO::sendTUIO(std::map<int, Blob> * fingerBlobs, std::map<int, Blob> * obj
 					b.addMessage( set );							// add message to bundle
 					alive.addIntArg(blob->second.id);				// add blob to list of ALL active IDs
 				}
+				
+				map<int, Blob>::iterator blob_obj;
+				for(blob_obj = objectBlobs->begin(); blob_obj != objectBlobs->end(); blob_obj++)
+				{
+					// omit point (0,0) since this means that we are outside of the range
+					if(blob_obj->second.centroid.x == 0 && blob_obj->second.centroid.y == 0)
+						continue;
+	
+					//Set Message
+					ofxOscMessage set_obj;
+					set_obj.setAddress( "/tuio/2Dcur" );
+					set_obj.addStringArg("set");
+					set_obj.addIntArg(blob_obj->second.id);				// id
+					set_obj.addFloatArg(blob_obj->second.centroid.x);	// x
+					set_obj.addFloatArg(blob_obj->second.centroid.y);	// y
+					set_obj.addFloatArg(blob_obj->second.D.x);			// dX
+					set_obj.addFloatArg(blob_obj->second.D.y);			// dY
+					set_obj.addFloatArg(blob_obj->second.maccel);		// m
+					if(bHeightWidth)
+					{
+						set_obj.addFloatArg(blob_obj->second.boundingRect.width);	// wd
+						set_obj.addFloatArg(blob_obj->second.boundingRect.height);	// ht
+					}
+					b.addMessage( set_obj );							// add message to bundle
+					alive.addIntArg(blob_obj->second.id);				// add blob to list of ALL active IDs
+				}
+
 				b.addMessage( alive );		//add message to bundle
 				b.addMessage( fseq );		//add message to bundle
 				TUIOSocket.sendBundle( b ); //send bundle
@@ -121,31 +148,7 @@ void TUIO::sendTUIO(std::map<int, Blob> * fingerBlobs, std::map<int, Blob> * obj
 			}
 			else // actually send the blobs
 			{
-				map<int, Blob>::iterator blob_obj;
-				for(blob_obj = objectBlobs->begin(); blob_obj != objectBlobs->end(); blob_obj++)
-				{
-					// omit point (0,0) since this means that we are outside of the range
-					if(blob_obj->second.centroid.x == 0 && blob_obj->second.centroid.y == 0)
-						continue;
-	
-					//Set Message
-					ofxOscMessage set_obj;
-					set_obj.setAddress( "/tuio/2Dcur" );
-					set_obj.addStringArg("set");
-					set_obj.addIntArg(blob_obj->second.id);				// id
-					set_obj.addFloatArg(blob_obj->second.centroid.x);	// x
-					set_obj.addFloatArg(blob_obj->second.centroid.y);	// y
-					set_obj.addFloatArg(blob_obj->second.D.x);			// dX
-					set_obj.addFloatArg(blob_obj->second.D.y);			// dY
-					set_obj.addFloatArg(blob_obj->second.maccel);		// m
-					if(bHeightWidth)
-					{
-						set_obj.addFloatArg(blob_obj->second.boundingRect.width);	// wd
-						set_obj.addFloatArg(blob_obj->second.boundingRect.height);	// ht
-					}
-					b_obj.addMessage( set_obj );							// add message to bundle
-					alive_obj.addIntArg(blob_obj->second.id);				// add blob to list of ALL active IDs
-				}
+
 	
 				b_obj.addMessage( alive_obj );		//add message to bundle
 				b_obj.addMessage( fseq_obj );		//add message to bundle
