@@ -212,9 +212,9 @@ void TUIO::sendTUIO(std::map<int, Blob> * fingerBlobs, std::map<int, Blob> * obj
 	}
 	else if(bTCPMode) // else, if TCP (flash) mode
 	{
-		if(bFingers)
+		if(bFingers || bObjects)
 		{
-			if(fingerBlobs->size() == 0)
+			if(fingerBlobs->size() == 0 && objectBlobs->size() == 0)
 			{
 				m_tcpServer.sendToAll("<OSCPACKET ADDRESS=\"127.0.0.1\" PORT=\""+ofToString(TUIOFlashPort)+"\" TIME=\""+ofToString(ofGetElapsedTimef())+"\">" +
 								"<MESSAGE NAME=\"/tuio/2Dcur\">"+
@@ -266,34 +266,8 @@ void TUIO::sendTUIO(std::map<int, Blob> * fingerBlobs, std::map<int, Blob> * obj
 					aliveBlobsMsg += "<ARGUMENT TYPE=\"i\" VALUE=\""+ofToString(blob->second.id)+"\"/>";
 				}
 
-				string fseq = "<MESSAGE NAME=\"/tuio/2Dcur\"><ARGUMENT TYPE=\"s\" VALUE=\"fseq\"/><ARGUMENT TYPE=\"i\" VALUE=\""+ofToString(frameseq) + "\"/></MESSAGE>";
-				m_tcpServer.sendToAll("<OSCPACKET ADDRESS=\"127.0.0.1\" PORT=\"" + 
-										ofToString(TUIOFlashPort) + "\" TIME=\""+ofToString(ofGetElapsedTimef()) + "\">" +
-										setBlobsMsg + aliveBeginMsg + aliveBlobsMsg + aliveEndMsg + fseq + "</OSCPACKET>");
-			}
-		}
 
-		if(bObjects)
-		{
-			if(objectBlobs->size() == 0)
-			{
-				m_tcpServer.sendToAll("<OSCPACKET ADDRESS=\"127.0.0.1\" PORT=\""+ofToString(TUIOFlashPort)+"\" TIME=\""+ofToString(ofGetElapsedTimef())+"\">" +
-								"<MESSAGE NAME=\"/tuio/2Dcur\">"+
-								"<ARGUMENT TYPE=\"s\" VALUE=\"alive\"/>"+
-								"</MESSAGE>"+
-								"<MESSAGE NAME=\"/tuio/2Dcur\">"+
-								"<ARGUMENT TYPE=\"s\" VALUE=\"fseq\"/>"+
-								"<ARGUMENT TYPE=\"i\" VALUE=\""+ofToString(frameseq)+"\"/>" +
-								"</MESSAGE>"+
-								"</OSCPACKET>");
-			}
-			else
-			{
-				string setBlobsMsg_obj;
-				string aliveBeginMsg_obj = "<MESSAGE NAME=\"/tuio/2Dcur\"><ARGUMENT TYPE=\"s\" VALUE=\"alive\"/>";
-				string aliveEndMsg_obj = "</MESSAGE>";
-				string aliveBlobsMsg_obj;
-	
+				//Object TUIO
 				map<int, Blob>::iterator blob_obj;
 				for(blob_obj = objectBlobs->begin(); blob_obj != objectBlobs->end(); blob_obj++)
 				{
@@ -304,7 +278,7 @@ void TUIO::sendTUIO(std::map<int, Blob> * fingerBlobs, std::map<int, Blob> * obj
 					// if sending height and width
 					if(bHeightWidth)
 					{
-						setBlobsMsg_obj += "<MESSAGE NAME=\"/tuio/2Dcur\"><ARGUMENT TYPE=\"s\" VALUE=\"set\"/><ARGUMENT TYPE=\"i\" VALUE=\""+ofToString(blob_obj->second.id)+"\"/>"+
+						setBlobsMsg += "<MESSAGE NAME=\"/tuio/2Dcur\"><ARGUMENT TYPE=\"s\" VALUE=\"set\"/><ARGUMENT TYPE=\"i\" VALUE=\""+ofToString(blob_obj->second.id)+"\"/>"+
 						"<ARGUMENT TYPE=\"f\" VALUE=\""+ofToString(blob_obj->second.centroid.x)+"\"/>"+
 						"<ARGUMENT TYPE=\"f\" VALUE=\""+ofToString(blob_obj->second.centroid.y)+"\"/>"+
 						"<ARGUMENT TYPE=\"f\" VALUE=\""+ofToString(blob_obj->second.D.x)+"\"/>"+
@@ -316,7 +290,7 @@ void TUIO::sendTUIO(std::map<int, Blob> * fingerBlobs, std::map<int, Blob> * obj
 					}
 					else
 					{
-						setBlobsMsg_obj += "<MESSAGE NAME=\"/tuio/2Dcur\"><ARGUMENT TYPE=\"s\" VALUE=\"set\"/><ARGUMENT TYPE=\"i\" VALUE=\""+ofToString(blob_obj->second.id)+"\"/>"+
+						setBlobsMsg += "<MESSAGE NAME=\"/tuio/2Dcur\"><ARGUMENT TYPE=\"s\" VALUE=\"set\"/><ARGUMENT TYPE=\"i\" VALUE=\""+ofToString(blob_obj->second.id)+"\"/>"+
 						"<ARGUMENT TYPE=\"f\" VALUE=\""+ofToString(blob_obj->second.centroid.x)+"\"/>"+
 						"<ARGUMENT TYPE=\"f\" VALUE=\""+ofToString(blob_obj->second.centroid.y)+"\"/>"+
 						"<ARGUMENT TYPE=\"f\" VALUE=\""+ofToString(blob_obj->second.D.x)+"\"/>"+
@@ -324,17 +298,17 @@ void TUIO::sendTUIO(std::map<int, Blob> * fingerBlobs, std::map<int, Blob> * obj
 						"<ARGUMENT TYPE=\"f\" VALUE=\""+ofToString(blob_obj->second.maccel)+"\"/>"+
 						"</MESSAGE>";
 					}
-					aliveBlobsMsg_obj += "<ARGUMENT TYPE=\"i\" VALUE=\""+ofToString(blob_obj->second.id)+"\"/>";
+					aliveBlobsMsg += "<ARGUMENT TYPE=\"i\" VALUE=\""+ofToString(blob_obj->second.id)+"\"/>";
 				}
 
-				string fseq_obj = "<MESSAGE NAME=\"/tuio/2Dcur\"><ARGUMENT TYPE=\"s\" VALUE=\"fseq\"/><ARGUMENT TYPE=\"i\" VALUE=\""+ofToString(frameseq) + "\"/></MESSAGE>";
+
+				string fseq = "<MESSAGE NAME=\"/tuio/2Dcur\"><ARGUMENT TYPE=\"s\" VALUE=\"fseq\"/><ARGUMENT TYPE=\"i\" VALUE=\""+ofToString(frameseq) + "\"/></MESSAGE>";
 				m_tcpServer.sendToAll("<OSCPACKET ADDRESS=\"127.0.0.1\" PORT=\"" + 
 										ofToString(TUIOFlashPort) + "\" TIME=\""+ofToString(ofGetElapsedTimef()) + "\">" +
-										setBlobsMsg_obj + aliveBeginMsg_obj + aliveBlobsMsg_obj + aliveEndMsg_obj + fseq_obj + "</OSCPACKET>");
+										setBlobsMsg + aliveBeginMsg + aliveBlobsMsg + aliveEndMsg + fseq + "</OSCPACKET>");
 			}
-
 		}
-		
+
 		if(bFiducials)
 		{
 			if(fiducialsList->size() == 0)
