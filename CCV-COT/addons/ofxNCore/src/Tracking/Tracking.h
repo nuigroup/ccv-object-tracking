@@ -45,8 +45,10 @@ private:
 	int						fightMongrel;
 	std::vector<Blob>		trackedBlobs; //tracked blobs
 	std::map<int, Blob>     calibratedBlobs;
-	std::vector<Blob>		trackedObjects;
+
+	std::map<int,Blob>		trackedObjects;
 	std::map<int, Blob>		calibratedObjects;
+
 };
 
 #endif

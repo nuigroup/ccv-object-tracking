@@ -16,6 +16,12 @@ BlobTracker::BlobTracker()
 {
 	IDCounter = 200;
 	isCalibrating = false;
+
+	//Initialise Object Blobs
+	for(int i = 180;i<200;i++)
+	{
+		trackedObjects[i].id = -1;
+	}
 }
 
 void BlobTracker::passInFiducialInfo(ofxFiducialTracker*	_fidfinder)
@@ -45,15 +51,70 @@ void BlobTracker::passInCalibration(CalibrationUtils* calibrater)
 //assigns IDs to each blob in the contourFinder
 void BlobTracker::track(ContourFinder* newBlobs)
 {
+/*********************************************************************
+//Object tracking
+*********************************************************************/
+
+	for(std::map<int,Blob>::iterator tracked=trackedObjects.begin();tracked!=trackedObjects.end();++tracked)
+	{
+		int id= tracked->second.id;
+		bool isFound=false; // The variable to check if the blob is in the new blobs list or not
+		for(std::vector<Blob>::iterator blob = newBlobs->objects.begin();blob!=newBlobs->objects.end();++blob)
+		{
+			if(blob->id == id)
+			{
+				isFound=true;
+				break;
+			}
+		}
+
+		if(!isFound) // current tracked blob was not found in the new blob list
+		{
+			trackedObjects[id].id = -1;
+		}
+	}
 	//handle the object tracking if present
 	for (int i = 0; i < newBlobs->nObjects; i++)
 	{
-		calibratedObjects[i]=newBlobs->objects[i];
+		int ID = newBlobs->objects[i].id;
 
-		//Camera to Screen Position Conversion
-		calibrate->cameraToScreenPosition(calibratedObjects[i].centroid.x,calibratedObjects[i].centroid.y);
-		calibrate->transformDimension(calibratedObjects[i].angleBoundingRect.width,calibratedObjects[i].angleBoundingRect.height);
+		if(trackedObjects[ID].id == -1) //If this blob has appeared in the current frame
+		{
+			calibratedObjects[i]=newBlobs->objects[i];
+
+			calibratedObjects[i].D.x=0;
+			calibratedObjects[i].D.y=0;
+			calibratedObjects[i].maccel=0;
+			
+			
+			//Camera to Screen Position Conversion
+			calibrate->cameraToScreenPosition(calibratedObjects[i].centroid.x,calibratedObjects[i].centroid.y);
+			calibrate->transformDimension(calibratedObjects[i].angleBoundingRect.width,calibratedObjects[i].angleBoundingRect.height);
+		}
+		else //Do all the calculations
+		{
+			double xOld = trackedObjects[ID].centroid.x;
+			double yOld = trackedObjects[ID].centroid.y;
+
+			double xNew = newBlobs->objects[i].centroid.x;
+			double yNew = newBlobs->objects[i].centroid.y;
+
+			calibratedObjects[i] = newBlobs->objects[i];
+			calibratedObjects[i].D.x = xNew-xOld;
+			calibratedObjects[i].D.y = yNew-yOld;
+
+			calibratedObjects[i].maccel = 0;
+
+			
+			calibrate->cameraToScreenPosition(calibratedObjects[i].centroid.x,calibratedObjects[i].centroid.y);
+			calibrate->transformDimension(calibratedObjects[i].angleBoundingRect.width,calibratedObjects[i].angleBoundingRect.height);
+		}
+
+		trackedObjects[ID] = newBlobs->objects[i];
 	}
+/****************************************************************************
+	//Finger tracking
+****************************************************************************/
 
 	//initialize ID's of all blobs
 	for(int i=0; i<newBlobs->nBlobs; i++)
