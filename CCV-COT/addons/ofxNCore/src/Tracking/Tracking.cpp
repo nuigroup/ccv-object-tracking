@@ -21,6 +21,7 @@ BlobTracker::BlobTracker()
 	for(int i = 180;i<200;i++)
 	{
 		trackedObjects[i].id = -1;
+		trackedObjects[i].lastTimeTimeWasChecked = 0;
 	}
 }
 
@@ -78,6 +79,8 @@ void BlobTracker::track(ContourFinder* newBlobs)
 	{
 		int ID = newBlobs->objects[i].id;
 
+		int now = ofGetElapsedTimeMillis();
+
 		if(trackedObjects[ID].id == -1) //If this blob has appeared in the current frame
 		{
 			calibratedObjects[i]=newBlobs->objects[i];
@@ -99,11 +102,14 @@ void BlobTracker::track(ContourFinder* newBlobs)
 			double xNew = newBlobs->objects[i].centroid.x;
 			double yNew = newBlobs->objects[i].centroid.y;
 
-			calibratedObjects[i] = newBlobs->objects[i];
-			calibratedObjects[i].D.x = xNew-xOld;
-			calibratedObjects[i].D.y = yNew-yOld;
+			float dx = xNew-xOld;
+			float dy = yNew-yOld;
 
-			calibratedObjects[i].maccel = 0;
+			calibratedObjects[i] = newBlobs->objects[i];
+			calibratedObjects[i].D.x = dx;
+			calibratedObjects[i].D.y = dy;
+
+			calibratedObjects[i].maccel = sqrtf((dx*dx+dy*dy)/(now - trackedObjects[ID].lastTimeTimeWasChecked));
 
 			
 			calibrate->cameraToScreenPosition(calibratedObjects[i].centroid.x,calibratedObjects[i].centroid.y);
@@ -111,6 +117,7 @@ void BlobTracker::track(ContourFinder* newBlobs)
 		}
 
 		trackedObjects[ID] = newBlobs->objects[i];
+		trackedObjects[ID].lastTimeTimeWasChecked = now;
 	}
 /****************************************************************************
 	//Finger tracking
