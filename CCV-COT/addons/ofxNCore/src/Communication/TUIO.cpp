@@ -68,58 +68,64 @@ void TUIO::sendTUIO(std::map<int, Blob> * fingerBlobs, std::map<int, Blob> * obj
 			}
 			else // actually send the blobs
 			{
-				map<int, Blob>::iterator blob;
-				for(blob = fingerBlobs->begin(); blob != fingerBlobs->end(); blob++)
+				if(bFingers)
 				{
-					// omit point (0,0) since this means that we are outside of the range
-					if(blob->second.centroid.x == 0 && blob->second.centroid.y == 0)
-						continue;
-	
-					//Set Message
-					ofxOscMessage set;
-					set.setAddress( "/tuio/2Dcur" );
-					set.addStringArg("set");
-					set.addIntArg(blob->second.id);				// id
-					set.addFloatArg(blob->second.centroid.x);	// x
-					set.addFloatArg(blob->second.centroid.y);	// y
-					set.addFloatArg(blob->second.D.x);			// dX
-					set.addFloatArg(blob->second.D.y);			// dY
-					set.addFloatArg(blob->second.maccel);		// m
-					if(bHeightWidth)
+					map<int, Blob>::iterator blob;
+					for(blob = fingerBlobs->begin(); blob != fingerBlobs->end(); blob++)
 					{
-						set.addFloatArg(blob->second.boundingRect.width);	// wd
-						set.addFloatArg(blob->second.boundingRect.height);	// ht
+						// omit point (0,0) since this means that we are outside of the range
+						if(blob->second.centroid.x == 0 && blob->second.centroid.y == 0)
+							continue;
+		
+						//Set Message
+						ofxOscMessage set;
+						set.setAddress( "/tuio/2Dcur" );
+						set.addStringArg("set");
+						set.addIntArg(blob->second.id);				// id
+						set.addFloatArg(blob->second.centroid.x);	// x
+						set.addFloatArg(blob->second.centroid.y);	// y
+						set.addFloatArg(blob->second.D.x);			// dX
+						set.addFloatArg(blob->second.D.y);			// dY
+						set.addFloatArg(blob->second.maccel);		// m
+						if(bHeightWidth)
+						{
+							set.addFloatArg(blob->second.boundingRect.width);	// wd
+							set.addFloatArg(blob->second.boundingRect.height);	// ht
+						}
+						b.addMessage( set );							// add message to bundle
+						alive.addIntArg(blob->second.id);				// add blob to list of ALL active IDs
 					}
-					b.addMessage( set );							// add message to bundle
-					alive.addIntArg(blob->second.id);				// add blob to list of ALL active IDs
 				}
-				
-				map<int, Blob>::iterator blob_obj;
-				for(blob_obj = objectBlobs->begin(); blob_obj != objectBlobs->end(); blob_obj++)
+	
+				if(bObjects)
 				{
-					// omit point (0,0) since this means that we are outside of the range
-					if(blob_obj->second.centroid.x == 0 && blob_obj->second.centroid.y == 0)
-						continue;
-	
-					//Set Message
-					ofxOscMessage set_obj;
-					set_obj.setAddress( "/tuio/2Dcur" );
-					set_obj.addStringArg("set");
-					set_obj.addIntArg(blob_obj->second.id);				// id
-					set_obj.addFloatArg(blob_obj->second.centroid.x);	// x
-					set_obj.addFloatArg(blob_obj->second.centroid.y);	// y
-					set_obj.addFloatArg(blob_obj->second.D.x);			// dX
-					set_obj.addFloatArg(blob_obj->second.D.y);			// dY
-					set_obj.addFloatArg(blob_obj->second.maccel);		// m
-					if(bHeightWidth)
+					map<int, Blob>::iterator blob_obj;
+					for(blob_obj = objectBlobs->begin(); blob_obj != objectBlobs->end(); blob_obj++)
 					{
-						set_obj.addFloatArg(blob_obj->second.boundingRect.width);	// wd
-						set_obj.addFloatArg(blob_obj->second.boundingRect.height);	// ht
+						// omit point (0,0) since this means that we are outside of the range
+						if(blob_obj->second.centroid.x == 0 && blob_obj->second.centroid.y == 0)
+							continue;
+		
+						//Set Message
+						ofxOscMessage set_obj;
+						set_obj.setAddress( "/tuio/2Dcur" );
+						set_obj.addStringArg("set");
+						set_obj.addIntArg(blob_obj->second.id);				// id
+						set_obj.addFloatArg(blob_obj->second.centroid.x);	// x
+						set_obj.addFloatArg(blob_obj->second.centroid.y);	// y
+						set_obj.addFloatArg(blob_obj->second.D.x);			// dX
+						set_obj.addFloatArg(blob_obj->second.D.y);			// dY
+						set_obj.addFloatArg(blob_obj->second.maccel);		// m
+						if(bHeightWidth)
+						{
+							set_obj.addFloatArg(blob_obj->second.boundingRect.width);	// wd
+							set_obj.addFloatArg(blob_obj->second.boundingRect.height);	// ht
+						}
+						b.addMessage( set_obj );							// add message to bundle
+						alive.addIntArg(blob_obj->second.id);				// add blob to list of ALL active IDs
 					}
-					b.addMessage( set_obj );							// add message to bundle
-					alive.addIntArg(blob_obj->second.id);				// add blob to list of ALL active IDs
 				}
-
+	
 				b.addMessage( alive );		//add message to bundle
 				b.addMessage( fseq );		//add message to bundle
 				TUIOSocket.sendBundle( b ); //send bundle

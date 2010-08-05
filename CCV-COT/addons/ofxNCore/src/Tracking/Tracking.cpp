@@ -56,8 +56,8 @@ void BlobTracker::track(ContourFinder* newBlobs)
 //Object tracking
 *********************************************************************/
 
-	for(std::map<int,Blob>::iterator tracked=trackedObjects.begin();tracked!=trackedObjects.end();++tracked)
-	{
+	for(std::map<int,Blob>::iterator tracked=trackedObjects.begin();tracked != trackedObjects.end(); ++tracked)
+	{//iterate through the tracked blobs and check if any of these are present in current blob list, else delete it (mark id = -1)
 		int id= tracked->second.id;
 		bool isFound=false; // The variable to check if the blob is in the new blobs list or not
 		for(std::vector<Blob>::iterator blob = newBlobs->objects.begin();blob!=newBlobs->objects.end();++blob)
@@ -119,6 +119,8 @@ void BlobTracker::track(ContourFinder* newBlobs)
 		trackedObjects[ID] = newBlobs->objects[i];
 		trackedObjects[ID].lastTimeTimeWasChecked = now;
 	}
+
+
 /****************************************************************************
 	//Finger tracking
 ****************************************************************************/
