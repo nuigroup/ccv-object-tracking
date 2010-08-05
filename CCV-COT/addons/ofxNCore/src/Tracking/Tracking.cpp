@@ -102,8 +102,11 @@ void BlobTracker::track(ContourFinder* newBlobs)
 			double xNew = newBlobs->objects[i].centroid.x;
 			double yNew = newBlobs->objects[i].centroid.y;
 
-			float dx = xNew-xOld;
-			float dy = yNew-yOld;
+			//converting xNew and yNew to calibrated ones
+			calibrate->cameraToScreenPosition(xNew,yNew);
+
+			double dx = xNew-xOld;
+			double dy = yNew-yOld;
 
 			calibratedObjects[i] = newBlobs->objects[i];
 			calibratedObjects[i].D.x = dx;
@@ -118,6 +121,8 @@ void BlobTracker::track(ContourFinder* newBlobs)
 
 		trackedObjects[ID] = newBlobs->objects[i];
 		trackedObjects[ID].lastTimeTimeWasChecked = now;
+		trackedObjects[ID].centroid.x = calibratedObjects[i].centroid.x;
+		trackedObjects[ID].centroid.y = calibratedObjects[i].centroid.y;
 	}
 
 
