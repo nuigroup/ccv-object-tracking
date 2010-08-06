@@ -27,11 +27,11 @@ BlobTracker::BlobTracker()
 
 void BlobTracker::passInFiducialInfo(ofxFiducialTracker*	_fidfinder)
 {
-	_fidfinder = fidfinder;
+	fidfinder = _fidfinder;
 }
 void BlobTracker::doFiducialCalculation()
 {	
-	for (list<ofxFiducial>::iterator fiducial = fidfinder->fiducialsList.begin(); fiducial != fidfinder->fiducialsList.end(); fiducial++)
+	for(list<ofxFiducial>::iterator fiducial = fidfinder->fiducialsList.begin();fiducial!=fidfinder->fiducialsList.end();++fiducial)
 	{
 		fiducial->x_pos = fiducial->getX();
 		fiducial->y_pos = fiducial->getY();
