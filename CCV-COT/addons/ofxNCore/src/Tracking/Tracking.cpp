@@ -96,11 +96,11 @@ void BlobTracker::track(ContourFinder* newBlobs)
 		}
 		else //Do all the calculations
 		{
-			double xOld = trackedObjects[ID].centroid.x;
-			double yOld = trackedObjects[ID].centroid.y;
+			float xOld = trackedObjects[ID].centroid.x;
+			float yOld = trackedObjects[ID].centroid.y;
 
-			double xNew = newBlobs->objects[i].centroid.x;
-			double yNew = newBlobs->objects[i].centroid.y;
+			float xNew = newBlobs->objects[i].centroid.x;
+			float yNew = newBlobs->objects[i].centroid.y;
 
 			//converting xNew and yNew to calibrated ones
 			calibrate->cameraToScreenPosition(xNew,yNew);

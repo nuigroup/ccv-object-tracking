@@ -132,36 +132,6 @@ void TUIO::sendTUIO(std::map<int, Blob> * fingerBlobs, std::map<int, Blob> * obj
 			}
 		}
 
-		if(bObjects)
-		{
-			ofxOscBundle b_obj;
-			ofxOscMessage alive_obj;
-			// Sends alive message - saying 'Hey, there's no alive blobs'
-			alive_obj.setAddress("/tuio/2Dcur");
-			alive_obj.addStringArg("alive");
-	
-			// Send fseq message
-			ofxOscMessage fseq_obj;
-			fseq_obj.setAddress( "/tuio/2Dcur" );
-			fseq_obj.addStringArg( "fseq" );
-			fseq_obj.addIntArg(frameseq);
-	
-			if(objectBlobs->size() == 0)
-			{
-				b_obj.addMessage( alive_obj );		// add message to bundle
-				b_obj.addMessage( fseq_obj );		// add message to bundle
-				TUIOSocket.sendBundle( b_obj ); // send bundle
-			}
-			else // actually send the blobs
-			{
-
-	
-				b_obj.addMessage( alive_obj );		//add message to bundle
-				b_obj.addMessage( fseq_obj );		//add message to bundle
-				TUIOSocket.sendBundle( b_obj ); //send bundle
-			}
-		}
-
 		if(bFiducials)
 		{
 			ofxOscBundle b_fid;
