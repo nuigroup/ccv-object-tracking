@@ -622,7 +622,7 @@ package flash.events {
         {           			
 			if(RECORDING)
 			RECORDED_XML.appendChild( XML(e.data) );
-			trace(e.data);
+			//trace(e.data);
 			processMessage(XML(e.data));
         } 
 //---------------------------------------------------------------------------------------------------------------------------------------------   			
