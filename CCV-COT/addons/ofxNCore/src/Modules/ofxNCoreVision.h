@@ -146,6 +146,8 @@ public:
 		bDrawOutlines = 1;
 		bGPUMode = 0;
 		bTUIOMode = 0;
+		bFidMode = 0;
+		
 		showConfiguration = 0;
 		//camera
 		camRate = 30;
@@ -275,6 +277,8 @@ public:
 	int					minTempArea;
 	int					maxTempArea;
 
+	//For the fiducial mode drawing
+	bool				bFidMode;
 	//auto ~ standalone/non-addon
 	bool                bStandaloneMode;
 	/*****************************************************

@@ -130,7 +130,7 @@ void ofxNCoreVision::_setup(ofEventArgs &e)
 
 	#ifdef TARGET_WIN32
 		//get rid of the console window
-		FreeConsole();
+		//FreeConsole();
 	#endif
 
 	printf("Community Core Vision is setup!\n\n");
@@ -652,12 +652,29 @@ void ofxNCoreVision::drawFullMode()
 	ofSetColor(0xFFFFFF);
 	//Draw Image Filters To Screen
 	if (bGPUMode) filter->drawGPU();
-	else filter->draw();
+	else
+	{
+		if(!bFidMode)
+		{
+			filter->draw();
+		}
+		else
+		{
+			filter_fiducial->draw();
+		}
+	}
 
 	ofSetColor(0x969696);
 
 	bigvideo.drawString("Source", 168, 20);
-	bigvideo.drawString("Tracked", 509, 20);
+	if(!bFidMode)
+	{
+		bigvideo.drawString("Tracked", 509, 20);
+	}
+	else
+	{
+		bigvideo.drawString("Fiducial", 509, 20);
+	}
 
 	//draw link to tbeta website
 	ofSetColor(79, 79, 79);
@@ -964,6 +981,41 @@ void ofxNCoreVision::_keyPressed(ofKeyEventArgs &e)
 			controls->update(appPtr->TemplatePanel_minArea, kofxGui_Set_Bool, &appPtr->minTempArea, sizeof(float));
 			controls->update(appPtr->TemplatePanel_maxArea, kofxGui_Set_Bool, &appPtr->maxTempArea, sizeof(float));
 			}
+			break;
+		case 'i':
+			bFidMode = !bFidMode;
+
+			if(bFidMode)
+			{//Update the GUI with Fiducial Filter values
+				//Smooth
+				controls->update(appPtr->smoothPanel_use, kofxGui_Set_Bool, &appPtr->filter_fiducial->bSmooth, sizeof(bool));
+				controls->update(appPtr->smoothPanel_smooth, kofxGui_Set_Bool, &appPtr->filter_fiducial->smooth, sizeof(float));
+				//Highpass
+				controls->update(appPtr->highpassPanel_use, kofxGui_Set_Bool, &appPtr->filter_fiducial->bHighpass, sizeof(bool));
+				controls->update(appPtr->highpassPanel_blur, kofxGui_Set_Bool, &appPtr->filter_fiducial->highpassBlur, sizeof(float));
+				controls->update(appPtr->highpassPanel_noise, kofxGui_Set_Bool, &appPtr->filter_fiducial->highpassNoise, sizeof(float));
+				//Amplify
+				controls->update(appPtr->amplifyPanel_use, kofxGui_Set_Bool, &appPtr->filter_fiducial->bAmplify, sizeof(bool));
+				controls->update(appPtr->amplifyPanel_amp, kofxGui_Set_Bool, &appPtr->filter_fiducial->highpassAmp, sizeof(float));
+				//Threshold
+				controls->update(appPtr->trackedPanel_threshold, kofxGui_Set_Bool, &appPtr->filter_fiducial->threshold, sizeof(float));
+			}
+			else
+			{//Update the GUI with normal Filter values
+				//Smooth
+				controls->update(appPtr->smoothPanel_use, kofxGui_Set_Bool, &appPtr->filter->bSmooth, sizeof(bool));
+				controls->update(appPtr->smoothPanel_smooth, kofxGui_Set_Bool, &appPtr->filter->smooth, sizeof(float));
+				//Highpass
+				controls->update(appPtr->highpassPanel_use, kofxGui_Set_Bool, &appPtr->filter->bHighpass, sizeof(bool));
+				controls->update(appPtr->highpassPanel_blur, kofxGui_Set_Bool, &appPtr->filter->highpassBlur, sizeof(float));
+				controls->update(appPtr->highpassPanel_noise, kofxGui_Set_Bool, &appPtr->filter->highpassNoise, sizeof(float));
+				//Amplify
+				controls->update(appPtr->amplifyPanel_use, kofxGui_Set_Bool, &appPtr->filter->bAmplify, sizeof(bool));
+				controls->update(appPtr->amplifyPanel_amp, kofxGui_Set_Bool, &appPtr->filter->highpassAmp, sizeof(float));
+				//Threshold
+				controls->update(appPtr->trackedPanel_threshold, kofxGui_Set_Bool, &appPtr->filter->threshold, sizeof(float));
+			}
+			//TODO:Update the GUI
 			break;
 		default: //Check key character <<<<===== Remove this
 			//printf("%c",e.key);

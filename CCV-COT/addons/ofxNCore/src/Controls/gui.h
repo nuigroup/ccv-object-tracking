@@ -325,15 +325,6 @@ void ofxNCoreVision ::handleGui(int parameterId, int task, void* data, int lengt
 				}
 			}
 			break;
-		//case sourcePanel_video:
-		//	if(length == sizeof(bool))
-		//	{
-		//		if(*(bool*)data)
-		//		{
-
-		//		}
-		//	}
-		//	break;
 		case sourcePanel_nextCam:
 			if(length == sizeof(bool))
 			{
@@ -400,10 +391,12 @@ void ofxNCoreVision ::handleGui(int parameterId, int task, void* data, int lengt
 		case propertiesPanel_flipH:
 			if(length == sizeof(bool))
 				filter->bHorizontalMirror = *(bool*)data;
+				filter_fiducial->bHorizontalMirror = *(bool*)data;
 			break;
 		case propertiesPanel_flipV:
 			if(length == sizeof(bool))
 				filter->bVerticalMirror = *(bool*)data;
+				filter_fiducial->bVerticalMirror = *(bool*)data;
 			break;
 		//GPU
 		case gpuPanel_use:
@@ -486,10 +479,12 @@ void ofxNCoreVision ::handleGui(int parameterId, int task, void* data, int lengt
 		case backgroundPanel_dynamic:
 			if(length == sizeof(bool))
 				filter->bDynamicBG = *(bool*)data;
+				filter_fiducial->bDynamicBG = *(bool*)data;
 			break;
 		case backgroundPanel_remove:
 			if(length == sizeof(bool))
 				filter->bLearnBakground = *(bool*)data;
+				filter_fiducial->bLearnBakground = *(bool*)data;
 			break;
 		case backgroundPanel_learn_rate:
 			if(length == sizeof(float))
@@ -498,32 +493,95 @@ void ofxNCoreVision ::handleGui(int parameterId, int task, void* data, int lengt
 		//Highpass
 		case highpassPanel_use:
 			if(length == sizeof(bool))
-				filter->bHighpass = *(bool*)data;
+			{
+				if(!bFidMode)
+				{
+					filter->bHighpass = *(bool*)data;
+				}
+				else
+				{
+					filter_fiducial->bHighpass = *(bool*)data;
+				}
+			}
 			break;
 		case highpassPanel_blur:
 			if(length == sizeof(float))
-				filter->highpassBlur = *(float*)data;
+			{
+				if(!bFidMode)
+				{
+					filter->highpassBlur = *(float*)data;
+				}
+				else
+				{
+					filter_fiducial->highpassBlur = *(float*)data;
+				}
+			}
 			break;
 		case highpassPanel_noise:
 			if(length == sizeof(float))
-				filter->highpassNoise = *(float*)data;
+			{
+				if(!bFidMode)
+				{
+					filter->highpassNoise = *(float*)data;
+				}
+				else
+				{
+					filter_fiducial->highpassNoise = *(float*)data;
+				}
+			}
 			break;
 		//Amplify
 		case amplifyPanel_use:
 			if(length == sizeof(bool))
-				filter->bAmplify = *(bool*)data;
+			{
+				if(!bFidMode)
+				{
+					filter->bAmplify = *(bool*)data;
+				}
+				else
+				{
+					filter_fiducial->bAmplify = *(bool*)data;
+				}
+			}
 			break;
 		case amplifyPanel_amp:
 			if(length == sizeof(float))
-				filter->highpassAmp = *(float*)data;
+			{
+				if(!bFidMode)
+				{
+					filter->highpassAmp = *(float*)data;
+				}
+				else
+				{
+					filter_fiducial->highpassAmp = *(float*)data;
+				}
+			}
 			break;
 		case trackedPanel_darkblobs:
 			if(length == sizeof(bool))
-				filter->bTrackDark = *(bool*)data;
+			{
+				if(!bFidMode)
+				{
+					filter->bTrackDark = *(bool*)data;
+				}
+				else
+				{
+					filter_fiducial->bTrackDark = *(bool*)data;
+				}
+			}
 			break;
 		case trackedPanel_threshold:
 			if(length == sizeof(float))
-				filter->threshold = *(float*)data;
+			{
+				if(!bFidMode)
+				{
+					filter->threshold = *(float*)data;
+				}
+				else
+				{
+					filter_fiducial->threshold = *(float*)data;
+				}
+			}
 			break;
 		case trackedPanel_min_movement:
 			if(length == sizeof(float))
@@ -548,11 +606,29 @@ void ofxNCoreVision ::handleGui(int parameterId, int task, void* data, int lengt
 		//smooth
 		case smoothPanel_smooth:
 			if(length == sizeof(float))
-				filter->smooth = *(float*)data;
+			{
+				if(!bFidMode)
+				{
+					filter->smooth = *(float*)data;
+				}
+				else
+				{
+					filter_fiducial->smooth = *(float*)data;
+				}
+			}
 			break;
 		case smoothPanel_use:
 			if(length == sizeof(bool))
-				filter->bSmooth = *(bool*)data;
+			{
+				if(!bFidMode)
+				{
+					filter->bSmooth = *(bool*)data;
+				}
+				else
+				{
+					filter_fiducial->bSmooth = *(bool*)data;
+				}
+			}
 			break;
 		//Template Area Sliders
 		case TemplatePanel_minArea:
