@@ -209,19 +209,21 @@ void ofxNCoreVision::loadXMLSettings()
 	//  END XML SETUP
 
 	//Filter for Fiducial setup
-	filter_fiducial->bLearnBackground        = filter->bLearnBackground;
+	filter_fiducial->bLearnBackground        = false;
 	filter_fiducial->bVerticalMirror        = filter->bVerticalMirror;
 	filter_fiducial->bHorizontalMirror        = filter->bHorizontalMirror;
 	filter_fiducial->bTrackDark               = filter->bTrackDark;
-	filter_fiducial->bHighpass				= filter->bHighpass;
-	filter_fiducial->bAmplify				= filter->bAmplify;
-	filter_fiducial->bSmooth				= filter->bSmooth;
+//^^ did not want to hardcode this , but these will not be any use of this.
 
-	filter_fiducial->threshold				= filter->threshold;
-	filter_fiducial->highpassBlur			= filter->highpassBlur;
-	filter_fiducial->highpassNoise			= filter->highpassNoise;
-	filter_fiducial->highpassAmp			= filter->highpassAmp;
-	filter_fiducial->smooth					= filter->smooth;
+	filter_fiducial->bHighpass				= XML.getValue("CONFIG:FIDUCIAL:HIGHPASS", 0);
+	filter_fiducial->bAmplify				= XML.getValue("CONFIG:FIDUCIAL:AMPLIFY", 0);
+	filter_fiducial->bSmooth				= XML.getValue("CONFIG:FIDUCIAL:SMOOTH", 0);
+
+	filter_fiducial->threshold				= XML.getValue("CONFIG:FIDUCIAL:THRESHOLD", 0);
+	filter_fiducial->highpassBlur			= XML.getValue("CONFIG:FIDUCIAL:HIGHPASSBLUR", 0);
+	filter_fiducial->highpassNoise			= XML.getValue("CONFIG:FIDUCIAL:HIGHPASSNOISE", 0);
+	filter_fiducial->highpassAmp			= XML.getValue("CONFIG:FIDUCIAL:HIGHPASSAMP", 0);
+	filter_fiducial->smooth					= XML.getValue("CONFIG:FIDUCIAL:SMOOTHVALUE", 0);
 }
 
 void ofxNCoreVision::saveSettings()
@@ -264,8 +266,17 @@ void ofxNCoreVision::saveSettings()
 	XML.setValue("CONFIG:BOOLEAN:OSCMODE", myTUIO.bOSCMode);
 	XML.setValue("CONFIG:BOOLEAN:TCPMODE", myTUIO.bTCPMode);
 	XML.setValue("CONFIG:BOOLEAN:BINMODE", myTUIO.bBinaryMode);
-//	XML.setValue("CONFIG:NETWORK:LOCALHOST", myTUIO.localHost);
-//	XML.setValue("CONFIG:NETWORK:TUIO_PORT_OUT",myTUIO.TUIOPort);
+
+	XML.setValue("CONFIG:FIDUCIAL:HIGHPASS", filter_fiducial->bHighpass);
+	XML.setValue("CONFIG:FIDUCIAL:AMPLIFY", filter_fiducial->bAmplify);
+	XML.setValue("CONFIG:FIDUCIAL:SMOOTH", filter_fiducial->bSmooth);
+
+	XML.setValue("CONFIG:FIDUCIAL:THRESHOLD", filter_fiducial->threshold);
+	XML.setValue("CONFIG:FIDUCIAL:HIGHPASSBLUR", filter_fiducial->highpassBlur);
+	XML.setValue("CONFIG:FIDUCIAL:HIGHPASSNOISE", filter_fiducial->highpassNoise);
+	XML.setValue("CONFIG:FIDUCIAL:HIGHPASSAMP", filter_fiducial->highpassAmp);
+	XML.setValue("CONFIG:FIDUCIAL:SMOOTHVALUE", filter_fiducial->smooth);
+
 	XML.saveFile("config.xml");
 }
 
@@ -863,14 +874,6 @@ void ofxNCoreVision::_keyPressed(ofKeyEventArgs &e)
 	{
 		switch (e.key)
 		{
-		case 'a':
-			filter->threshold++;
-			controls->update(appPtr->trackedPanel_threshold, kofxGui_Set_Int, &appPtr->filter->threshold, sizeof(int));
-			break;
-		case 'z':
-			filter->threshold--;
-			controls->update(appPtr->trackedPanel_threshold, kofxGui_Set_Int, &appPtr->filter->threshold, sizeof(int));
-			break;
 		case 'b':
 			filter->bLearnBakground = true;
 			filter_fiducial->bLearnBackground = true;
@@ -881,6 +884,7 @@ void ofxNCoreVision::_keyPressed(ofKeyEventArgs &e)
 			break;
 		case 'h':
 			filter->bHorizontalMirror ? filter->bHorizontalMirror = false : filter->bHorizontalMirror = true;
+			filter_fiducial->bHorizontalMirror ? filter_fiducial->bHorizontalMirror = false : filter_fiducial->bHorizontalMirror = true;
 			controls->update(appPtr->propertiesPanel_flipH, kofxGui_Set_Bool, &appPtr->filter->bHorizontalMirror, sizeof(bool));
 			break;
 		case 'j':

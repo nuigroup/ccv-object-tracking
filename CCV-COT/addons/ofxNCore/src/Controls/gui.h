@@ -432,6 +432,10 @@ void ofxNCoreVision ::handleGui(int parameterId, int task, void* data, int lengt
 				contourFinder.bTrackFiducials=*(bool*)data;
 				contourFinder.bTrackObjects=false;
 				controls->update(appPtr->trackingPanel_trackObjects, kofxGui_Set_Bool, &appPtr->contourFinder.bTrackObjects, sizeof(bool));
+				if(contourFinder.bTrackFiducials)
+				{
+					filter_fiducial->bLearnBakground = true;
+				}
 			}
 			break;
 		//Communication
