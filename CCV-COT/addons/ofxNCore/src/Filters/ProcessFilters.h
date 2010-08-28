@@ -194,22 +194,22 @@ class ProcessFilters : public Filters {
  ****************************************************************/
     void draw()
     {
-        grayImg.draw(40, 30, 320, 240);
-        grayDiff.draw(385, 30, 320, 240);
-        floatBgImg.draw(85, 392, 128, 96);
-        subtractBg.draw(235, 392, 128, 96);
-        highpassImg.draw(385, 392, 128, 96);
-        ampImg.draw(535, 392, 128, 96);
+        grayImg.draw(30, 15, 320, 240);
+        grayDiff.draw(375, 15, 320, 240);
+        floatBgImg.draw(30, 392, 128, 96);
+        subtractBg.draw(165, 392, 128, 96);
+        highpassImg.draw(300, 392, 128, 96);
+        ampImg.draw(435, 392, 128, 96);
     }
 
     void drawGPU()
     {
-        drawGLTexture(40, 30, 320, 240, gpuSourceTex);
-        drawGLTexture(85, 392, 128, 96, gpuBGTex);
-        gaussVFilter->drawOutputTexture(235, 392, 128, 96);
-        subtractFilter2->drawOutputTexture(385, 392, 128, 96);
-        threshFilter->drawOutputTexture(535, 392, 128, 96); //this should be amplify filter but we don't have one yet
-        gpuReadBackImageGS.draw(385, 30, 320, 240);
+        drawGLTexture(30, 15, 320, 240, gpuSourceTex);
+        drawGLTexture(30, 392, 128, 96, gpuBGTex);
+        gaussVFilter->drawOutputTexture(165, 392, 128, 96);
+        subtractFilter2->drawOutputTexture(300, 392, 128, 96);
+        threshFilter->drawOutputTexture(435, 392, 128, 96); //this should be amplify filter but we don't have one yet
+        gpuReadBackImageGS.draw(375, 15, 320, 240);
     }
 };
 #endif

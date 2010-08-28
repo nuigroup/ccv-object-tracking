@@ -72,11 +72,9 @@ void ofxNCoreVision::_setup(ofEventArgs &e)
 
 	//Fonts - Is there a way to dynamically change font size?
 	verdana.loadFont("verdana.ttf", 8, true, true);	   //Font used for small images
-	bigvideo.loadFont("verdana.ttf", 13, true, true);  //Font used for big images.
 
 	//Static Images
 	background.loadImage("images/background.jpg"); //Main (Temp?) Background
-	
 	//GUI Controls
 	controls = ofxGui::Instance(this);
 	setupControls();
@@ -130,7 +128,7 @@ void ofxNCoreVision::_setup(ofEventArgs &e)
 
 	#ifdef TARGET_WIN32
 		//get rid of the console window
-		//FreeConsole();
+		FreeConsole();
 	#endif
 
 	printf("Community Core Vision is setup!\n\n");
@@ -501,7 +499,7 @@ void ofxNCoreVision::getPixels()
 	{
 		//already grayscale
 		processedImg.setFromPixels(PS3->getPixels(), camWidth, camHeight);
-		if(contourFinder.bTrackFiducials){processedImg_fiducial = sourceImg;}
+		if(contourFinder.bTrackFiducials){processedImg_fiducial = processedImg;}
 	}
 	else if(ffmv != NULL)
 	{
@@ -652,15 +650,8 @@ void ofxNCoreVision::drawFullMode()
 {
 	ofSetColor(0xFFFFFF);
 	//Draw Background Image
-	background.draw(0, 0);
-	//Draw arrows
-	ofSetColor(187, 200, 203);
-	ofFill();
-	ofTriangle(680, 420, 680, 460, 700, 440);
-	ofTriangle(70, 420, 70, 460, 50, 440);
-	ofSetColor(255, 255, 0);
+	background.draw(0,0);
 
-	ofSetColor(0xFFFFFF);
 	//Draw Image Filters To Screen
 	if (bGPUMode) filter->drawGPU();
 	else
@@ -675,75 +666,91 @@ void ofxNCoreVision::drawFullMode()
 		}
 	}
 
-	ofSetColor(0x969696);
-
-	bigvideo.drawString("Source", 168, 20);
-	if(!bFidMode)
-	{
-		bigvideo.drawString("Tracked", 509, 20);
-	}
-	else
-	{
-		bigvideo.drawString("Fiducial", 509, 20);
-	}
-
-	//draw link to tbeta website
-	ofSetColor(79, 79, 79);
-	ofFill();
-	ofRect(721, 584, 228, 16);
+//	ofSetColor(0x444444);
+//	ofFill();
+//	ofRect(570,392,128,190);
 	ofSetColor(0xFFFFFF);
-	ofDrawBitmapString(" www.nuigroup.com/ccv - 1.3 ", 725, 596);
-
-	//Display Application information in bottom right
-	string str = "Calculation Time: ";
-	str+= ofToString(differenceTime, 0)+" ms \n\n";
 
 	if (bcamera)
 	{
-		string str2 = "Camera Resolution: ";
-        str2+= ofToString(camWidth, 0) + " x " + ofToString(camHeight, 0)  + "\n";
-		string str4 = "Camera Framerate: ";
-		str4+= ofToString(fps, 0)+" FPS \n";
-		ofSetColor(0xFFFFFF);
-		verdana.drawString(str + str2 + str4, 740, 480);
+		string str1 = "Mode: Camera\n";
+		string str2 = "Resolution: ";
+        str2+= ofToString(camWidth, 0) + "x" + ofToString(camHeight, 0)  + "\n";
+		string str3 = "FPS: ";
+		str3+= ofToString(fps, 0)+"\n";
+
+		string str4 = "Processing: ";
+		str4+= ofToString(differenceTime, 0)+" ms \n";
+		
+		string str5 = "Filter: ";
+		if(!bFidMode)
+		{
+			str5+= "Finger/Object\n";
+		}
+		else
+		{
+			str5+= "Fiducial\n";
+		}
+	
+		string str6 = "Blobs: ";
+		str6+= ofToString(contourFinder.nBlobs,0)+", "+ofToString(contourFinder.nObjects,0)+", "+ofToString(fidfinder.fiducialsList.size(),0)+"\n";
+
+		ofSetColor(0x969696);
+		verdana.drawString( str2+ str3 + str1 + str4 + str5 + str6 , 570, 430);
 	}
 	else
 	{
-		string str2 = "Video Resolution: ";
-		str2+= ofToString(vidPlayer->width, 0) + " x " + ofToString(vidPlayer->height, 0)  + "\n";
-		string str4 = "Video Framerate: ";
-		str4+= ofToString(fps, 0)+" FPS \n";
-		ofSetColor(0xFFFFFF);
-		verdana.drawString(str + str2 + str4, 740, 480);
+		string str1 = "Mode: Video\n";
+		string str2 = "Resolution: ";
+		str2+= ofToString(vidPlayer->width, 0) + "x" + ofToString(vidPlayer->height, 0)  + "\n";
+
+		string str3 = "FPS: ";
+		str3+= ofToString(fps, 0)+"\n";
+
+		string str4 = "Processing: ";
+		str4+= ofToString(differenceTime, 0)+" ms \n";
+		
+		string str5 = "Filter: ";
+		if(!bFidMode)
+		{
+			str5+= "Finger/Object\n";
+		}
+		else
+		{
+			str5+= "Fiducial\n";
+		}
+		
+		string str6 = "Blobs: ";
+		str6+= ofToString(contourFinder.nBlobs,0)+", "+ofToString(fidfinder.fiducialsList.size(),0)+", "+ofToString(contourFinder.nObjects,0)+"\n";
+
+		ofSetColor(0x969696);
+		verdana.drawString(str2+ str3 + str1 + str4 + str5 + str6 , 573, 427);
 	}
 
 	if (bTUIOMode)
 	{
-		//Draw Port and IP to screen
-		ofSetColor(0xffffff);
+		
 		char buf[256];
 		if(myTUIO.bOSCMode)
-			sprintf(buf, "Sending TUIO messages to:\nHost: %s\nPort: %i", myTUIO.localHost, myTUIO.TUIOPort);
+			sprintf(buf, "Host: %s\nProtocol: UDP [OSC]\nPort: %i", myTUIO.localHost, myTUIO.TUIOPort);
 		else if(myTUIO.bTCPMode)
 		{
 			if(myTUIO.bIsConnected)
-				//sprintf(buf, "Sending XML messages to:\nPort: %i", myTUIO.TUIOFlashPort);
-				sprintf(buf, "Sending XML messages to:\nHost: %s\nPort: %i", myTUIO.localHost, myTUIO.TUIOFlashPort);
+				sprintf(buf, "Host: %s\nProtocol: TCP [XML]\nPort: %i", myTUIO.localHost, myTUIO.TUIOFlashPort);
 			else
-				sprintf(buf, "Could not bind or send TCP to:\nPort: %i", myTUIO.TUIOFlashPort);
+				sprintf(buf, "Binding Error\nHost: %s\nProtocol: TCP [XML]\nPort: %i", myTUIO.localHost, myTUIO.TUIOFlashPort);
 		}
 		else if(myTUIO.bBinaryMode)
 		{
 			if(myTUIO.bIsConnected)
-				//sprintf(buf, "Sending XML messages to:\nPort: %i", myTUIO.TUIOFlashPort);
-				sprintf(buf, "Sending BINARY messages to:\nHost: %s\nPort: %i", myTUIO.localHost, myTUIO.TUIOFlashPort);
+				sprintf(buf, "Host: %s\nProtocol: Binary\nPort: %i", myTUIO.localHost, myTUIO.TUIOFlashPort);
 			else
-				sprintf(buf, "Could not bind or send TCP to:\nPort: %i", myTUIO.TUIOFlashPort);
+				sprintf(buf, "Binding Error\nHost: %s\nProtocol: Binary\nPort: %i", myTUIO.localHost, myTUIO.TUIOFlashPort);
 		}
-		verdana.drawString(buf, 740, 535);
+
+		ofSetColor(0x969696);
+		verdana.drawString(buf, 573, 515);
 	}
-	ofSetColor(0xFF0000);
-	verdana.drawString("Press spacebar for mini mode", 748, 572);
 }
 
 void ofxNCoreVision::drawMiniMode()
@@ -875,8 +882,14 @@ void ofxNCoreVision::_keyPressed(ofKeyEventArgs &e)
 		switch (e.key)
 		{
 		case 'b':
+			if(!bFidMode)
+			{
 			filter->bLearnBakground = true;
+			}
+			else
+			{
 			filter_fiducial->bLearnBackground = true;
+			}
 			break;
 		case 'o':
 			bDrawOutlines ? bDrawOutlines = false : bDrawOutlines = true;
@@ -927,7 +940,6 @@ void ofxNCoreVision::_keyPressed(ofKeyEventArgs &e)
 			break;
 		case 'g':
 			bGPUMode ? bGPUMode = false : bGPUMode = true;
-			controls->update(appPtr->gpuPanel_use, kofxGui_Set_Bool, &appPtr->bGPUMode, sizeof(bool));
 			filter->bLearnBakground = true;
 			break;
 		case 'v':

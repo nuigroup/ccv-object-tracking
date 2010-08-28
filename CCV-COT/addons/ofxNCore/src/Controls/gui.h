@@ -55,19 +55,15 @@ void ofxNCoreVision::setupControls()
 	controls->mGlobals->mSliderColor.b = 0;
 	controls->mGlobals->mSliderColor.a = .8;
 
-	ofxGuiPanel* propPanel = controls->addPanel(appPtr->propertiesPanel, "Camera Properties", 735, 0, 12, OFXGUI_PANEL_SPACING);
+	ofxGuiPanel* propPanel = controls->addPanel(appPtr->propertiesPanel, "Camera Properties", 740, 140, 12, OFXGUI_PANEL_SPACING);
 	propPanel->addButton(appPtr->propertiesPanel_settings, "Camera Settings (v)", OFXGUI_BUTTON_HEIGHT, OFXGUI_BUTTON_HEIGHT, kofxGui_Button_Off, kofxGui_Button_Trigger);
 	propPanel->addButton(appPtr->propertiesPanel_flipV, "Flip Vertical (j)", OFXGUI_BUTTON_HEIGHT, OFXGUI_BUTTON_HEIGHT, kofxGui_Button_Off, kofxGui_Button_Switch);
 	propPanel->addButton(appPtr->propertiesPanel_flipH, "Flip Horizontal (h)", OFXGUI_BUTTON_HEIGHT, OFXGUI_BUTTON_HEIGHT, kofxGui_Button_Off, kofxGui_Button_Switch);
 	propPanel->mObjWidth = 200;
-	propPanel->mObjHeight = 93;
+	propPanel->mObjHeight = 90;
 
-	ofxGuiPanel* gPanel = controls->addPanel(appPtr->gpuPanel, "GPU Properties", 735, 95, OFXGUI_PANEL_BORDER, OFXGUI_PANEL_SPACING);
-	gPanel->addButton(appPtr->gpuPanel_use, "GPU Shaders (g)", OFXGUI_BUTTON_HEIGHT, OFXGUI_BUTTON_HEIGHT, kofxGui_Button_Off, kofxGui_Button_Switch);
-	gPanel->mObjWidth = 200;
-	gPanel->mObjHeight = 45;
 
-	ofxGuiPanel* oPanel = controls->addPanel(appPtr->optionPanel, "Communication", 735, 142, OFXGUI_PANEL_BORDER, OFXGUI_PANEL_SPACING);
+	ofxGuiPanel* oPanel = controls->addPanel(appPtr->optionPanel, "Communication", 740, 240, OFXGUI_PANEL_BORDER, OFXGUI_PANEL_SPACING);
 	oPanel->addButton(appPtr->optionPanel_tuio_osc, "TUIO UDP (t)", OFXGUI_BUTTON_HEIGHT, OFXGUI_BUTTON_HEIGHT, kofxGui_Button_Off, kofxGui_Button_Switch);
 	oPanel->addButton(appPtr->optionPanel_tuio_tcp, "Flash XML (f)", OFXGUI_BUTTON_HEIGHT, OFXGUI_BUTTON_HEIGHT, kofxGui_Button_Off, kofxGui_Button_Switch);
 	oPanel->addButton(appPtr->optionPanel_bin_tcp, "Binary TCP (n)", OFXGUI_BUTTON_HEIGHT, OFXGUI_BUTTON_HEIGHT, kofxGui_Button_Off, kofxGui_Button_Switch);
@@ -76,19 +72,19 @@ void ofxNCoreVision::setupControls()
 	oPanel->mObjHeight = 90;
 	oPanel->mObjWidth = 200;
 
-	ofxGuiPanel* trackingPanel = controls->addPanel(appPtr->optionPanel, "Track", 735, 234, OFXGUI_PANEL_BORDER, OFXGUI_PANEL_SPACING);
+	ofxGuiPanel* trackingPanel = controls->addPanel(appPtr->optionPanel, "Track", 740, 440, OFXGUI_PANEL_BORDER, OFXGUI_PANEL_SPACING);
 	trackingPanel->addButton(appPtr->trackingPanel_trackFingers, "Fingers", OFXGUI_BUTTON_HEIGHT, OFXGUI_BUTTON_HEIGHT, kofxGui_Button_Off, kofxGui_Button_Switch);
-	trackingPanel->addButton(appPtr->trackingPanel_trackObjects, "Objects", OFXGUI_BUTTON_HEIGHT, OFXGUI_BUTTON_HEIGHT, kofxGui_Button_Off, kofxGui_Button_Switch);
 	trackingPanel->addButton(appPtr->trackingPanel_trackFiducials, "Fiducials", OFXGUI_BUTTON_HEIGHT, OFXGUI_BUTTON_HEIGHT, kofxGui_Button_Off, kofxGui_Button_Switch);
+	trackingPanel->addButton(appPtr->trackingPanel_trackObjects, "Objects", OFXGUI_BUTTON_HEIGHT, OFXGUI_BUTTON_HEIGHT, kofxGui_Button_Off, kofxGui_Button_Switch);
 	trackingPanel->mObjHeight = 90;
 	trackingPanel->mObjWidth = 200;
 
-	ofxGuiPanel* cPanel = controls->addPanel(appPtr->calibrationPanel, "Calibration", 735, 326, OFXGUI_PANEL_BORDER, OFXGUI_PANEL_SPACING);
+	ofxGuiPanel* cPanel = controls->addPanel(appPtr->calibrationPanel, "Calibration", 740, 85, OFXGUI_PANEL_BORDER, OFXGUI_PANEL_SPACING);
 	cPanel->addButton(appPtr->calibrationPanel_calibrate, "Enter Calibration (c)", OFXGUI_BUTTON_HEIGHT, OFXGUI_BUTTON_HEIGHT, kofxGui_Button_Off, kofxGui_Button_Trigger);
 	cPanel->mObjWidth = 200;
 	cPanel->mObjHeight = 45;
 
-	ofxGuiPanel* panel2 = controls->addPanel(appPtr->savePanel, "Settings", 735, 373, OFXGUI_PANEL_BORDER, OFXGUI_PANEL_SPACING);
+	ofxGuiPanel* panel2 = controls->addPanel(appPtr->savePanel, "Settings", 740, 340, OFXGUI_PANEL_BORDER, OFXGUI_PANEL_SPACING);
 	panel2->addButton(appPtr->kParameter_SaveXml, "Save Settings (s)", OFXGUI_BUTTON_HEIGHT, OFXGUI_BUTTON_HEIGHT, kofxGui_Button_Off, kofxGui_Button_Trigger);
 	panel2->addButton(appPtr->kParameter_SaveTemplateXml, "Save Templates", OFXGUI_BUTTON_HEIGHT, OFXGUI_BUTTON_HEIGHT, kofxGui_Button_Off, kofxGui_Button_Trigger);
 	panel2->addButton(appPtr->kParameter_LoadTemplateXml, "Load Templates", OFXGUI_BUTTON_HEIGHT, OFXGUI_BUTTON_HEIGHT, kofxGui_Button_Off, kofxGui_Button_Trigger);
@@ -96,7 +92,7 @@ void ofxNCoreVision::setupControls()
 	panel2->mObjHeight = 90;
 
 	//Tracked Image
-	ofxGuiPanel* trackPanel = controls->addPanel(appPtr->trackedPanel, "Tracked Image", 386, 270, OFXGUI_PANEL_BORDER, OFXGUI_PANEL_SPACING);
+	ofxGuiPanel* trackPanel = controls->addPanel(appPtr->trackedPanel, "Tracked Image", 376, 255, OFXGUI_PANEL_BORDER, OFXGUI_PANEL_SPACING);
 	trackPanel->addButton(appPtr->trackedPanel_darkblobs, "Inverse", OFXGUI_BUTTON_HEIGHT, OFXGUI_BUTTON_HEIGHT, kofxGui_Button_Off, kofxGui_Button_Switch);
 	trackPanel->addSlider(appPtr->trackedPanel_threshold, "Image Threshold", 140, 13, 0.0f, 255.0f, filter->threshold, kofxGui_Display_Int, 0);
 	trackPanel->addSlider(appPtr->trackedPanel_min_movement, "Movement Filtering", 140, 13, 0.0f, 15.0f, tracker.MOVEMENT_FILTERING, kofxGui_Display_Int, 0);
@@ -115,7 +111,7 @@ void ofxNCoreVision::setupControls()
 	trackPanel->adjustToNewContent(100, 0);
 
 	//Source Image
-	ofxGuiPanel* srcPanel = controls->addPanel(appPtr->sourcePanel, "Source Image", 41, 270, OFXGUI_PANEL_BORDER, OFXGUI_PANEL_SPACING);
+	ofxGuiPanel* srcPanel = controls->addPanel(appPtr->sourcePanel, "Source Image", 31, 255, OFXGUI_PANEL_BORDER, OFXGUI_PANEL_SPACING);
 	srcPanel->addButton(appPtr->trackedPanel_outlines, "Show Outlines (o)", OFXGUI_BUTTON_HEIGHT, OFXGUI_BUTTON_HEIGHT, kofxGui_Button_Off, kofxGui_Button_Switch);
 	srcPanel->addButton(appPtr->trackedPanel_ids, "Show IDs (i)", OFXGUI_BUTTON_HEIGHT, OFXGUI_BUTTON_HEIGHT, kofxGui_Button_Off, kofxGui_Button_Switch);
 	srcPanel->addButton(appPtr->sourcePanel_cam, "Use Camera", OFXGUI_BUTTON_HEIGHT, OFXGUI_BUTTON_HEIGHT, kofxGui_Button_Off, kofxGui_Button_Switch);
@@ -135,7 +131,7 @@ void ofxNCoreVision::setupControls()
 	srcPanel->mObjHeight = 60;
 
 	//Template Panel
-	ofxGuiPanel* tPanel = controls->addPanel(appPtr->TemplatePanel, "Template Area", 41, 330, OFXGUI_PANEL_BORDER, OFXGUI_PANEL_SPACING);
+	ofxGuiPanel* tPanel = controls->addPanel(appPtr->TemplatePanel, "Template Area", 31, 315, OFXGUI_PANEL_BORDER, OFXGUI_PANEL_SPACING);
 	tPanel->addSlider(appPtr->TemplatePanel_minArea, "Min Area", 140, 13, 0.0f, 2000.0f, minTempArea, kofxGui_Display_Int, 0);
 	tPanel->addSlider(appPtr->TemplatePanel_maxArea, "Max Area", 140, 13, 0.0f, 2000.0f, maxTempArea, kofxGui_Display_Int, 0);
 	tPanel->mObjWidth = 319;
@@ -146,7 +142,7 @@ void ofxNCoreVision::setupControls()
 	tPanel->adjustToNewContent(100, 0);
 
 	//Background Image
-	ofxGuiPanel* bkPanel1 = controls->addPanel(appPtr->backgroundPanel, "Background", 86, 487, 10, 7);
+	ofxGuiPanel* bkPanel1 = controls->addPanel(appPtr->backgroundPanel, "Background", 31, 487, 10, 7);
 	bkPanel1->addButton(backgroundPanel_remove, "Remove BG (b)", 10, 10, kofxGui_Button_Off, kofxGui_Button_Trigger);
 	bkPanel1->addButton(backgroundPanel_dynamic, "Dynamic Subtract", 10, 10, kofxGui_Button_Off, kofxGui_Button_Switch);
 	bkPanel1->addSlider(appPtr->backgroundPanel_learn_rate, "Learn Speed", 110, 13, 1.0f, 500.0f, backgroundLearnRate, kofxGui_Display_Int, 0);
@@ -154,17 +150,17 @@ void ofxNCoreVision::setupControls()
 	bkPanel1->mObjHeight = 95;
 
 	//Smooth Image
-	ofxGuiPanel* sPanel = controls->addPanel(appPtr->smoothPanel, "Smooth", 236, 487, 10, 7);
+	ofxGuiPanel* sPanel = controls->addPanel(appPtr->smoothPanel, "Smooth", 166, 487, 10, 7);
 	sPanel->addButton(smoothPanel_use, "", 12, 12, kofxGui_Button_Off, kofxGui_Button_Switch);
 	sPanel->addSlider(smoothPanel_smooth, "Smooth", 110, 13, 0.0f, 15.0f, filter->smooth, kofxGui_Display_Int, 0);
 	sPanel->mObjects[0]->mObjX = 105;
 	sPanel->mObjects[0]->mObjY = 10;
 	sPanel->mObjects[1]->mObjY = 30;
 	sPanel->mObjWidth = 127;
-	sPanel->mObjHeight = 65;
+	sPanel->mObjHeight = 95;
 
 	//Highpass Image
-	ofxGuiPanel* hpPanel = controls->addPanel(appPtr->highpassPanel, "Highpass", 386, 487, OFXGUI_PANEL_BORDER, 7);
+	ofxGuiPanel* hpPanel = controls->addPanel(appPtr->highpassPanel, "Highpass", 301, 487, OFXGUI_PANEL_BORDER, 7);
 	hpPanel->addButton(highpassPanel_use, "", 12, 12, kofxGui_Button_Off, kofxGui_Button_Switch);
 	hpPanel->addSlider(highpassPanel_blur, "Blur", 110, 13, 0.0f, 200.0f, filter->highpassBlur, kofxGui_Display_Int, 0);
 	hpPanel->addSlider(highpassPanel_noise, "Noise", 110, 13, 0.0f, 30.0f, filter->highpassNoise, kofxGui_Display_Int, 0);
@@ -176,14 +172,14 @@ void ofxNCoreVision::setupControls()
 	hpPanel->mObjHeight = 95;
 
 	//Amplify Image
-	ofxGuiPanel* ampPanel = controls->addPanel(appPtr->amplifyPanel, "Amplify", 536, 487, OFXGUI_PANEL_BORDER, 7);
+	ofxGuiPanel* ampPanel = controls->addPanel(appPtr->amplifyPanel, "Amplify", 436, 487, OFXGUI_PANEL_BORDER, 7);
 	ampPanel->addButton(amplifyPanel_use, "", 12, 12, kofxGui_Button_Off, kofxGui_Button_Switch);
 	ampPanel->addSlider(amplifyPanel_amp, "Amplify", 110, 13, 0.0f, 300.0f, filter->highpassAmp, kofxGui_Display_Int, 0);
 	ampPanel->mObjects[0]->mObjX = 105;
 	ampPanel->mObjects[0]->mObjY = 10;
 	ampPanel->mObjects[1]->mObjY = 30;
 	ampPanel->mObjWidth = 127;
-	ampPanel->mObjHeight = 65;
+	ampPanel->mObjHeight = 95;
 
 	//do update while inactive
 	controls->forceUpdate(false);
@@ -236,8 +232,6 @@ void ofxNCoreVision::setupControls()
 	controls->update(appPtr->optionPanel_bin_tcp, kofxGui_Set_Bool, &appPtr->myTUIO.bBinaryMode, sizeof(bool));
 	//TUIO Height Width
 //	controls->update(appPtr->optionPanel_tuio_height_width, kofxGui_Set_Bool, &appPtr->myTUIO.bHeightWidth, sizeof(bool));
-	//GPU Mode
-	controls->update(appPtr->gpuPanel_use, kofxGui_Set_Bool, &appPtr->bGPUMode, sizeof(bool));
 }
 
 void ofxNCoreVision ::handleGui(int parameterId, int task, void* data, int length)
@@ -398,11 +392,6 @@ void ofxNCoreVision ::handleGui(int parameterId, int task, void* data, int lengt
 				filter->bVerticalMirror = *(bool*)data;
 				filter_fiducial->bVerticalMirror = *(bool*)data;
 			break;
-		//GPU
-		case gpuPanel_use:
-			if(length == sizeof(bool))
-				bGPUMode= *(bool*)data;
-			break;
 
 		//Tracking Panel
 		case trackingPanel_trackFingers:
@@ -421,21 +410,12 @@ void ofxNCoreVision ::handleGui(int parameterId, int task, void* data, int lengt
 				{
 					templates.saveTemplateXml();
 				}
-
-				contourFinder.bTrackFiducials=false;
-				controls->update(appPtr->trackingPanel_trackFiducials, kofxGui_Set_Bool, &appPtr->contourFinder.bTrackFiducials, sizeof(bool));
 			}
 			break;
 		case trackingPanel_trackFiducials:
 			if(length == sizeof(bool))
 			{
 				contourFinder.bTrackFiducials=*(bool*)data;
-				contourFinder.bTrackObjects=false;
-				controls->update(appPtr->trackingPanel_trackObjects, kofxGui_Set_Bool, &appPtr->contourFinder.bTrackObjects, sizeof(bool));
-				if(contourFinder.bTrackFiducials)
-				{
-					filter_fiducial->bLearnBakground = true;
-				}
 			}
 			break;
 		//Communication

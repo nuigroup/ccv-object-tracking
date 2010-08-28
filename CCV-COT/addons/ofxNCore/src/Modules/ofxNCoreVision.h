@@ -45,9 +45,6 @@ class ofxNCoreVision : public ofxGuiListener
 		propertiesPanel_settings,
 		propertiesPanel_pressure,
 
-		gpuPanel,
-		gpuPanel_use,
-
 		optionPanel,
 		optionPanel_tuio_osc,
 		optionPanel_tuio_tcp,
