@@ -16,7 +16,7 @@
 void ofxNCoreVision::_setup(ofEventArgs &e)
 {	
 	//set the title
-	ofSetWindowTitle(" Community Core Vision ");
+	ofSetWindowTitle(" Community Core Vision v 1.4a");
 	
 	//create filter
 	if(filter == NULL)	filter = new ProcessFilters();
@@ -696,7 +696,7 @@ void ofxNCoreVision::drawFullMode()
 		str6+= ofToString(contourFinder.nBlobs,0)+", "+ofToString(contourFinder.nObjects,0)+", "+ofToString(fidfinder.fiducialsList.size(),0)+"\n";
 
 		ofSetColor(0x969696);
-		verdana.drawString( str2+ str3 + str1 + str4 + str5 + str6 , 570, 430);
+		verdana.drawString( str3+ str1 + str6 + str4 + str2 + str5 , 570, 430);
 	}
 	else
 	{
@@ -724,7 +724,7 @@ void ofxNCoreVision::drawFullMode()
 		str6+= ofToString(contourFinder.nBlobs,0)+", "+ofToString(fidfinder.fiducialsList.size(),0)+", "+ofToString(contourFinder.nObjects,0)+"\n";
 
 		ofSetColor(0x969696);
-		verdana.drawString(str2+ str3 + str1 + str4 + str5 + str6 , 573, 427);
+		verdana.drawString(str3+ str1 + str6 + str4 + str2 + str5 , 573, 427);
 	}
 
 	if (bTUIOMode)
