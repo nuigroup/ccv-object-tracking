@@ -813,7 +813,7 @@ void ofxNCoreVision::drawFingerOutlines()
 			if (bDrawOutlines)
 			{
 				//Draw contours (outlines) on the source image
-				contourFinder.blobs[i].drawContours(40, 30, camWidth, camHeight, MAIN_WINDOW_WIDTH, MAIN_WINDOW_HEIGHT);
+				contourFinder.blobs[i].drawContours(30, 15, camWidth, camHeight, MAIN_WINDOW_WIDTH, MAIN_WINDOW_HEIGHT);
 			}
 			if (bShowLabels) //Show ID label;
 			{
@@ -862,9 +862,9 @@ void ofxNCoreVision::drawFiducials()
 {
 	for (list<ofxFiducial>::iterator fiducial = fidfinder.fiducialsList.begin(); fiducial != fidfinder.fiducialsList.end(); fiducial++)
 	{
-		fiducial->drawScaled(40,30,fiducialDrawFactor_Width,fiducialDrawFactor_Height);
+		fiducial->drawScaled(30,15,fiducialDrawFactor_Width,fiducialDrawFactor_Height);
 
-		fiducial->drawCornersScaled( 40, 30 ,fiducialDrawFactor_Width,fiducialDrawFactor_Height);
+		fiducial->drawCornersScaled( 30, 15 ,fiducialDrawFactor_Width,fiducialDrawFactor_Height);
 
 		ofSetColor(0,0,255);
 		ofSetColor(255,255,255);
