@@ -61,6 +61,9 @@ public:
 	//Constructor
 	//****//--------------------------------------------------------------------------------------
 	ofxFiducial() {
+		x_pos			= 0;
+		y_pos			= 0;
+
 		fidId			= INVALID_ID;
 		current.xpos	= current.ypos = -100.0f;
 		current.angle	= 0.0f;

@@ -158,7 +158,7 @@ void TUIO::sendTUIO(std::map<int, Blob> * fingerBlobs, std::map<int, Blob> * obj
 				for(blob_fid = fiducialsList->begin(); blob_fid != fiducialsList->end(); blob_fid++)
 				{
 					// omit point (0,0) since this means that we are outside of the range
-					if(blob_fid->getX() == 0 && blob_fid->getY() == 0)
+					if(blob_fid->x_pos == 0 && blob_fid->y_pos == 0)
 						continue;
 	
 					//Set Message
@@ -167,8 +167,8 @@ void TUIO::sendTUIO(std::map<int, Blob> * fingerBlobs, std::map<int, Blob> * obj
 					set_fid.addStringArg("set");
 					set_fid.addIntArg(blob_fid->getId());				// Session Id
 					set_fid.addIntArg(blob_fid->getId());				// Id
-					set_fid.addFloatArg(blob_fid->getX());				// x
-					set_fid.addFloatArg(blob_fid->getY());				// y
+					set_fid.addFloatArg(blob_fid->x_pos);				// x
+					set_fid.addFloatArg(blob_fid->y_pos);				// y
 					set_fid.addFloatArg(blob_fid->getAngle());			// a
 					set_fid.addFloatArg(blob_fid->getMSpeedX());		// X
 					set_fid.addFloatArg(blob_fid->getMSpeedY());		// Y
@@ -310,13 +310,13 @@ void TUIO::sendTUIO(std::map<int, Blob> * fingerBlobs, std::map<int, Blob> * obj
 				for(blob_fid = fiducialsList->begin(); blob_fid != fiducialsList->end(); blob_fid++)
 				{
 					// omit point (0,0) since this means that we are outside of the range
-					if(blob_fid->getX() == 0 && blob_fid->getY() == 0)
+					if(blob_fid->x_pos == 0 && blob_fid->y_pos == 0)
 						continue;
 	
 					setBlobsMsg_fid+= "<MESSAGE NAME=\"/tuio/2Dobj\"><ARGUMENT TYPE=\"s\" VALUE=\"set\"/><ARGUMENT TYPE=\"i\" VALUE=\""+ofToString(blob_fid->getId())+"\"/>"+
 					"<ARGUMENT TYPE=\"i\" VALUE=\""+ofToString(blob_fid->getId())+"\"/>"+
-					"<ARGUMENT TYPE=\"f\" VALUE=\""+ofToString(blob_fid->getX())+"\"/>"+
-					"<ARGUMENT TYPE=\"f\" VALUE=\""+ofToString(blob_fid->getY())+"\"/>"+
+					"<ARGUMENT TYPE=\"f\" VALUE=\""+ofToString(blob_fid->x_pos)+"\"/>"+
+					"<ARGUMENT TYPE=\"f\" VALUE=\""+ofToString(blob_fid->y_pos)+"\"/>"+
 					"<ARGUMENT TYPE=\"f\" VALUE=\""+ofToString(blob_fid->getAngle())+"\"/>"+
 					"<ARGUMENT TYPE=\"f\" VALUE=\""+ofToString(blob_fid->getMSpeedX())+"\"/>"+
 					"<ARGUMENT TYPE=\"f\" VALUE=\""+ofToString(blob_fid->getMSpeedY())+"\"/>"+
