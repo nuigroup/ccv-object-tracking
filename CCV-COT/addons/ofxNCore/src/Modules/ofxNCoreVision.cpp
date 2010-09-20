@@ -994,8 +994,8 @@ void ofxNCoreVision::_keyPressed(ofKeyEventArgs &e)
 			maxRect = rect;
 			minTempArea = 0;
 			maxTempArea = 0;
-			controls->update(appPtr->TemplatePanel_minArea, kofxGui_Set_Bool, &appPtr->minTempArea, sizeof(float));
-			controls->update(appPtr->TemplatePanel_maxArea, kofxGui_Set_Bool, &appPtr->maxTempArea, sizeof(float));
+			controls->update(appPtr->TemplatePanel_minArea, kofxGui_Set_Float, &appPtr->minTempArea, sizeof(float));
+			controls->update(appPtr->TemplatePanel_maxArea, kofxGui_Set_Float, &appPtr->maxTempArea, sizeof(float));
 			}
 			break;
 		case 'i':
@@ -1005,31 +1005,31 @@ void ofxNCoreVision::_keyPressed(ofKeyEventArgs &e)
 			{//Update the GUI with Fiducial Filter values
 				//Smooth
 				controls->update(appPtr->smoothPanel_use, kofxGui_Set_Bool, &appPtr->filter_fiducial->bSmooth, sizeof(bool));
-				controls->update(appPtr->smoothPanel_smooth, kofxGui_Set_Bool, &appPtr->filter_fiducial->smooth, sizeof(float));
+				controls->update(appPtr->smoothPanel_smooth, kofxGui_Set_Float, &appPtr->filter_fiducial->smooth, sizeof(float));
 				//Highpass
 				controls->update(appPtr->highpassPanel_use, kofxGui_Set_Bool, &appPtr->filter_fiducial->bHighpass, sizeof(bool));
-				controls->update(appPtr->highpassPanel_blur, kofxGui_Set_Bool, &appPtr->filter_fiducial->highpassBlur, sizeof(float));
-				controls->update(appPtr->highpassPanel_noise, kofxGui_Set_Bool, &appPtr->filter_fiducial->highpassNoise, sizeof(float));
+				controls->update(appPtr->highpassPanel_blur, kofxGui_Set_Float, &appPtr->filter_fiducial->highpassBlur, sizeof(float));
+				controls->update(appPtr->highpassPanel_noise, kofxGui_Set_Float, &appPtr->filter_fiducial->highpassNoise, sizeof(float));
 				//Amplify
 				controls->update(appPtr->amplifyPanel_use, kofxGui_Set_Bool, &appPtr->filter_fiducial->bAmplify, sizeof(bool));
-				controls->update(appPtr->amplifyPanel_amp, kofxGui_Set_Bool, &appPtr->filter_fiducial->highpassAmp, sizeof(float));
+				controls->update(appPtr->amplifyPanel_amp, kofxGui_Set_Float, &appPtr->filter_fiducial->highpassAmp, sizeof(float));
 				//Threshold
-				controls->update(appPtr->trackedPanel_threshold, kofxGui_Set_Bool, &appPtr->filter_fiducial->threshold, sizeof(float));
+				controls->update(appPtr->trackedPanel_threshold, kofxGui_Set_Float, &appPtr->filter_fiducial->threshold, sizeof(float));
 			}
 			else
 			{//Update the GUI with normal Filter values
 				//Smooth
 				controls->update(appPtr->smoothPanel_use, kofxGui_Set_Bool, &appPtr->filter->bSmooth, sizeof(bool));
-				controls->update(appPtr->smoothPanel_smooth, kofxGui_Set_Bool, &appPtr->filter->smooth, sizeof(float));
+				controls->update(appPtr->smoothPanel_smooth, kofxGui_Set_Float, &appPtr->filter->smooth, sizeof(float));
 				//Highpass
 				controls->update(appPtr->highpassPanel_use, kofxGui_Set_Bool, &appPtr->filter->bHighpass, sizeof(bool));
-				controls->update(appPtr->highpassPanel_blur, kofxGui_Set_Bool, &appPtr->filter->highpassBlur, sizeof(float));
-				controls->update(appPtr->highpassPanel_noise, kofxGui_Set_Bool, &appPtr->filter->highpassNoise, sizeof(float));
+				controls->update(appPtr->highpassPanel_blur, kofxGui_Set_Float, &appPtr->filter->highpassBlur, sizeof(float));
+				controls->update(appPtr->highpassPanel_noise, kofxGui_Set_Float, &appPtr->filter->highpassNoise, sizeof(float));
 				//Amplify
 				controls->update(appPtr->amplifyPanel_use, kofxGui_Set_Bool, &appPtr->filter->bAmplify, sizeof(bool));
-				controls->update(appPtr->amplifyPanel_amp, kofxGui_Set_Bool, &appPtr->filter->highpassAmp, sizeof(float));
+				controls->update(appPtr->amplifyPanel_amp, kofxGui_Set_Float, &appPtr->filter->highpassAmp, sizeof(float));
 				//Threshold
-				controls->update(appPtr->trackedPanel_threshold, kofxGui_Set_Bool, &appPtr->filter->threshold, sizeof(float));
+				controls->update(appPtr->trackedPanel_threshold, kofxGui_Set_Float, &appPtr->filter->threshold, sizeof(float));
 			}
 			//TODO:Update the GUI
 			break;
