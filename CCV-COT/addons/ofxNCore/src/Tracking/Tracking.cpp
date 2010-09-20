@@ -36,7 +36,7 @@ void BlobTracker::doFiducialCalculation()
 		fiducial->x_pos = fiducial->getX();
 		fiducial->y_pos = fiducial->getY();
 		calibrate->cameraToScreenPosition(fiducial->x_pos,fiducial->y_pos);
-	//	printf("new x: %f  y: %f\n",fiducial->x_pos,fiducial->y_pos);
+	//	printf("x : %f , y : %f\n",fiducial->x_pos,fiducial->x_pos);
 	}
 }
 

@@ -191,7 +191,7 @@ void ofxNCoreVision::loadXMLSettings()
 	//Tracking Options
 	contourFinder.bTrackFingers				= XML.getValue("CONFIG:BOOLEAN:TRACKFINGERS",0);
 	contourFinder.bTrackObjects				= XML.getValue("CONFIG:BOOLEAN:TRACKOBJECTS",0);
-	contourFinder.bTrackFiducials				= XML.getValue("CONFIG:BOOLEAN:TRACKFIDUCIALS",0);
+	contourFinder.bTrackFiducials			= XML.getValue("CONFIG:BOOLEAN:TRACKFIDUCIALS",0);
 
 	//NETWORK SETTINGS
 	bTUIOMode					= XML.getValue("CONFIG:BOOLEAN:TUIO",0);
