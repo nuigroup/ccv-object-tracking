@@ -16,7 +16,7 @@
 void ofxNCoreVision::_setup(ofEventArgs &e)
 {	
 	//set the title
-	ofSetWindowTitle(" Community Core Vision v 1.4a");
+	ofSetWindowTitle(" Community Core Vision v 1.4");
 	
 	//create filter
 	if(filter == NULL)	filter = new ProcessFilters();
