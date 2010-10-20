@@ -479,8 +479,9 @@ void ofxNCoreVision::_update(ofEventArgs &e)
 		}//End Background Learning rate
 
 		//Sending TUIO messages
-		if (bTUIOMode)
+		if (myTUIO.bOSCMode || myTUIO.bTCPMode || myTUIO.bBinaryMode)
 		{
+			//printf("sending data osc : %d TCP : %d binary : %d\n", myTUIO.bOSCMode, myTUIO.bTCPMode, myTUIO.bBinaryMode);
 			myTUIO.setMode(contourFinder.bTrackFingers , contourFinder.bTrackObjects, contourFinder.bTrackFiducials);
 			myTUIO.sendTUIO(&getBlobs(),&getObjects(),&fidfinder.fiducialsList);
 		}
@@ -727,12 +728,17 @@ void ofxNCoreVision::drawFullMode()
 		verdana.drawString(str3+ str1 + str6 + str4 + str2 + str5 , 573, 427);
 	}
 
-	if (bTUIOMode)
-	{
-		
-		char buf[256];
-		if(myTUIO.bOSCMode)
+
+	//TUIO data drawing	
+		char buf[256]="";
+		if(myTUIO.bOSCMode && myTUIO.bTCPMode)
+		{
+			sprintf(buf, "Dual Mode");
+		}
+		else if(myTUIO.bOSCMode)
+		{
 			sprintf(buf, "Host: %s\nProtocol: UDP [OSC]\nPort: %i", myTUIO.localHost, myTUIO.TUIOPort);
+		}
 		else if(myTUIO.bTCPMode)
 		{
 			if(myTUIO.bIsConnected)
@@ -750,7 +756,7 @@ void ofxNCoreVision::drawFullMode()
 
 		ofSetColor(0x969696);
 		verdana.drawString(buf, 573, 515);
-	}
+
 }
 
 void ofxNCoreVision::drawMiniMode()
@@ -939,8 +945,8 @@ void ofxNCoreVision::_keyPressed(ofKeyEventArgs &e)
 			//			myTUIO.blobs.clear();
 			break;
 		case 'g':
-			bGPUMode ? bGPUMode = false : bGPUMode = true;
-			filter->bLearnBakground = true;
+		//	bGPUMode ? bGPUMode = false : bGPUMode = true;
+		//	filter->bLearnBakground = true;
 			break;
 		case 'v':
 			if (bcamera && vidGrabber != NULL)

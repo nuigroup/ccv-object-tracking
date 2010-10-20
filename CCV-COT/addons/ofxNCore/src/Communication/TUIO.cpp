@@ -209,7 +209,8 @@ void TUIO::sendTUIO(std::map<int, Blob> * fingerBlobs, std::map<int, Blob> * obj
 			}
 		}
 	}
-	else if(bTCPMode) // else, if TCP (flash) mode
+	
+	if(bTCPMode) // else, if TCP (flash) mode
 	{
 		if(bFingers || bObjects)
 		{
@@ -358,7 +359,8 @@ void TUIO::sendTUIO(std::map<int, Blob> * fingerBlobs, std::map<int, Blob> * obj
 			}
 		}
 	}
-	else if(bBinaryMode) // else, if TCP (binary) mode
+	
+	if(bBinaryMode) // else, if TCP (binary) mode
 	{
 		if(bFingers)
 		{

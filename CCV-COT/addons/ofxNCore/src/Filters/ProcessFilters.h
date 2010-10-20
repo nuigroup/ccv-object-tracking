@@ -38,7 +38,8 @@ class ProcessFilters : public Filters {
         //GPU Setup
 		gpuReadBackBuffer = new unsigned char[camWidth*camHeight*3];
         gpuReadBackImageGS.allocate(camWidth, camHeight);
-        allocateGPU();
+        //allocateGPU();
+		//^^ Commented out for now, till full GPU implementation
     }
 
     void allocateGPU(){

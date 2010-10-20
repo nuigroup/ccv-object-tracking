@@ -422,24 +422,24 @@ void ofxNCoreVision ::handleGui(int parameterId, int task, void* data, int lengt
 		case optionPanel_tuio_osc:
 			if(length == sizeof(bool))
 				myTUIO.bOSCMode = *(bool*)data;
-				bTUIOMode = *(bool*)data;
+			//	bTUIOMode = *(bool*)data;
 				//set tcp to opposite
-				myTUIO.bTCPMode = false;
-				controls->update(appPtr->optionPanel_tuio_tcp, kofxGui_Set_Bool, &appPtr->myTUIO.bTCPMode, sizeof(bool));
-				myTUIO.bBinaryMode = false;
-				controls->update(appPtr->optionPanel_bin_tcp, kofxGui_Set_Bool, &appPtr->myTUIO.bBinaryMode, sizeof(bool));
+			//	myTUIO.bTCPMode = false;
+			//	controls->update(appPtr->optionPanel_tuio_tcp, kofxGui_Set_Bool, &appPtr->myTUIO.bTCPMode, sizeof(bool));
+			//	myTUIO.bBinaryMode = false;
+			//	controls->update(appPtr->optionPanel_bin_tcp, kofxGui_Set_Bool, &appPtr->myTUIO.bBinaryMode, sizeof(bool));
 				//clear blobs
 //				myTUIO.blobs.clear();
 			break;
 		case optionPanel_tuio_tcp:
 			if(length == sizeof(bool))
 				myTUIO.bTCPMode = *(bool*)data;
-				bTUIOMode = *(bool*)data;
+			//	bTUIOMode = *(bool*)data;
 				//set osc to opposite
-				myTUIO.bOSCMode = false;
-				controls->update(appPtr->optionPanel_tuio_osc, kofxGui_Set_Bool, &appPtr->myTUIO.bOSCMode, sizeof(bool));
-				myTUIO.bBinaryMode = false;
-				controls->update(appPtr->optionPanel_bin_tcp, kofxGui_Set_Bool, &appPtr->myTUIO.bBinaryMode, sizeof(bool));
+			//	myTUIO.bOSCMode = false;
+			//	controls->update(appPtr->optionPanel_tuio_osc, kofxGui_Set_Bool, &appPtr->myTUIO.bOSCMode, sizeof(bool));
+			//	myTUIO.bBinaryMode = false;
+			//	controls->update(appPtr->optionPanel_bin_tcp, kofxGui_Set_Bool, &appPtr->myTUIO.bBinaryMode, sizeof(bool));
 				//clear blobs
 //				myTUIO.blobs.clear();
 			break;
