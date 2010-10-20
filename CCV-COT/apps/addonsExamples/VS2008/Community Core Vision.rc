@@ -73,7 +73,7 @@ BEGIN
             VALUE "CompanyName", "Natural User Interface Group (www.nuigroup.com)"
             VALUE "FileDescription", "Community Core Vision"
             VALUE "FileVersion", "1, 4, 0, 0"
-            VALUE "InternalName", "CCV-1.4a"
+            VALUE "InternalName", "CCV-1.4"
             VALUE "LegalCopyright", "Natural User Interface Group - Copyright (C) 2005-2009"
             VALUE "OriginalFilename", "Community Core Vision.exe"
             VALUE "PrivateBuild", "a"
