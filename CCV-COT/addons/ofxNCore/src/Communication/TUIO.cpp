@@ -95,6 +95,9 @@ void TUIO::sendTUIO(std::map<int, Blob> * fingerBlobs, std::map<int, Blob> * obj
 						b.addMessage( set );							// add message to bundle
 						alive.addIntArg(blob->second.id);				// add blob to list of ALL active IDs
 					}
+					b.addMessage( alive );	 //add message to bundle
+					b.addMessage( fseq );	 //add message to bundle
+					TUIOSocket.sendBundle( b ); //send bundle
 				}
 			}
 		}
